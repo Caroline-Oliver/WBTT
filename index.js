@@ -7,5 +7,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log('WBTT server listening at 172.31.11.98:3000')
+    console.log('WBTT server listening at 3.141.202.74:3000')
 });
