@@ -23,6 +23,7 @@
 <body>
 	<script>
 		var count=1
+		var testDoc
 		
 		function allowDrop(ev) {
   			ev.preventDefault();
@@ -51,9 +52,28 @@
 				count=count+1/* We cannot use the same ID */
 				ev.target.appendChild(nodeCopy);
 			}
+		}
+		function testSend() {
+			//console.log("made it here")
+			testDoc = document.getElementById("dropArea").innerHTML
+			//document.getElementById("printArea").innerHTML="<p>"+testDoc+"</p>"
+			alert(testDoc)
+		}
+		
+		function convertToPlain(html){
+
+    // Create a new div element
+    var tempDivElement = document.createElement("div");
+
+    // Set the HTML content with the given value
+    tempDivElement.innerHTML = html;
+
+    // Retrieve the text property of the element 
+    return tempDivElement.textContent || tempDivElement.innerText || "";
+}
   
   //ev.target.appendChild(document.getElementById(data));
-}</script>
+</script>
 	<div class="container">
 	<div class="row">
 		<div class="col-3">
@@ -100,7 +120,10 @@
 						document.getElementById("seats").append(tile);
 			}
 				</script>
-			</div>	
-	
+	</div>
+	<div>
+		<button id="submit" onClick="testSend()">Send it</button>
+		<div id="printArea"></div>
+	</div>	
 </body>
 </html>
