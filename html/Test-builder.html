@@ -39,10 +39,18 @@
 			//https://stackoverflow.com/questions/6230834/html5-drag-and-drop-anywhere-on-the-screen
 			//this will work, but is not responsive
 			//maybe add a key listener to allow for resizing as well https://developer.mozilla.org/en-US/docs/Web/CSS/resize
- 			var nodeCopy = document.getElementById(data).cloneNode(true);
-    		nodeCopy.id = "newId"+count;
-			count=count+1/* We cannot use the same ID */
-    		ev.target.appendChild(nodeCopy);
+ 			if (document.getElementById(data).id.includes("new")){
+				ev.preventDefault();
+  				var data = ev.dataTransfer.getData("text");
+				ev.target.appendChild(document.getElementById(data));
+				
+			}
+			else{
+				var nodeCopy = document.getElementById(data).cloneNode(true);
+				nodeCopy.id = "newId"+count;
+				count=count+1/* We cannot use the same ID */
+				ev.target.appendChild(nodeCopy);
+			}
   
   //ev.target.appendChild(document.getElementById(data));
 }</script>
