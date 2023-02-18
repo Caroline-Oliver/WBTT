@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Test-Builder</title>
+<link href="css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+	<style>
+.grid-container {
+  display: inline-grid;
+  grid-template-columns: auto auto auto auto auto;
+  background-color: #2196F3;
+  padding: 10px;
+}
+
+.grid-item {
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+</style>
+</head>
+
+<body>
+	<script>
+		var count=1
+		
+		function allowDrop(ev) {
+  			ev.preventDefault();
+		}
+
+		function drag(ev) {
+  			ev.dataTransfer.setData("text", ev.target.id);
+		}
+
+		function drop(ev) {
+  			ev.preventDefault();
+  			var data = ev.dataTransfer.getData("text");
+			//only copy from template area, have a delete area as well
+			//https://stackoverflow.com/questions/6230834/html5-drag-and-drop-anywhere-on-the-screen
+			//this will work, but is not responsive
+			//maybe add a key listener to allow for resizing as well https://developer.mozilla.org/en-US/docs/Web/CSS/resize
+ 			var nodeCopy = document.getElementById(data).cloneNode(true);
+    		nodeCopy.id = "newId"+count;
+			count=count+1/* We cannot use the same ID */
+    		ev.target.appendChild(nodeCopy);
+  
+  //ev.target.appendChild(document.getElementById(data));
+}</script>
+	<div class="container">
+	<div class="row">
+		<div class="col-3">
+			<div>
+				<div class="tile" id="rectangle1" style="width: 25px; height: 100px; background: black" draggable="true" resizeable="true" ondragstart="drag(event)"></div>
+				<div class="tile" id="rectangle2" style="width: 100px; height: 25px; background: red" draggable="true" ondragstart="drag(event)"></div>
+				<div class="tile" id="square" style="width: 100px; height: 100px; background: green" draggable="true" ondragstart="drag(event)"></div>
+			</div>
+		</div>
+		<div class="col-9">
+		<div class="grid-container" id="dropArea" ondrop="drop(event)" ondragover="allowDrop(event)">
+			<div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+  <div class="grid-item"></div>
+			</div>
+		</div>
+		
+	</div>
+		<div class="row" id="seats"></div>
+				<script>
+				var index=0
+				for (index=0;index<5;index++)
+					{
+						let tile = document.createElement("div");
+            			tile.id = "shape"+index;
+						//tile.addEventListener("click", selectTile);
+						tile.classList.add("tile");
+						tile.setAttribute('style',"text-align:center;background:orange;width:25px;height:25px;border-radius:20px");
+						
+						tile.innerText=index;
+						console.log=index;
+						document.getElementById("seats").append(tile);
+			}
+				</script>
+			</div>	
+	
+</body>
+</html>
