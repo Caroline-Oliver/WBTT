@@ -9,7 +9,6 @@ app.set('view engine', 'ejs');
 // use static
 app.use( express.static( "public" ) );
 
-/*
 const pool = mysql.createPool({
     connectionLimit: 10,
     host: "localhost",
@@ -17,20 +16,20 @@ const pool = mysql.createPool({
     password: "UTSACSgroup7",
     database: "mysql_test",
 });
-*/
+
 app.get('/', (req, res) => {
     res.render('pages/index');
 });
 
 app.use('/static', express.static('html'));
-/*
+
 app.get('/getall', (req, res) => {
     pool.query("SELECT * FROM test_table1", function (err, result, fields) {
         if (err) throw err;
         res.end(JSON.stringify(result));
   });
 });
-*/
+
 app.listen(port, () => {
     console.log('WBTT server listening at 3.141.202.74:3000')
 });
