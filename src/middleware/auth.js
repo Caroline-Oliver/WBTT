@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-function auth(request, response, next) {
+function authenticate(request, response, next) {
     const authHeader = req.headers["authorization"];
 	
 	// the request header contains the token "Bearer <token>",
@@ -20,4 +20,4 @@ function auth(request, response, next) {
 	});
 }
 
-module.exports = auth;
+module.exports = authenticate;

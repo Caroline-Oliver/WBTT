@@ -11,3 +11,9 @@ function generateRefreshToken(user) {
 	refreshTokens.push(refreshToken)
 	return refreshToken;
 }
+
+module.exports = {
+	refreshTokens,
+	generateAccessToken,
+	generateRefreshToken
+}
