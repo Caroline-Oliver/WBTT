@@ -1,10 +1,14 @@
+// #region require
 const express = require('express');
 const mysql = require('mysql');
 const auth = require('./middleware/auth');
+const login = require('./middleware/login');
+// #endregion
+
+// #region init
 const app = express();
 const port = 3000;
 
-// #region init
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use( express.static( "src/public" ) );
@@ -17,7 +21,7 @@ const pool = mysql.createPool({
     password: "UTSACSgroup7",
     database: "mysql_test",
 });
-//#endregion
+// #endregion
 
 // #region basic pages
 app.get('/', (req, res) => {
@@ -73,7 +77,6 @@ app.post('/admin/upload', /*validateToken,*/ (req, res) => {
 });
 //#endregion
 
-
 // #region example query
 // app.get('/getall', (req, res) => {
 //     pool.query("SELECT * FROM test_table1", function (err, result, fields) {
@@ -83,7 +86,8 @@ app.post('/admin/upload', /*validateToken,*/ (req, res) => {
 // });
 // #endregion
 
+// #region listen on port
 app.listen(port, () => {
     console.log('WBTT server listening at 3.141.202.74:3000');
 });
-
+// #endregion
