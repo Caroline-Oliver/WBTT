@@ -23,29 +23,17 @@
   <hr style="margin-bottom: 15px; margin-top: 15px">
   <div class="container">
     <h2 style="text-align: center">Upcoming Events</h2>
-    <div class="row" style="margin-top: 25px">
-      <div class="col-lg-9 col-12" style="margin-top: 10px">
-        <h3 style="text-align: center">Event 1</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, voluptates, soluta velit nostrum ut iste
-          exercitationem vitae ipsum repellendus laudantium ab possimus nemo odio cumque illum nulla laborum blanditiis
-          unde.</p>
+    <% events.forEach(function(event) { %>
+      <div class="row" style="margin-top: 25px">
+        <div class="col-lg-9 col-12" style="margin-top: 10px">
+          <h3 style="text-align: center"><%= event.name %></h3>
+          <p><%= event.desc %></p>
+        </div>
+        <div class="col-lg-3 col-12" style="margin-top: 10px">
+          <img class="img-fluid" alt="<%= event.name %>" src="<%= event.imgSrc %>" style="max-height: 500px">
+        </div>
       </div>
-      <div class="col-lg-3 col-12" style="margin-top: 10px">
-        <img class="img-fluid" alt="event 1" src="/images/event-field.jpg" style="max-height: 500px">
-      </div>
-
-    </div>
-    <div class="row" style="margin-top: 25px">
-      <div class="col-lg-9 col-12" style="margin-top: 10px">
-        <h3 style="text-align: center">Event 2</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, voluptates, soluta velit nostrum ut iste
-          exercitationem vitae ipsum repellendus laudantium ab possimus nemo odio cumque illum nulla laborum blanditiis
-          unde.</p>
-      </div>
-      <div class="col-lg-3 col-12" style="margin-top: 10px">
-        <img class="img-fluid" alt="event 2" src="/images/event-singer.jpg">
-      </div>
-    </div>
+    <% }); %>
   </div>
   <hr>
   <div class="container">

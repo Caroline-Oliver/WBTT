@@ -1,7 +1,35 @@
+// #region authenticate middleware
+
+/*
+{
+	token: "tokenjadkfljds"
+}
+*/
+
+//   pool.query("SELECT * FROM test_table1", function (err, result, fields) {
+//         if (err) throw err;
+//         res.end(JSON.stringify(result));
+//   });
+
+function authenticate(req, res, next) {
+	if (req.body.token == null) 
+		res.sendStatus(400).send("Token not present");
+	
+    // is it 1 or 2?
+	pool.query("SELECT * FROM user WHERE user_id = " + req.body.token + ";", function(err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+        console.log(JSON.stringify(result));
+    });
+
+	// query the database for the token
+
+}
+// #endregion
+
 // #region require
 const express = require('express');
 const mysql = require('mysql');
-const auth = require('./middleware/auth');
 const login = require('./middleware/login');
 // #endregion
 
@@ -19,13 +47,37 @@ const pool = mysql.createPool({
     host: "localhost",
     user: "root",
     password: "UTSACSgroup7",
-    database: "mysql_test",
+    database: "wbtt",
 });
 // #endregion
 
 // #region basic pages
+
+// TODO: if statements in ejs
 app.get('/', (req, res) => {
-    res.render('pages/index');
+    /*
+    var mascots = [
+      { name: 'Sammy', organization: "DigitalOcean", birth_year: 2012},
+      { name: 'Tux', organization: "Linux", birth_year: 1996},
+      { name: 'Moby Dock', organization: "Docker", birth_year: 2013}
+    ];
+    */
+
+    var events = [
+        {
+            name: 'Event 1',
+            desc: '1 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, voluptates, soluta velit nostrum ut iste exercitationem vitae ipsum repellendus laudantium ab possimus nemo odio cumque illum nulla laborum blanditiis unde.',
+            imgSrc: '/images/event-singer.jpg'
+        },
+        {
+            name: 'Event 2',
+            desc: '2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, voluptates, soluta velit nostrum ut iste exercitationem vitae ipsum repellendus laudantium ab possimus nemo odio cumque illum nulla laborum blanditiis unde.',
+            imgSrc: '/images/event-field.jpg'
+        }
+    ]
+    res.render('pages/index', {
+        events: events
+    });
 });
 // #endregion
 
@@ -42,7 +94,7 @@ app.post('/user/create', (req, res) => {
     }
     
     // make sure user account doesn't already exist
-    if (! (users.some( ({user}) => user === req.body.username ) ) ) {
+    if ( (users.some( ({user}) => user === req.body.username ) ) ) {
         res.status(403).send("Username already exists");
         return;
     }
