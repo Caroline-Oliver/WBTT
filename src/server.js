@@ -110,6 +110,7 @@ app.post('/my/create', (req, res) => {
         if (err_0) throw err;
 
         max_id = result_0[0].RowDataPacket + 1;
+        console.log(result_0[0]);
         console.log(result_0[0].RowDataPacket);
 
         // inserts new user into user table
