@@ -153,34 +153,23 @@ app.get('/user/login', (req, res) => {
     var sql = "SELECT * FROM user WHERE user_name = ?"
     var sqlParams = [req.body.username];
     pool.query(sql, sqlParams, function(err, result) {
-        if (err) {
+        if (err || result.length == 0) {
             res.status(403).send("DB Error. Please contact an administrator.");
             throw err;
         }
-    });
 
-    // provide access and refresh tokens
-    // TODO: convert to prod code
-    res.status(200).send("Success! Logged in.");
+        res.status(200).send({token: result.user_id});
+    });
 });
 // #endregion
 
 // #region admin
-app.post('/admin/upload', /*validateToken,*/ (req, res) => {
+app.post('/admin/upload', authenticate, (req, res) => {
     fs.writeFile(`venues/${req.body.name}.html`, req.body.html, (err) => {
         if (err) return console.log(err);
     });
 });
 //#endregion
-
-// #region example query
-// app.get('/getall', (req, res) => {
-//     pool.query("SELECT * FROM test_table1", function (err, result, fields) {
-//         if (err) throw err;
-//         res.end(JSON.stringify(result));
-//   });
-// });
-// #endregion
 
 // #region listen on port
 app.listen(port, () => {
