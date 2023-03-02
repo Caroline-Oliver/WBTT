@@ -87,7 +87,7 @@ app.get('/', (req, res) => {
 // #endregion
 
 // #region user account api
-app.get('/user/auth', authenticate, (req, res) => {
+app.get('/my/auth', authenticate, (req, res) => {
     res.sendStatus(400).send("hello world");
 });
 
