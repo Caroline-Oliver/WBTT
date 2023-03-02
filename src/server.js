@@ -23,7 +23,8 @@ function authenticate(req, res, next) {
             }
             else {
                 console.log(req);
-                console.log(req.body)
+                console.log(req.url);
+                console.log(req.originalUrl);
                 next();
             }
         });
