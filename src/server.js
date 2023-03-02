@@ -108,30 +108,26 @@ app.post('/my/create', (req, res) => {
     sqlParams = [];
     pool.query(sql, sqlParams, function(err_0, result_0) {
         if (err_0) throw err;
-        console.log(result_0);
-        console.log(result_0.RowDataPacket);
-        console.log(result_0[0].RowDataPacket);
-        max_id = result_0[0].max_id;
-    });
 
-    console.log(max_id);
-    max_id += 1;
-    console.log(max_id);
+        max_id = result_0[0].RowDataPacket + 1;
 
-    // inserts new user into user table
-    sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, 1)";
-    sqlParams = [max_id, req.body.username, req.body.first_name, req.body.last_name, req.body.email];
-    pool.query(sql, sqlParams, function(err_1, result_1) {
-        if (err_1) throw err_1;
+        // inserts new user into user table
+        sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, 1)";
+        sqlParams = [max_id, req.body.username, req.body.first_name, req.body.last_name, req.body.email];
+        pool.query(sql, sqlParams, function(err_1, result_1) {
+            if (err_1) throw err_1;
 
-        sql = "INSERT INTO password (user_name, password) values (?, ?)";
-        sqlParams = [req.body.username, req.body.password];
-        pool.query(sql, sqlParams, function(err_2, result_2) {
-            if (err_2) throw err_2;
+            sql = "INSERT INTO password (user_name, password) values (?, ?)";
+            sqlParams = [req.body.username, req.body.password];
+            pool.query(sql, sqlParams, function(err_2, result_2) {
+                if (err_2) throw err_2;
 
-            res.status(200).send("Account successfully created!");
+                res.status(200).send("Account successfully created!");
+            });
         });
     });
+
+    
 });
 
 app.get('/user/login', (req, res) => {
