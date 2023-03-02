@@ -21,7 +21,7 @@ function authenticate(req, res, next) {
         console.log(result);
         console.log(JSON.stringify(result));
     });
-
+    res.next();
 	// query the database for the token
 
 }
@@ -82,6 +82,10 @@ app.get('/', (req, res) => {
 // #endregion
 
 // #region user account api
+app.get('/user/auth', authenticate, (req, res) => {
+    res.sendStatus(400).send("hello world");
+});
+
 const users = [{user: "admin", password: "password123"}];
 
 app.post('/user/create', (req, res) => {
