@@ -118,8 +118,8 @@ app.post('/my/create', (req, res) => {
         pool.query(sql, sqlParams, function(err_1, result_1) {
             if (err_1) throw err_1;
 
-            sql = "INSERT INTO password (user_name, password) values (?, ?)";
-            sqlParams = [req.body.username, req.body.password];
+            sql = "INSERT INTO password (password_id, user_name, password) values (?, ?, ?)";
+            sqlParams = [max_id, req.body.username, req.body.password];
             pool.query(sql, sqlParams, function(err_2, result_2) {
                 if (err_2) throw err_2;
 
