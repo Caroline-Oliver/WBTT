@@ -23,7 +23,7 @@ function authenticate(req, res, next) {
             }
             else {
                 console.log(req);
-                console.log(req.url);
+                console.log(req.url.contains("/my/"));
                 console.log(req.originalUrl);
                 next();
             }
@@ -93,7 +93,7 @@ app.get('/user/auth', authenticate, (req, res) => {
 
 const users = [{user: "admin", password: "password123"}];
 
-app.post('/user/create', (req, res) => {
+app.post('/my/create', (req, res) => {
     // make sure request contains all elements of a user account
     if (req.body.username == null || req.body.password == null
         || req.body.email == null || req.body.first_name == null
