@@ -4,6 +4,7 @@ function authenticate(req, res, next) {
 		res.status(400).send("Token not present");
     }
     else {
+        // parameterized MySQL requests are immune to SQL injection
         var sql = "SELECT * FROM user WHERE user_id = ?;"
         sqlParams = [req.body.token];
         pool.query(sql, sqlParams, function(err, result) {
@@ -25,12 +26,6 @@ function authenticate(req, res, next) {
             }
         });
     }
-}
-// #endregion
-
-// #region input validation
-function validateInput(string) {
-
 }
 // #endregion
 
@@ -89,8 +84,6 @@ app.get('/', (req, res) => {
 // #endregion
 
 // #region user account api
-const users = [{user: "admin", password: "password123"}];
-
 app.post('/my/create', (req, res) => {
     // make sure request contains all elements of a user account
     if (req.body.username == null || req.body.password == null
@@ -99,16 +92,38 @@ app.post('/my/create', (req, res) => {
         res.status(403).send("Missing body parts");
         return;
     }
-
-    
-    
     // make sure user account doesn't already exist
-    if ( (users.some( ({user}) => user === req.body.username ) ) ) {
-        res.status(403).send("Username already exists");
-        return;
-    }
+    var sql = "SELECT * FROM user WHERE user_name = ?;"
+    sqlParams = [req.body.username];
+    pool.query(sql, sqlParams, function(err, result) {
+        if (err) throw err;
+        if (result.length != 0) {
+            res.status(400).send("Username already in user");
+            return;
+        }
+    });
 
-    users.push({user: req.body.username, password: req.body.password});
+    // inserts new user into user table
+    sql = "INSERT INTO user (user_name, first_name, last_name, email, type) values (?, ?, ?, ?, 1)";
+    sqlParams = [req.body.username, req.body.first_name, req.body.last_name, req.body.email];
+    pool.query(sql, sqlParams, function(err, result) {
+        if (err) {
+            res.status(403).send("DB Error. Please contact an administrator.");
+            throw err;
+        }
+    });
+
+    // inserts new user into password table
+    sql = "INSERT INTO password (user_name, password) values (?, ?)";
+    sqlParams = [req.body.username, req.body.password];
+    pool.query(sql, sqlParams, function(err, result) {
+        if (err) {
+            res.status(403).send("DB Error. Please contact an administrator.");
+            throw err;
+        }
+    });
+
+    res.status(200).send("Account successfully created!");
 });
 
 app.get('/user/login', (req, res) => {
@@ -119,10 +134,30 @@ app.get('/user/login', (req, res) => {
     }
 
     // checks to see if username/password pair exist
-    if (!users.some( ({user,password}) => user === req.body.username && password === req.body.password)) {
-        res.status(403).send("Username/password pair does not exist: " + req.body.username + ", " + req.body.password);
-        return;
-    }
+    var sql = "SELECT * FROM password WHERE user_name = ? AND password = ?"
+    var sqlParams = [req.body.username, req.body.password];
+    var sqlResult = null;
+    pool.query(sql, sqlParams, function(err, result) {
+        if (err) {
+            res.status(403).send("DB Error. Please contact an administrator.");
+            throw err;
+        }
+        else if (result.length == 0) {
+            res.status(400).send("Invalid username/password combination.");
+        }
+        else {
+            sqlResult = result;
+        }
+    });
+
+    var sql = "SELECT * FROM user WHERE user_name = ?"
+    var sqlParams = [req.body.username];
+    pool.query(sql, sqlParams, function(err, result) {
+        if (err) {
+            res.status(403).send("DB Error. Please contact an administrator.");
+            throw err;
+        }
+    });
 
     // provide access and refresh tokens
     // TODO: convert to prod code
