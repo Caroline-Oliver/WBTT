@@ -13,13 +13,13 @@
 
 function authenticate(req, res, next) {
 	if (req.body.token == null) {
-		res.sendStatus(400).send("Token not present");
+		res.status(400).send("Token not present");
     }
     else {
         pool.query("SELECT * FROM user WHERE user_id = " + req.body.token + ";", function(err, result, fields) {
             if (err) throw err;
-            if (result.length == 0) {
-                res.sendStatus(404).send("Token not valid");
+            else if (result.length == 0) {
+                res.status(404).send("Token not valid");
             }
             else {
                 if (req.url.includes("/my/")) {
@@ -94,7 +94,7 @@ app.get('/', (req, res) => {
 
 // #region user account api
 app.get('/my/auth', authenticate, (req, res) => {
-    res.sendStatus(200).send("hello world");
+    res.status(200).send("hello world");
 });
 
 const users = [{user: "admin", password: "password123"}];
