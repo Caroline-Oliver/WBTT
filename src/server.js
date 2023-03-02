@@ -141,29 +141,29 @@ app.get('/my/login', (req, res) => {
     var sql = "SELECT * FROM password WHERE user_name = ? AND password = ?"
     var sqlParams = [req.body.username, req.body.password];
     var sqlResult = null;
-    pool.query(sql, sqlParams, function(err, result) {
+    pool.query(sql, sqlParams, function(err_1, result_1) {
         if (err) {
-            // res.status(403).send("DB Error. Please contact an administrator.");
             throw err;
         }
         else if (result.length == 0) {
             res.status(400).send("Invalid username/password combination.");
         }
         else {
-            sqlResult = result;
+            var sql = "SELECT * FROM user WHERE user_name = ?"
+            var sqlParams = [req.body.username];
+            pool.query(sql, sqlParams, function(err_2, result_2) {
+                if (err_2) throw err_2;
+                else if (result_2.length == 0) {
+                    res.status(403).send("DB Error. Please contact an administrator.");
+                }
+                else {
+                    res.status(200).send({token: result_2.user_id});
+                }
+            });
         }
     });
 
-    var sql = "SELECT * FROM user WHERE user_name = ?"
-    var sqlParams = [req.body.username];
-    pool.query(sql, sqlParams, function(err, result) {
-        if (err || result.length == 0) {
-            // res.status(403).send("DB Error. Please contact an administrator.");
-            throw err;
-        }
-
-        res.status(200).send({token: result.user_id});
-    });
+    
 });
 // #endregion
 
