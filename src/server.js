@@ -106,12 +106,12 @@ app.post('/my/create', (req, res) => {
     var max_id = null;
     var sql = "SELECT MAX(user_id) AS max_id FROM user";
     sqlParams = [];
-    pool.query(sql, sqlParams, function(err, result) {
-        if (err) throw err;
-        console.log(result);
-        console.log(result.RowDataPacket);
-        console.log(result[0]);
-        max_id = result[0].max_id;
+    pool.query(sql, sqlParams, function(err_0, result_0) {
+        if (err_0) throw err;
+        console.log(result_0);
+        console.log(result_0.RowDataPacket);
+        console.log(result_0[0].RowDataPacket);
+        max_id = result_0[0].max_id;
     });
 
     console.log(max_id);
@@ -121,24 +121,17 @@ app.post('/my/create', (req, res) => {
     // inserts new user into user table
     sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, 1)";
     sqlParams = [max_id, req.body.username, req.body.first_name, req.body.last_name, req.body.email];
-    pool.query(sql, sqlParams, function(err, result) {
-        if (err) {
-           //  res.status(403).send("DB Error. Please contact an administrator.");
-            throw err;
-        }
-    });
+    pool.query(sql, sqlParams, function(err_1, result_1) {
+        if (err_1) throw err_1;
 
-    // inserts new user into password table
-    sql = "INSERT INTO password (user_name, password) values (?, ?)";
-    sqlParams = [req.body.username, req.body.password];
-    pool.query(sql, sqlParams, function(err, result) {
-        if (err) {
-            res.status(403).send("DB Error. Please contact an administrator.");
-            throw err;
-        }
-    });
+        sql = "INSERT INTO password (user_name, password) values (?, ?)";
+        sqlParams = [req.body.username, req.body.password];
+        pool.query(sql, sqlParams, function(err_2, result_2) {
+            if (err_2) throw err_2;
 
-    res.status(200).send("Account successfully created!");
+            res.status(200).send("Account successfully created!");
+        });
+    });
 });
 
 app.get('/user/login', (req, res) => {
