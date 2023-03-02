@@ -28,7 +28,10 @@ function authenticate(req, res, next) {
                 else if (req.url.includes("/admin/") && result.type == 0) {
                     next();
                 }
-                res.redirect(403, "/");
+                else {
+                    res.redirect(403, "/");
+                }
+                
             }
         });
     }
