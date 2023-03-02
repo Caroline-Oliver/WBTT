@@ -113,7 +113,7 @@ app.post('/my/create', (req, res) => {
         console.log(max_id);
 
         // inserts new user into user table
-        sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, 1)";
+        sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, ?, 1)";
         sqlParams = [max_id, req.body.username, req.body.first_name, req.body.last_name, req.body.email];
         pool.query(sql, sqlParams, function(err_1, result_1) {
             if (err_1) throw err_1;
