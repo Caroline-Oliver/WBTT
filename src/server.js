@@ -22,10 +22,13 @@ function authenticate(req, res, next) {
                 res.sendStatus(404).send("Token not valid");
             }
             else {
-                console.log(req);
-                console.log(req.url.includes("/my/"));
-                console.log(req.originalUrl);
-                next();
+                if (req.url.includes("/my/")) {
+                    next();
+                }
+                else if (req.url.includes("/admin/") && result.type == 0) {
+                    next();
+                }
+                res.redirect(403, "/");
             }
         });
     }
