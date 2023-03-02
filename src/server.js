@@ -139,7 +139,7 @@ app.get('/user/login', (req, res) => {
     var sqlResult = null;
     pool.query(sql, sqlParams, function(err, result) {
         if (err) {
-            res.status(403).send("DB Error. Please contact an administrator.");
+            // res.status(403).send("DB Error. Please contact an administrator.");
             throw err;
         }
         else if (result.length == 0) {
@@ -154,7 +154,7 @@ app.get('/user/login', (req, res) => {
     var sqlParams = [req.body.username];
     pool.query(sql, sqlParams, function(err, result) {
         if (err || result.length == 0) {
-            res.status(403).send("DB Error. Please contact an administrator.");
+            // res.status(403).send("DB Error. Please contact an administrator.");
             throw err;
         }
 
