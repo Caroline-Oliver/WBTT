@@ -156,6 +156,7 @@ app.get('/my/login', (req, res) => {
                     res.status(403).send("DB Error. Please contact an administrator.");
                 }
                 else {
+                    console.log(result_2.user_id);
                     res.status(200).send({token: result_2.user_id});
                 }
             });
