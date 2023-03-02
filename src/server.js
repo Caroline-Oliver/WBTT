@@ -108,7 +108,7 @@ app.post('/my/create', (req, res) => {
     sqlParams = [req.body.username, req.body.first_name, req.body.last_name, req.body.email];
     pool.query(sql, sqlParams, function(err, result) {
         if (err) {
-            res.status(403).send("DB Error. Please contact an administrator.");
+           //  res.status(403).send("DB Error. Please contact an administrator.");
             throw err;
         }
     });
