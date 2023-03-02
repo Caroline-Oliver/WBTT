@@ -111,7 +111,9 @@ app.post('/my/create', (req, res) => {
         max_id = result.max_id;
     });
 
+    console.log(max_id);
     max_id += 1;
+    console.log(max_id);
 
     // inserts new user into user table
     sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, 1)";
