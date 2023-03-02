@@ -8,26 +8,27 @@ function authenticate(req, res, next) {
         var sql = "SELECT * FROM user WHERE user_id = ?;"
         sqlParams = [req.body.token];
         pool.query(sql, sqlParams, function(err, result) {
-        // parameterized MySQL requests are immune to SQL injection
-        var sql = "SELECT * FROM user WHERE user_id = ?;"
-        sqlParams = [req.body.token];
-        pool.query(sql, sqlParams, function(err, result) {
-            if (err) throw err;
-            else if (result.length == 0) {
-                res.status(404).send("Token not valid");
-            }
-            else {
-                if (req.url.includes("/my/")) {
-                    next();
-                }
-                else if (req.url.includes("/admin/") && result.type == 0) {
-                    next();
+            // parameterized MySQL requests are immune to SQL injection
+            var sql = "SELECT * FROM user WHERE user_id = ?;"
+            sqlParams = [req.body.token];
+            pool.query(sql, sqlParams, function(err, result) {
+                if (err) throw err;
+                else if (result.length == 0) {
+                    res.status(404).send("Token not valid");
                 }
                 else {
-                    res.redirect(403, "/");
+                    if (req.url.includes("/my/")) {
+                        next();
+                    }
+                    else if (req.url.includes("/admin/") && result.type == 0) {
+                        next();
+                    }
+                    else {
+                        res.redirect(403, "/");
+                    }
+                    
                 }
-                
-            }
+            });
         });
     }
 }
@@ -168,7 +169,6 @@ app.post('/my/create', (req, res) => {
 });
 
 app.get('/my/login', (req, res) => {
-app.get('/my/login', (req, res) => {
     // make sure request contains all elements of a user account
     if (req.body.username == null || req.body.password == null) {
         res.status(403).send("Missing body parts");
@@ -206,7 +206,6 @@ app.get('/my/login', (req, res) => {
 // #endregion
 
 // #region admin
-app.post('/admin/upload', authenticate, (req, res) => {
 app.post('/admin/upload', authenticate, (req, res) => {
     fs.writeFile(`venues/${req.body.name}.html`, req.body.html, (err) => {
         if (err) return console.log(err);
