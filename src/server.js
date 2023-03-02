@@ -94,7 +94,7 @@ app.get('/', (req, res) => {
 
 // #region user account api
 app.get('/my/auth', authenticate, (req, res) => {
-    res.sendStatus(400).send("hello world");
+    res.sendStatus(200).send("hello world");
 });
 
 const users = [{user: "admin", password: "password123"}];
