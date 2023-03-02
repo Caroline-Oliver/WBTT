@@ -14,21 +14,20 @@
 function authenticate(req, res, next) {
 	if (req.body.token == null) {
 		res.sendStatus(400).send("Token not present");
-        return;
     }
-	
-    // is it 1 or 2?
-	pool.query("SELECT * FROM user WHERE user_id = " + req.body.token + ";", function(err, result, fields) {
-        if (err) throw err;
-        if (result.length == 0) {
-            res.sendStatus(404).send("Token not valid");
-        }
-        else {
-            console.log(req);
-            console.log(JSON.stringify(req));
-            next();
-        }
-    });
+    else {
+        pool.query("SELECT * FROM user WHERE user_id = " + req.body.token + ";", function(err, result, fields) {
+            if (err) throw err;
+            if (result.length == 0) {
+                res.sendStatus(404).send("Token not valid");
+            }
+            else {
+                console.log(req);
+                console.log(JSON.stringify(req));
+                next();
+            }
+        });
+    }
 }
 // #endregion
 
