@@ -1,22 +1,12 @@
 // #region authenticate middleware
-
-/*
-{
-	token: "tokenjadkfljds"
-}
-*/
-
-//   pool.query("SELECT * FROM test_table1", function (err, result, fields) {
-//         if (err) throw err;
-//         res.end(JSON.stringify(result));
-//   });
-
 function authenticate(req, res, next) {
 	if (req.body.token == null) {
 		res.status(400).send("Token not present");
     }
     else {
-        pool.query("SELECT * FROM user WHERE user_id = " + req.body.token + ";", function(err, result, fields) {
+        var sql = "SELECT * FROM user WHERE user_id = ?;"
+        sqlParams = [req.body.token];
+        pool.query(sql, sqlParams, function(err, result) {
             if (err) throw err;
             else if (result.length == 0) {
                 res.status(404).send("Token not valid");
@@ -35,6 +25,12 @@ function authenticate(req, res, next) {
             }
         });
     }
+}
+// #endregion
+
+// #region input validation
+function validateInput(string) {
+
 }
 // #endregion
 
@@ -93,10 +89,6 @@ app.get('/', (req, res) => {
 // #endregion
 
 // #region user account api
-app.get('/my/auth', authenticate, (req, res) => {
-    res.status(200).send("hello world");
-});
-
 const users = [{user: "admin", password: "password123"}];
 
 app.post('/my/create', (req, res) => {
@@ -107,6 +99,8 @@ app.post('/my/create', (req, res) => {
         res.status(403).send("Missing body parts");
         return;
     }
+
+    
     
     // make sure user account doesn't already exist
     if ( (users.some( ({user}) => user === req.body.username ) ) ) {
