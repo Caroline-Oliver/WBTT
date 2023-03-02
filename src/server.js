@@ -109,9 +109,8 @@ app.post('/my/create', (req, res) => {
     pool.query(sql, sqlParams, function(err_0, result_0) {
         if (err_0) throw err;
 
-        max_id = result_0[0].RowDataPacket + 1;
-        console.log(result_0[0]);
-        console.log(result_0[0].max_id);
+        max_id = result_0[0].max_id + 1;
+        console.log(max_id);
 
         // inserts new user into user table
         sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, 1)";
