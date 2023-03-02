@@ -12,8 +12,10 @@
 //   });
 
 function authenticate(req, res, next) {
-	if (req.body.token == null) 
+	if (req.body.token == null) {
 		res.sendStatus(400).send("Token not present");
+        return;
+    }
 	
     // is it 1 or 2?
 	pool.query("SELECT * FROM user WHERE user_id = " + req.body.token + ";", function(err, result, fields) {
