@@ -103,9 +103,19 @@ app.post('/my/create', (req, res) => {
         }
     });
 
+    var max_id = null;
+    var sql = "SELECT MAX(user_id) AS max_id FROM user";
+    sqlParams = [];
+    pool.query(sql, sqlParams, function(err, result) {
+        if (err) throw err;
+        max_id = result.max_id;
+    });
+
+    max_id += 1;
+
     // inserts new user into user table
-    sql = "INSERT INTO user (user_name, first_name, last_name, email, type) values (?, ?, ?, ?, 1)";
-    sqlParams = [req.body.username, req.body.first_name, req.body.last_name, req.body.email];
+    sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, 1)";
+    sqlParams = [max_id, req.body.username, req.body.first_name, req.body.last_name, req.body.email];
     pool.query(sql, sqlParams, function(err, result) {
         if (err) {
            //  res.status(403).send("DB Error. Please contact an administrator.");
