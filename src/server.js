@@ -23,7 +23,7 @@ function authenticate(req, res, next) {
             }
             else {
                 console.log(req);
-                console.log(req.url.contains("/my/"));
+                console.log(req.url.includes("/my/"));
                 console.log(req.originalUrl);
                 next();
             }
