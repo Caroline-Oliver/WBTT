@@ -108,6 +108,7 @@ app.post('/my/create', (req, res) => {
     sqlParams = [];
     pool.query(sql, sqlParams, function(err, result) {
         if (err) throw err;
+        console.log(result);
         max_id = result.max_id;
     });
 
