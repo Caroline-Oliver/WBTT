@@ -18,12 +18,15 @@ function authenticate(req, res, next) {
     // is it 1 or 2?
 	pool.query("SELECT * FROM user WHERE user_id = " + req.body.token + ";", function(err, result, fields) {
         if (err) throw err;
-        console.log(result);
-        console.log(JSON.stringify(result));
+        if (result.length == 0) {
+            res.sendStatus(404).send("Token not valid");
+        }
+        else {
+            console.log(req);
+            console.log(JSON.stringify(req));
+            next();
+        }
     });
-    res.next();
-	// query the database for the token
-
 }
 // #endregion
 
