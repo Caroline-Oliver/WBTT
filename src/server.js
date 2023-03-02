@@ -141,10 +141,10 @@ app.get('/my/login', (req, res) => {
     var sqlParams = [req.body.username, req.body.password];
     var sqlResult = null;
     pool.query(sql, sqlParams, function(err_1, result_1) {
-        if (err) {
-            throw err;
+        if (err_1) {
+            throw err_1;
         }
-        else if (result.length == 0) {
+        else if (result_1.length == 0) {
             res.status(400).send("Invalid username/password combination.");
         }
         else {
