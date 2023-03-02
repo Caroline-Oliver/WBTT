@@ -104,12 +104,12 @@ app.post('/my/create', (req, res) => {
     });
 
     var max_id = null;
-    var sql = "SELECT MAX(user_id) FROM user";
+    var sql = "SELECT MAX(user_id) AS max_id FROM user";
     sqlParams = [];
     pool.query(sql, sqlParams, function(err, result) {
         if (err) throw err;
         console.log(result);
-        max_id = result.max_id;
+        max_id = result[0].max_id;
     });
 
     console.log(max_id);
