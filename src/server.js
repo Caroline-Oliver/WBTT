@@ -264,7 +264,7 @@ app.get('/my/checkout', authenticate, (req, res) => {
     });
 });
 
-app.get('/login', (req, res) => {
+app.get('/my/login', (req, res) => {
     res.render('pages/login');
 });
 
