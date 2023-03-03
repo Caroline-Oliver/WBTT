@@ -256,7 +256,7 @@ app.get('/my/checkout', authenticate, (req, res) => {
         .then((ticket_list) => {
             ticketListToInfoList()
             .then((info_list) => {
-                res.render('/pages/checkout', {
+                res.render('pages/checkout', {
                     cart: info_list
                 });
             });
@@ -264,7 +264,7 @@ app.get('/my/checkout', authenticate, (req, res) => {
     });
 });
 
-app.get('/my/login', (req, res) => {
+app.get('/login', (req, res) => {
     res.render('pages/login');
 });
 
