@@ -1,7 +1,7 @@
 // #region authenticate middleware
 function authenticate(req, res, next) {
 	if (req.body.token == null) {
-		res.status(400).send("Token not present").redirect('/');
+		res.status(400).redirect('/');
     }
     else {
         // parameterized MySQL requests are immune to SQL injection
