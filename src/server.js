@@ -37,7 +37,6 @@ function authenticate(req, res, next) {
 // #region require
 const express = require('express');
 const mysql = require('mysql');
-const login = require('./middleware/login');
 // #endregion
 
 // #region init
@@ -194,7 +193,6 @@ app.get('/my/login', (req, res) => {
         }
     });
 
-    
 });
 // #endregion
 
