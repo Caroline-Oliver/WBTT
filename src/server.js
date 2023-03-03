@@ -170,26 +170,15 @@ app.get('/my/login', (req, res) => {
     // checks to see if username/password pair exist
     var sql = "SELECT * FROM password WHERE user_name = ? AND password = ?"
     var sqlParams = [req.body.username, req.body.password];
-    var sqlResult = null;
-    pool.query(sql, sqlParams, function(err_1, result_1) {
-        if (err_1) {
-            throw err_1;
+    pool.query(sql, sqlParams, function(err, result) {
+        if (err) {
+            throw err;
         }
-        else if (result_1.length == 0) {
+        else if (result.length == 0) {
             res.status(400).send("Invalid username/password combination.");
         }
         else {
-            var sql = "SELECT * FROM user WHERE user_name = ?"
-            var sqlParams = [req.body.username];
-            pool.query(sql, sqlParams, function(err_2, result_2) {
-                if (err_2) throw err_2;
-                else if (result_2.length == 0) {
-                    res.status(403).send("DB Error. Please contact an administrator.");
-                }
-                else {
-                    res.status(200).send({token: result_2[0].user_id});
-                }
-            });
+            res.status(200).send({token: result[0].password_id});
         }
     });
 
