@@ -265,7 +265,7 @@ app.get('/my/checkout', authenticate, (req, res) => {
 });
 
 app.get('/my/login', (req, res) => {
-    res.render('/pages/login');
+    res.render('pages/login');
 });
 
 // TODO: pending page
