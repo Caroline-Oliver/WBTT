@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head') %>
+</head>
+
+<body>
+  <header>
+    <%- include('../partials/header') %>
+  </header>
+  <div class="container mt-2">
+    <div class="row">
+      <div class="col-12">
+        <div class="jumbotron">
+          <h1 class="text-center" style="color: #14213D">Same Tickets. No Fees</h1>
+          <!--<img src="/images/1200X400.gif" alt="" class="img-fluid">-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr style="margin-bottom: 15px; margin-top: 15px">
+  <div class="container">
+    <h2 style="text-align: center">Upcoming Events</h2>
+    <% events.forEach(function(event) { %>
+      <div class="row" style="margin-top: 25px">
+        <div class="col-lg-9 col-12" style="margin-top: 10px">
+          <h3 style="text-align: center"><%= event.name %></h3>
+          <p><%= event.desc %></p>
+        </div>
+        <div class="col-lg-3 col-12" style="margin-top: 10px">
+          <img class="img-fluid" alt="<%= event.name %>" src="<%= event.imgSrc %>" style="max-height: 500px">
+        </div>
+      </div>
+    <% }); %>
+  </div>
+  <hr>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-6 col-sm-6 mb-md-0 mb-2">
+        <h4>Contact Us</h4>
+        <address>
+          <strong>WBTT, Inc.</strong><br>
+          1 UTSA Circle<br>
+          San Antonio, TX 78249<br>
+          <abbr title="Phone">P:</abbr> (123) 456-7890
+        </address>
+        <h4>Social</h4>
+        <div class="row">
+          <div class="col-2"><img class="rounded-circle" src="/images/32X32.gif" alt=""></div>
+          <div class="col-2"><img class="rounded-circle" src="/images/32X32.gif" alt=""></div>
+          <div class="col-2"><img class="rounded-circle" src="/images/32X32.gif" alt=""></div>
+          <div class="col-2"><img class="rounded-circle" src="/images/32X32.gif" alt=""></div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <hr>
+  <footer class="text-center">
+    <%- include('../partials/footer') %>
+  </footer>
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="/js/jquery-3.4.1.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap-4.4.1.js"></script>
+</body>
+
+</html>
