@@ -156,7 +156,7 @@ const pool = mysql.createPool({
 
 // #region basic pages
 
-// TODO: if statements in ejs
+// good ejs
 app.get('/', (req, res) => {
     var events = [
         {
@@ -175,20 +175,24 @@ app.get('/', (req, res) => {
     });
 });
 
+// good ejs
 app.get('/about', (req, res) => {
     res.render('pages/about');
 });
 
+// good ejs
 app.get('/contact', (req, res) => {
     res.render('pages/contact');
 });
 // #endregion
 
 // #region event information
+// TODO: pending page
 app.get('/event/:event', (req, res) => {
     res.render('pages/event');
 });
 
+// TODO: pending pages
 app.get('/events/:category', (req, res) => {
     if (req.params.category.toLowerCase() === 'concerts') {
         res.render('pages/concerts-info');
@@ -206,6 +210,7 @@ app.get('/events/:category', (req, res) => {
 // #endregion
 
 // #region user account pages
+// TODO: pending page
 app.get('/my/account', authenticate, (req, res) => {
     var sql = "SELECT * FROM user WHERE user_id = ?;"
     sqlParams = [req.body.token];
@@ -213,7 +218,7 @@ app.get('/my/account', authenticate, (req, res) => {
         if (err) throw err;
 
         if (result.length != 0) {
-            res.render('/pages/myaccount', {
+            res.render('/pages/account', {
                 username: result[0].user_name,
                 first_name: result[0].first_name,
                 last_name: result[0].last_name,
@@ -224,7 +229,7 @@ app.get('/my/account', authenticate, (req, res) => {
         }
     });
 });
-// TODO: convert ticket list fetch to promises?
+// TODO: pending page
 app.get('/my/cart', authenticate, (req, res) => {
     checkTimestamps()
     .finally(() => {
@@ -232,7 +237,7 @@ app.get('/my/cart', authenticate, (req, res) => {
         .then((ticket_list) => {
             ticketListToInfoList()
             .then((info_list) => {
-                res.render('/pages/mycart', {
+                res.render('/pages/cart', {
                     cart: info_list
                 });
             });
@@ -240,6 +245,7 @@ app.get('/my/cart', authenticate, (req, res) => {
     });
 });
 
+// TODO: pending page
 app.get('/my/checkout', authenticate, (req, res) => {
     checkTimestamps()
     .finally(() => {
@@ -247,7 +253,7 @@ app.get('/my/checkout', authenticate, (req, res) => {
         .then((ticket_list) => {
             ticketListToInfoList()
             .then((info_list) => {
-                res.render('/pages/mycheckout', {
+                res.render('/pages/checkout', {
                     cart: info_list
                 });
             });
@@ -255,6 +261,7 @@ app.get('/my/checkout', authenticate, (req, res) => {
     });
 });
 
+// TODO: pending page
 app.get('/my/tickets', authenticate, (req, res) => {
     checkTimestamps()
     .finally(() => {
@@ -262,7 +269,7 @@ app.get('/my/tickets', authenticate, (req, res) => {
         .then((ticket_list) => {
             ticketListToInfoList()
             .then((info_list) => {
-                res.render('/pages/mytickets', {
+                res.render('/pages/my-tickets', {
                     tickets: info_list
                 });
             });
@@ -272,7 +279,7 @@ app.get('/my/tickets', authenticate, (req, res) => {
 // #endregion
 
 // #region user account api
-app.post('/my/create', (req, res) => {
+app.post('/api/my/create', (req, res) => {
     // make sure request contains all elements of a user account
     if (req.body.username == null || req.body.password == null
         || req.body.email == null || req.body.first_name == null
@@ -352,7 +359,7 @@ app.post('/my/create', (req, res) => {
 });
 
 // TODO change to async & promises to have more readable code
-app.get('/my/login', (req, res) => {
+app.get('/api/my/login', (req, res) => {
     // make sure request contains all elements of a user account
     if (req.body.username == null || req.body.password == null) {
         res.status(403).send("Missing body parts");
@@ -378,7 +385,7 @@ app.get('/my/login', (req, res) => {
 // #endregion
 
 // #region admin
-app.post('/admin/upload', authenticate, (req, res) => {
+app.post('/api/admin/upload', authenticate, (req, res) => {
     fs.writeFile(`venues/${req.body.name}.html`, req.body.html, (err) => {
         if (err) return console.log(err);
     });
