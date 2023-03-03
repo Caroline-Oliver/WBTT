@@ -34,6 +34,102 @@ function authenticate(req, res, next) {
 }
 // #endregion
 
+// #region db helper functions
+function checkTimestamps(search_terms) {
+    var sql = "SELECT * FROM tickets WHERE " + search_terms + ";";
+
+    return new Promise( (resolve, reject) => {
+        pool.query(sql, function(err_1, result_1) {
+            if (err_1) {
+                console.log(err_1);
+                reject(err_1);
+            }
+            bad_tickets = [];
+            var i = -1;
+            var now = Date.now();
+            while (++i < result_1.length) {
+                if (result_1[i].hold_time <= now) {
+                    bad_tickets.push(result_1[i].ticket_id);
+                }
+            }
+            var sql = "UPDATE tickets SET hold = null, hold_time = null WHERE ";
+            if (bad_tickets.length > 0) {
+                var i = -1;
+                while (++i < result_1.length) {
+                    if (i < result_1.length - 1) {
+                        sql += "ticket_id = ? OR ";
+                    }
+                    else {
+                        sql += "ticket_id = ?;";
+                    }
+                }
+                pool.query(sql, bad_tickets, function(err_2, result_2) {
+                    if (err_2) {
+                        console.log(err_2);
+                        reject(err_2);
+                    }
+                    else {
+                        resolve();
+                    }
+                });
+            }
+        });
+    });
+}
+
+function getTicketList(user_id) {
+    var ticket_list = [];
+    var sql = "SELECT * FROM cart WHERE user_id = ?;";
+    sqlParams = [user_id];
+    return new Promise( (resolve, reject) => {
+        pool.query(sql, sqlParams, function(err, result) {
+            if (err) {
+                console.log(err.message);
+                reject(err);
+            }
+            var i = -1;
+            while (++i < result.length) {
+                ticket_list.push(result[i].item);
+            }
+            resolve(ticket_list);
+        });
+    });
+}
+
+function ticketListToInfoList(ticket_list) {
+    var info_list = [];
+    var sql = "SELECT * FROM tickets WHERE ";
+    var i = -1;
+    while (++i < ticket_list.length) {
+        if (i < ticket_list.length - 1)
+            sql += "ticket_id = ? OR ";
+        else
+            sql += "ticket_id = ?;";
+    }
+
+    return new Promise( (resolve, reject) => {
+        pool.query(sql, ticket_list, function(err, result) {
+            if (err) {
+                console.log(err.message);
+                reject(err);
+            }
+            cart = [];
+            let i = -1;
+            while (++i < result.length) {
+                info_list.push({
+                    event_name: result[i].event_name,
+                    section: result[i].section,
+                    seat: result[i].seat,
+                    price: result[i].price
+                });
+            }
+            resolve(info_list);
+        });
+    });
+    
+}
+// #endregion
+
 // #region require
 const express = require('express');
 const mysql = require('mysql');
@@ -46,6 +142,7 @@ const port = 3000;
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use( express.static( "src/public" ) );
+app.use( express.static( "src/views/pages" ) );
 app.use(express.json());
 
 const pool = mysql.createPool({
@@ -75,6 +172,101 @@ app.get('/', (req, res) => {
     ]
     res.render('pages/index', {
         events: events
+    });
+});
+
+app.get('/about', (req, res) => {
+    res.render('pages/about');
+});
+
+app.get('/contact-us', (req, res) => {
+    res.render('pages/contact-us');
+});
+// #endregion
+
+// #region event information
+app.get('/event/:event', (req, res) => {
+    res.render('pages/event');
+});
+
+app.get('/events/:category', (req, res) => {
+    if (req.params.category.toLowerCase() === 'concerts') {
+        res.render('pages/concerts-info');
+    }
+    else if (req.params.category.toLowerCase() === 'sports') {
+        res.render('pages/theater-info');
+    }
+    else if (req.params.category.toLowerCase() === 'theater') {
+        res.render('pages/theater-info');
+    }
+    else {
+        res.render('pages/other-info');
+    }
+});
+// #endregion
+
+// #region user account pages
+app.get('/my/account', authenticate, (req, res) => {
+    var sql = "SELECT * FROM user WHERE user_id = ?;"
+    sqlParams = [req.body.token];
+    pool.query(sql, sqlParams, function(err, result) {
+        if (err) throw err;
+
+        if (result.length != 0) {
+            res.render('/pages/myaccount', {
+                username: result[0].user_name,
+                first_name: result[0].first_name,
+                last_name: result[0].last_name,
+            });
+        }
+        else {
+            res.status(404).send("Error, authenticated but not able to log in.");
+        }
+    });
+});
+// TODO: convert ticket list fetch to promises?
+app.get('/my/cart', authenticate, (req, res) => {
+    checkTimestamps()
+    .finally(() => {
+        getTicketList()
+        .then((ticket_list) => {
+            ticketListToInfoList()
+            .then((info_list) => {
+                res.render('/pages/mycart', {
+                    cart: info_list
+                });
+            });
+        });
+    });
+});
+
+app.get('/my/checkout', authenticate, (req, res) => {
+    checkTimestamps()
+    .finally(() => {
+        getTicketList()
+        .then((ticket_list) => {
+            ticketListToInfoList()
+            .then((info_list) => {
+                res.render('/pages/mycheckout', {
+                    cart: info_list
+                });
+            });
+        });
+    });
+});
+
+app.get('/my/tickets', authenticate, (req, res) => {
+    checkTimestamps()
+    .finally(() => {
+        getTicketList()
+        .then((ticket_list) => {
+            ticketListToInfoList()
+            .then((info_list) => {
+                res.render('/pages/mytickets', {
+                    tickets: info_list
+                });
+            });
+        });
     });
 });
 // #endregion
