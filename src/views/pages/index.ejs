@@ -26,14 +26,18 @@
     <% events.forEach(function(event) { %>
       <div class="row" style="margin-top: 25px">
         <div class="col-lg-9 col-12" style="margin-top: 10px">
-          <h3 style="text-align: center"><%= event.name %></h3>
-          <p><%= event.desc %></p>
+          <h3 style="text-align: center">
+            <%= event.name %>
+          </h3>
+          <p>
+            <%= event.desc %>
+          </p>
         </div>
         <div class="col-lg-3 col-12" style="margin-top: 10px">
           <img class="img-fluid" alt="<%= event.name %>" src="<%= event.imgSrc %>" style="max-height: 500px">
         </div>
       </div>
-    <% }); %>
+      <% }); %>
   </div>
   <hr>
   <div class="container">
@@ -62,11 +66,7 @@
   <footer class="text-center">
     <%- include('../partials/footer') %>
   </footer>
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="/js/jquery-3.4.1.min.js"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="/js/popper.min.js"></script>
-  <script src="/js/bootstrap-4.4.1.js"></script>
+  <%- include('../partials/scripts') %>
 </body>
 
 </html>
