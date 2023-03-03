@@ -221,7 +221,7 @@ app.get('/my/account', authenticate, (req, res) => {
         if (err) throw err;
 
         if (result.length != 0) {
-            res.render('/pages/account', {
+            res.render('pages/account', {
                 username: result[0].user_name,
                 first_name: result[0].first_name,
                 last_name: result[0].last_name,
@@ -240,7 +240,7 @@ app.get('/my/cart', authenticate, (req, res) => {
         .then((ticket_list) => {
             ticketListToInfoList()
             .then((info_list) => {
-                res.render('/pages/cart', {
+                res.render('pages/cart', {
                     cart: info_list
                 });
             });
