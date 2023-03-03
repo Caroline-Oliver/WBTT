@@ -140,7 +140,7 @@ const app = express();
 const port = 3000;
 
 app.set('view engine', 'ejs');
-app.set('views', __dirname + 'public/views');
+app.set('views', __dirname + '/public/views');
 app.use( express.static( "src/public" ) );
 app.use( express.static( "src/views/pages" ) );
 app.use(express.json());
@@ -179,8 +179,8 @@ app.get('/about', (req, res) => {
     res.render('pages/about');
 });
 
-app.get('/contact-us', (req, res) => {
-    res.render('pages/contact-us');
+app.get('/contact', (req, res) => {
+    res.render('pages/contact');
 });
 // #endregion
 
@@ -200,7 +200,7 @@ app.get('/events/:category', (req, res) => {
         res.render('pages/theater-info');
     }
     else {
-        res.render('pages/other-info');
+        res.redirect('/events/other').render('pages/other-info');
     }
 });
 // #endregion
