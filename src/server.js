@@ -62,14 +62,6 @@ const pool = mysql.createPool({
 
 // TODO: if statements in ejs
 app.get('/', (req, res) => {
-    /*
-    var mascots = [
-      { name: 'Sammy', organization: "DigitalOcean", birth_year: 2012},
-      { name: 'Tux', organization: "Linux", birth_year: 1996},
-      { name: 'Moby Dock', organization: "Docker", birth_year: 2013}
-    ];
-    */
-
     var events = [
         {
             name: 'Event 1',
@@ -168,6 +160,7 @@ app.post('/my/create', (req, res) => {
     
 });
 
+// TODO change to async & promises to have more readable code
 app.get('/my/login', (req, res) => {
     // make sure request contains all elements of a user account
     if (req.body.username == null || req.body.password == null) {
