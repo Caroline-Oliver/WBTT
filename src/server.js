@@ -1,7 +1,7 @@
 // #region authenticate middleware
 function authenticate(req, res, next) {
 	if (req.body.token == null) {
-		res.status(400).send("Token not present");
+		res.status(400).send("Token not present").redirect('/');
     }
     else {
         // parameterized MySQL requests are immune to SQL injection
@@ -203,8 +203,11 @@ app.get('/events/:category', (req, res) => {
     else if (req.params.category.toLowerCase() === 'theater') {
         res.render('pages/theater-info');
     }
+    else if (req.params.category.toLowerCase() === 'other') {
+        res.render('pages/other-info');
+    }
     else {
-        res.redirect('/events/other').render('pages/other-info');
+        res.redirect('/events/other');
     }
 });
 // #endregion
