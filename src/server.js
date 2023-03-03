@@ -1,7 +1,7 @@
 // #region authenticate middleware
 function authenticate(req, res, next) {
 	if (req.body.token == null) {
-		res.status(400).redirect('/');
+		res.status(400).redirect('/my/login');
     }
     else {
         // parameterized MySQL requests are immune to SQL injection
@@ -262,6 +262,10 @@ app.get('/my/checkout', authenticate, (req, res) => {
             });
         });
     });
+});
+
+app.get('/my/login', (req, res) => {
+    res.render('/pages/login');
 });
 
 // TODO: pending page
