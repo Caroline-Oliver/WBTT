@@ -113,20 +113,51 @@ function ticketListToInfoList(ticket_list) {
                 console.log(err.message);
                 reject(err);
             }
-            cart = [];
-            let i = -1;
-            while (++i < result.length) {
-                info_list.push({
-                    event_name: result[i].event_name,
-                    section: result[i].section,
-                    seat: result[i].seat,
-                    price: result[i].price
-                });
+            else {
+                cart = [];
+                let i = -1;
+                while (++i < result.length) {
+                    info_list.push({
+                        event_name: result[i].event_name,
+                        section: result[i].section,
+                        seat: result[i].seat,
+                        price: result[i].price
+                    });
+                }
+                resolve(info_list);
             }
-            resolve(info_list);
         });
     });
     
+}
+
+function accountStatus(token) {
+    var sql = "SELECT * FROM user WHERE user_id = ?";
+    var sqlParams = [token];
+    return new Promise( (resolve, reject) => {
+        if (token == null) {
+            resolve('na');
+        }
+        else {
+            pool.query(sql, sqlParams, function(err, result) {
+                if (err) {
+                    console.log(err.message);
+                    reject(err);
+                }
+                else {
+                    if (result.length == 0) {
+                        resolve('na');
+                    }
+                    else if (result[0].type == 0) {
+                        resolve('admin');
+                    }
+                    else {
+                        resolve('user');
+                    }
+                }
+            });
+        }
+    });
 }
 // #endregion
 
@@ -170,8 +201,20 @@ app.get('/', (req, res) => {
             imgSrc: '/images/event-field.jpg'
         }
     ]
-    res.render('pages/index', {
-        events: events
+    
+    var loggedIn = '';
+    accountStatus(req.body.token)
+    .catch( (err) => {
+        loggedIn = 'na';
+    })
+    .then( (status) => {
+        loggedIn = status;
+    })
+    .finally( () => {
+        res.render('pages/index', {
+            events: events,
+            status: loggedIn
+        });
     });
 });
 
@@ -264,7 +307,7 @@ app.get('/my/checkout', authenticate, (req, res) => {
     });
 });
 
-app.get('/my/login', (req, res) => {
+app.get('/login', (req, res) => {
     res.render('pages/login');
 });
 
