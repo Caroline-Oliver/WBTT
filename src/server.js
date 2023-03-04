@@ -220,38 +220,92 @@ app.get('/', (req, res) => {
 
 // good ejs
 app.get('/about', (req, res) => {
-    res.render('pages/about');
+    var loggedIn = '';
+    accountStatus(req.body.token)
+    .catch( (err) => {
+        loggedIn = 'na';
+    })
+    .then( (status) => {
+        loggedIn = status;
+    })
+    .finally( () => {
+        res.render('pages/about', {
+            status: loggedIn
+        });
+    });
 });
 
 // good ejs
 app.get('/contact', (req, res) => {
-    res.render('pages/contact');
+    var loggedIn = '';
+    accountStatus(req.body.token)
+    .catch( (err) => {
+        loggedIn = 'na';
+    })
+    .then( (status) => {
+        loggedIn = status;
+    })
+    .finally( () => {
+        res.render('pages/contact', {
+            status: loggedIn
+        });
+    });
 });
 // #endregion
 
 // #region event information
 // TODO: pending page
 app.get('/event/:event', (req, res) => {
-    res.render('pages/event');
+    var loggedIn = '';
+    accountStatus(req.body.token)
+    .catch( (err) => {
+        loggedIn = 'na';
+    })
+    .then( (status) => {
+        loggedIn = status;
+    })
+    .finally( () => {
+        res.render('pages/event', {
+            status: loggedIn
+        });
+    });
 });
 
 // TODO: pending pages
 app.get('/events/:category', (req, res) => {
-    if (req.params.category.toLowerCase() === 'concerts') {
-        res.render('pages/concerts-info');
-    }
-    else if (req.params.category.toLowerCase() === 'sports') {
-        res.render('pages/theater-info');
-    }
-    else if (req.params.category.toLowerCase() === 'theater') {
-        res.render('pages/theater-info');
-    }
-    else if (req.params.category.toLowerCase() === 'other') {
-        res.render('pages/other-info');
-    }
-    else {
-        res.redirect('/events/other');
-    }
+    var loggedIn = '';
+    accountStatus(req.body.token)
+    .catch( (err) => {
+        loggedIn = 'na';
+    })
+    .then( (status) => {
+        loggedIn = status;
+    })
+    .finally( () => {
+        if (req.params.category.toLowerCase() === 'concerts') {
+            res.render('pages/concerts-info', {
+                status: loggedIn
+            });
+        }
+        else if (req.params.category.toLowerCase() === 'sports') {
+            res.render('pages/theater-info', {
+                status: loggedIn
+            });
+        }
+        else if (req.params.category.toLowerCase() === 'theater') {
+            res.render('pages/theater-info', {
+                status: loggedIn
+            });
+        }
+        else if (req.params.category.toLowerCase() === 'other') {
+            res.render('pages/other-info', {
+                status: loggedIn
+            });
+        }
+        else {
+            res.redirect('/events/other');
+        }
+    });
 });
 // #endregion
 
@@ -263,11 +317,16 @@ app.get('/my/account', authenticate, (req, res) => {
     pool.query(sql, sqlParams, function(err, result) {
         if (err) throw err;
 
+        var loggedIn = '';
+        if (result[0].type == 1) loggedIn = 'user';
+        if (result[0].type == 0) loggedIn = 'admin';
+
         if (result.length != 0) {
             res.render('pages/account', {
                 username: result[0].user_name,
                 first_name: result[0].first_name,
                 last_name: result[0].last_name,
+                status: loggedIn
             });
         }
         else {
@@ -283,8 +342,19 @@ app.get('/my/cart', authenticate, (req, res) => {
         .then((ticket_list) => {
             ticketListToInfoList()
             .then((info_list) => {
-                res.render('pages/cart', {
-                    cart: info_list
+                var loggedIn = '';
+                accountStatus(req.body.token)
+                .catch( (err) => {
+                    loggedIn = 'na';
+                })
+                .then( (status) => {
+                    loggedIn = status;
+                })
+                .finally( () => {
+                    res.render('pages/cart', {
+                        cart: info_list,
+                        status: loggedIn
+                    });
                 });
             });
         });
@@ -299,8 +369,19 @@ app.get('/my/checkout', authenticate, (req, res) => {
         .then((ticket_list) => {
             ticketListToInfoList()
             .then((info_list) => {
-                res.render('pages/checkout', {
-                    cart: info_list
+                var loggedIn = '';
+                accountStatus(req.body.token)
+                .catch( (err) => {
+                    loggedIn = 'na';
+                })
+                .then( (status) => {
+                    loggedIn = status;
+                })
+                .finally( () => {
+                    res.render('pages/checkout', {
+                        cart: info_list,
+                        status: loggedIn
+                    });
                 });
             });
         });
@@ -319,8 +400,19 @@ app.get('/my/tickets', authenticate, (req, res) => {
         .then((ticket_list) => {
             ticketListToInfoList()
             .then((info_list) => {
-                res.render('/pages/my-tickets', {
-                    tickets: info_list
+                var loggedIn = '';
+                accountStatus(req.body.token)
+                .catch( (err) => {
+                    loggedIn = 'na';
+                })
+                .then( (status) => {
+                    loggedIn = status;
+                })
+                .finally( () => {
+                    res.render('pages/my-tickets', {
+                        cart: info_list,
+                        status: loggedIn
+                    });
                 });
             });
         });
