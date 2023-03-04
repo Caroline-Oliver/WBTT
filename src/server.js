@@ -389,7 +389,35 @@ app.get('/my/checkout', authenticate, (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.render('pages/login');
+    var loggedIn = '';
+    accountStatus(req.body.token)
+    .catch( (err) => {
+        loggedIn = 'na';
+    })
+    .then( (status) => {
+        loggedIn = status;
+    })
+    .finally( () => {
+        res.render('pages/login', {
+            status: loggedIn
+        });
+    });
+});
+
+app.get('/logout', (req, res) => {
+    var loggedIn = '';
+    accountStatus(req.body.token)
+    .catch( (err) => {
+        loggedIn = 'na';
+    })
+    .then( (status) => {
+        loggedIn = status;
+    })
+    .finally( () => {
+        res.render('pages/logout', {
+            status: loggedIn
+        });
+    });
 });
 
 // TODO: pending page

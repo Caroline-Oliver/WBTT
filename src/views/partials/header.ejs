@@ -25,42 +25,49 @@
                 </div>
             </li>
             <li class="nav-item dropdown">
-                <% if (status == 'user' || status == 'admin') { %>
-                <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">My Account</a>
-                <div class="dropdown-menu" aria-labelledby="accountDropdown">
-                    <a class="dropdown-item" href="/my/cart">Shopping Cart</a>
-                    <a class="dropdown-item" href="/my/tickets">My Tickets</a>
-                    <a class="dropdown-item" href="/my/account">My Account</a>
-                    <!--<div class="dropdown-divider"></div>-->
-                    <!--<a class="dropdown-item" href="/my/login">Login</a>-->
-                </div>
+                <% if (status=='user' || status=='admin' ) { %>
+                    <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account</a>
+                    <div class="dropdown-menu" aria-labelledby="accountDropdown">
+                        <a class="dropdown-item" href="/my/cart">Shopping Cart</a>
+                        <a class="dropdown-item" href="/my/tickets">My Tickets</a>
+                        <a class="dropdown-item" href="/my/account">My Account</a>
+                        <!--<div class="dropdown-divider"></div>-->
+                        <!--<a class="dropdown-item" href="/my/login">Login</a>-->
+                    </div>
+                    <% } %>
+            </li>
+            <% if (status=='admin' ) { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-page.html">Admin Page</a>
+                </li>
                 <% } %>
-            </li>
-            <% if (status == 'admin') { %>
-			<li class="nav-item">
-				<a class="nav-link" href="/admin-page.html">Admin Page</a>
-            </li>
-            <% } %>
-            <li>
-                <button type="button" class="btn btn-inverse" id="cart">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-  <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path>
-</svg>
-                Cart
-              </button>
-            </li>
-            
+                    <li>
+                        <button type="button" class="btn btn-inverse" id="cart">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cart" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z">
+                                </path>
+                            </svg>
+                            Cart
+                        </button>
+                    </li>
+
         </ul>
         <form class="form-inline my-2 my-lg-0">
-		<button class="btn btn-inverse my-2 my-sm-0" type="submit" style="margin-right:10px">Search</button>
+            <button class="btn btn-inverse my-2 my-sm-0" type="submit" style="margin-right:10px">Search</button>
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            
-        </form>
-		<a class="btn btn-nav" href="/login" role="button" id="login">
-                    Login
-                </a>
-		
 
+        </form>
+        <% if (status=='na') { %>
+        <a class="btn btn-nav" href="/login" role="button" id="login">
+            Login
+        </a>
+        <% } if (status=='admin' || status=='user') { %>
+            <a class="btn btn-nav" href="/logout" role="button" id="logout">
+                Logout
+            </a>
+        <% } %>
     </div>
 </nav>
