@@ -36,42 +36,17 @@ function authenticate(req, res, next) {
 
 // #region db helper functions
 function checkTimestamps(search_terms) {
-    var sql = "SELECT * FROM tickets WHERE " + search_terms + ";";
+    var sql = "UPDATE ticket SET hold = null, hold_time = null, user_name = null ";
+    sql += "WHERE (" + search_terms + ") AND hold_time > " + Date.now() + ";";
 
     return new Promise((resolve, reject) => {
-        pool.query(sql, function (err_1, result_1) {
-            if (err_1) {
-                console.log(err_1);
-                reject(err_1);
+        pool.query(sql, function (err, result) {
+            if (err) {
+                console.log(err);
+                reject(err);
             }
-            bad_tickets = [];
-            var i = -1;
-            var now = Date.now();
-            while (++i < result_1.length) {
-                if (result_1[i].hold_time <= now) {
-                    bad_tickets.push(result_1[i].ticket_id);
-                }
-            }
-            var sql = "UPDATE tickets SET hold = null, hold_time = null WHERE ";
-            if (bad_tickets.length > 0) {
-                var i = -1;
-                while (++i < result_1.length) {
-                    if (i < result_1.length - 1) {
-                        sql += "ticket_id = ? OR ";
-                    }
-                    else {
-                        sql += "ticket_id = ?;";
-                    }
-                }
-                pool.query(sql, bad_tickets, function (err_2, result_2) {
-                    if (err_2) {
-                        console.log(err_2);
-                        reject(err_2);
-                    }
-                    else {
-                        resolve();
-                    }
-                });
+            else {
+                resolve();
             }
         });
     });
