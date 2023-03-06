@@ -8,27 +8,22 @@ function authenticate(req, res, next) {
         var sql = "SELECT * FROM user WHERE user_id = ?;"
         sqlParams = [req.body.token];
         pool.query(sql, sqlParams, function (err, result) {
-            // parameterized MySQL requests are immune to SQL injection
-            var sql = "SELECT * FROM user WHERE user_id = ?;"
-            sqlParams = [req.body.token];
-            pool.query(sql, sqlParams, function (err, result) {
-                if (err) throw err;
-                else if (result.length == 0) {
-                    res.status(404).send("Token not valid");
+            if (err) throw err;
+            else if (result.length == 0) {
+                res.status(404).send("Token not valid");
+            }
+            else {
+                if (req.url.includes("/my/")) {
+                    next();
+                }
+                else if (req.url.includes("/admin/") && result.type == 0) {
+                    next();
                 }
                 else {
-                    if (req.url.includes("/my/")) {
-                        next();
-                    }
-                    else if (req.url.includes("/admin/") && result.type == 0) {
-                        next();
-                    }
-                    else {
-                        res.redirect(403, "/");
-                    }
-
+                    res.redirect(403, "/");
                 }
-            });
+
+            }
         });
     }
 }
