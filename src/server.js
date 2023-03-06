@@ -1,17 +1,17 @@
 // #region authenticate middleware
 function authenticate(req, res, next) {
-	if (req.body.token == null) {
-		res.status(400).redirect('/my/login');
+    if (req.body.token == null) {
+        res.status(400).redirect('/my/login');
     }
     else {
         // parameterized MySQL requests are immune to SQL injection
         var sql = "SELECT * FROM user WHERE user_id = ?;"
         sqlParams = [req.body.token];
-        pool.query(sql, sqlParams, function(err, result) {
+        pool.query(sql, sqlParams, function (err, result) {
             // parameterized MySQL requests are immune to SQL injection
             var sql = "SELECT * FROM user WHERE user_id = ?;"
             sqlParams = [req.body.token];
-            pool.query(sql, sqlParams, function(err, result) {
+            pool.query(sql, sqlParams, function (err, result) {
                 if (err) throw err;
                 else if (result.length == 0) {
                     res.status(404).send("Token not valid");
@@ -26,7 +26,7 @@ function authenticate(req, res, next) {
                     else {
                         res.redirect(403, "/");
                     }
-                    
+
                 }
             });
         });
@@ -38,8 +38,8 @@ function authenticate(req, res, next) {
 function checkTimestamps(search_terms) {
     var sql = "SELECT * FROM tickets WHERE " + search_terms + ";";
 
-    return new Promise( (resolve, reject) => {
-        pool.query(sql, function(err_1, result_1) {
+    return new Promise((resolve, reject) => {
+        pool.query(sql, function (err_1, result_1) {
             if (err_1) {
                 console.log(err_1);
                 reject(err_1);
@@ -63,7 +63,7 @@ function checkTimestamps(search_terms) {
                         sql += "ticket_id = ?;";
                     }
                 }
-                pool.query(sql, bad_tickets, function(err_2, result_2) {
+                pool.query(sql, bad_tickets, function (err_2, result_2) {
                     if (err_2) {
                         console.log(err_2);
                         reject(err_2);
@@ -81,8 +81,8 @@ function getTicketList(user_id) {
     var ticket_list = [];
     var sql = "SELECT * FROM cart WHERE user_id = ?;";
     sqlParams = [user_id];
-    return new Promise( (resolve, reject) => {
-        pool.query(sql, sqlParams, function(err, result) {
+    return new Promise((resolve, reject) => {
+        pool.query(sql, sqlParams, function (err, result) {
             if (err) {
                 console.log(err.message);
                 reject(err);
@@ -107,8 +107,8 @@ function ticketListToInfoList(ticket_list) {
             sql += "ticket_id = ?;";
     }
 
-    return new Promise( (resolve, reject) => {
-        pool.query(sql, ticket_list, function(err, result) {
+    return new Promise((resolve, reject) => {
+        pool.query(sql, ticket_list, function (err, result) {
             if (err) {
                 console.log(err.message);
                 reject(err);
@@ -128,18 +128,18 @@ function ticketListToInfoList(ticket_list) {
             }
         });
     });
-    
+
 }
 
 function accountStatus(token) {
     var sql = "SELECT * FROM user WHERE user_id = ?";
     var sqlParams = [token];
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         if (token == null) {
             resolve('na');
         }
         else {
-            pool.query(sql, sqlParams, function(err, result) {
+            pool.query(sql, sqlParams, function (err, result) {
                 if (err) {
                     console.log(err.message);
                     reject(err);
@@ -172,8 +172,8 @@ const port = 3000;
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
-app.use( express.static( "src/public" ) );
-app.use( express.static( "src/views/pages" ) );
+app.use(express.static("src/public"));
+app.use(express.static("src/views/pages"));
 app.use(express.json());
 
 const pool = mysql.createPool({
@@ -201,55 +201,55 @@ app.get('/', (req, res) => {
             imgSrc: '/images/event-field.jpg'
         }
     ]
-    
+
     var loggedIn = '';
     accountStatus(req.body.token)
-    .catch( (err) => {
-        loggedIn = 'na';
-    })
-    .then( (status) => {
-        loggedIn = status;
-    })
-    .finally( () => {
-        res.render('pages/index', {
-            events: events,
-            status: loggedIn
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/index', {
+                events: events,
+                status: loggedIn
+            });
         });
-    });
 });
 
 // good ejs
 app.get('/about', (req, res) => {
     var loggedIn = '';
     accountStatus(req.body.token)
-    .catch( (err) => {
-        loggedIn = 'na';
-    })
-    .then( (status) => {
-        loggedIn = status;
-    })
-    .finally( () => {
-        res.render('pages/about', {
-            status: loggedIn
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/about', {
+                status: loggedIn
+            });
         });
-    });
 });
 
 // good ejs
 app.get('/contact', (req, res) => {
     var loggedIn = '';
     accountStatus(req.body.token)
-    .catch( (err) => {
-        loggedIn = 'na';
-    })
-    .then( (status) => {
-        loggedIn = status;
-    })
-    .finally( () => {
-        res.render('pages/contact', {
-            status: loggedIn
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/contact', {
+                status: loggedIn
+            });
         });
-    });
 });
 // #endregion
 
@@ -258,54 +258,54 @@ app.get('/contact', (req, res) => {
 app.get('/event/:event', (req, res) => {
     var loggedIn = '';
     accountStatus(req.body.token)
-    .catch( (err) => {
-        loggedIn = 'na';
-    })
-    .then( (status) => {
-        loggedIn = status;
-    })
-    .finally( () => {
-        res.render('pages/event', {
-            status: loggedIn
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/event', {
+                status: loggedIn
+            });
         });
-    });
 });
 
 // TODO: pending pages
 app.get('/events/:category', (req, res) => {
     var loggedIn = '';
     accountStatus(req.body.token)
-    .catch( (err) => {
-        loggedIn = 'na';
-    })
-    .then( (status) => {
-        loggedIn = status;
-    })
-    .finally( () => {
-        if (req.params.category.toLowerCase() === 'concerts') {
-            res.render('pages/concerts-info', {
-                status: loggedIn
-            });
-        }
-        else if (req.params.category.toLowerCase() === 'sports') {
-            res.render('pages/theater-info', {
-                status: loggedIn
-            });
-        }
-        else if (req.params.category.toLowerCase() === 'theater') {
-            res.render('pages/theater-info', {
-                status: loggedIn
-            });
-        }
-        else if (req.params.category.toLowerCase() === 'other') {
-            res.render('pages/other-info', {
-                status: loggedIn
-            });
-        }
-        else {
-            res.redirect('/events/other');
-        }
-    });
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            if (req.params.category.toLowerCase() === 'concerts') {
+                res.render('pages/concerts-info', {
+                    status: loggedIn
+                });
+            }
+            else if (req.params.category.toLowerCase() === 'sports') {
+                res.render('pages/theater-info', {
+                    status: loggedIn
+                });
+            }
+            else if (req.params.category.toLowerCase() === 'theater') {
+                res.render('pages/theater-info', {
+                    status: loggedIn
+                });
+            }
+            else if (req.params.category.toLowerCase() === 'other') {
+                res.render('pages/other-info', {
+                    status: loggedIn
+                });
+            }
+            else {
+                res.redirect('/events/other');
+            }
+        });
 });
 // #endregion
 
@@ -314,7 +314,7 @@ app.get('/events/:category', (req, res) => {
 app.get('/my/account', authenticate, (req, res) => {
     var sql = "SELECT * FROM user WHERE user_id = ?;"
     sqlParams = [req.body.token];
-    pool.query(sql, sqlParams, function(err, result) {
+    pool.query(sql, sqlParams, function (err, result) {
         if (err) throw err;
 
         var loggedIn = '';
@@ -337,114 +337,114 @@ app.get('/my/account', authenticate, (req, res) => {
 // TODO: pending page
 app.get('/my/cart', authenticate, (req, res) => {
     checkTimestamps()
-    .finally(() => {
-        getTicketList()
-        .then((ticket_list) => {
-            ticketListToInfoList()
-            .then((info_list) => {
-                var loggedIn = '';
-                accountStatus(req.body.token)
-                .catch( (err) => {
-                    loggedIn = 'na';
-                })
-                .then( (status) => {
-                    loggedIn = status;
-                })
-                .finally( () => {
-                    res.render('pages/cart', {
-                        cart: info_list,
-                        status: loggedIn
-                    });
+        .finally(() => {
+            getTicketList()
+                .then((ticket_list) => {
+                    ticketListToInfoList()
+                        .then((info_list) => {
+                            var loggedIn = '';
+                            accountStatus(req.body.token)
+                                .catch((err) => {
+                                    loggedIn = 'na';
+                                })
+                                .then((status) => {
+                                    loggedIn = status;
+                                })
+                                .finally(() => {
+                                    res.render('pages/cart', {
+                                        cart: info_list,
+                                        status: loggedIn
+                                    });
+                                });
+                        });
                 });
-            });
         });
-    });
 });
 
 // TODO: pending page
 app.get('/my/checkout', authenticate, (req, res) => {
     checkTimestamps()
-    .finally(() => {
-        getTicketList()
-        .then((ticket_list) => {
-            ticketListToInfoList()
-            .then((info_list) => {
-                var loggedIn = '';
-                accountStatus(req.body.token)
-                .catch( (err) => {
-                    loggedIn = 'na';
-                })
-                .then( (status) => {
-                    loggedIn = status;
-                })
-                .finally( () => {
-                    res.render('pages/checkout', {
-                        cart: info_list,
-                        status: loggedIn
-                    });
+        .finally(() => {
+            getTicketList()
+                .then((ticket_list) => {
+                    ticketListToInfoList()
+                        .then((info_list) => {
+                            var loggedIn = '';
+                            accountStatus(req.body.token)
+                                .catch((err) => {
+                                    loggedIn = 'na';
+                                })
+                                .then((status) => {
+                                    loggedIn = status;
+                                })
+                                .finally(() => {
+                                    res.render('pages/checkout', {
+                                        cart: info_list,
+                                        status: loggedIn
+                                    });
+                                });
+                        });
                 });
-            });
         });
-    });
 });
 
 app.get('/login', (req, res) => {
     var loggedIn = '';
     accountStatus(req.body.token)
-    .catch( (err) => {
-        loggedIn = 'na';
-    })
-    .then( (status) => {
-        loggedIn = status;
-    })
-    .finally( () => {
-        res.render('pages/login', {
-            status: loggedIn
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/login', {
+                status: loggedIn
+            });
         });
-    });
 });
 
 app.get('/logout', (req, res) => {
     var loggedIn = '';
     accountStatus(req.body.token)
-    .catch( (err) => {
-        loggedIn = 'na';
-    })
-    .then( (status) => {
-        loggedIn = status;
-    })
-    .finally( () => {
-        res.render('pages/logout', {
-            status: loggedIn
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/logout', {
+                status: loggedIn
+            });
         });
-    });
 });
 
 // TODO: pending page
 app.get('/my/tickets', authenticate, (req, res) => {
     checkTimestamps()
-    .finally(() => {
-        getTicketList()
-        .then((ticket_list) => {
-            ticketListToInfoList()
-            .then((info_list) => {
-                var loggedIn = '';
-                accountStatus(req.body.token)
-                .catch( (err) => {
-                    loggedIn = 'na';
-                })
-                .then( (status) => {
-                    loggedIn = status;
-                })
-                .finally( () => {
-                    res.render('pages/my-tickets', {
-                        cart: info_list,
-                        status: loggedIn
-                    });
+        .finally(() => {
+            getTicketList()
+                .then((ticket_list) => {
+                    ticketListToInfoList()
+                        .then((info_list) => {
+                            var loggedIn = '';
+                            accountStatus(req.body.token)
+                                .catch((err) => {
+                                    loggedIn = 'na';
+                                })
+                                .then((status) => {
+                                    loggedIn = status;
+                                })
+                                .finally(() => {
+                                    res.render('pages/my-tickets', {
+                                        cart: info_list,
+                                        status: loggedIn
+                                    });
+                                });
+                        });
                 });
-            });
         });
-    });
 });
 // #endregion
 
@@ -460,7 +460,7 @@ app.post('/api/my/create', (req, res) => {
     // make sure user account doesn't already exist
     var sql = "SELECT * FROM user WHERE user_name = ?;"
     sqlParams = [req.body.username];
-    pool.query(sql, sqlParams, function(err_1, result_1) {
+    pool.query(sql, sqlParams, function (err_1, result_1) {
         if (err_1) throw err_1;
         else if (result_1.length != 0) {
             res.status(400).send("Username already in user");
@@ -469,32 +469,32 @@ app.post('/api/my/create', (req, res) => {
             var max_id = null;
             var sql = "SELECT MAX(user_id) AS max_id FROM user";
             sqlParams = [];
-            pool.query(sql, sqlParams, function(err_2, result_2) {
+            pool.query(sql, sqlParams, function (err_2, result_2) {
                 if (err_2) throw err_2;
-        
+
                 max_id = result_2[0].max_id + 1;
-        
+
                 // inserts new user into user table
                 sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, ?, 1)";
                 sqlParams = [max_id, req.body.username, req.body.first_name, req.body.last_name, req.body.email];
-                pool.query(sql, sqlParams, function(err_3, result_3) {
+                pool.query(sql, sqlParams, function (err_3, result_3) {
                     if (err_3) throw err_3;
-        
+
                     sql = "INSERT INTO password (password_id, user_name, password) values (?, ?, ?)";
                     sqlParams = [max_id, req.body.username, req.body.password];
-                    pool.query(sql, sqlParams, function(err_4, result_4) {
+                    pool.query(sql, sqlParams, function (err_4, result_4) {
                         if (err_4) throw err_4;
-        
+
                         res.status(200).send("Account successfully created!");
                     });
                 });
             });
         }
     });
-    
+
     var sql = "SELECT * FROM user WHERE user_name = ?;"
     sqlParams = [req.body.username];
-    pool.query(sql, sqlParams, function(err_01, result_01) {
+    pool.query(sql, sqlParams, function (err_01, result_01) {
         if (err_01) throw err_01;
         else if (result_01.length != 0) {
             res.status(400).send("Username already in user");
@@ -503,29 +503,29 @@ app.post('/api/my/create', (req, res) => {
             var max_id = null;
             var sql = "SELECT MAX(user_id) AS max_id FROM user";
             sqlParams = [];
-            pool.query(sql, sqlParams, function(err_0, result_0) {
+            pool.query(sql, sqlParams, function (err_0, result_0) {
                 if (err_0) throw err;
-        
+
                 max_id = result_0[0].max_id + 1;
-        
+
                 // inserts new user into user table
                 sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, ?, 1)";
                 sqlParams = [max_id, req.body.username, req.body.first_name, req.body.last_name, req.body.email];
-                pool.query(sql, sqlParams, function(err_1, result_1) {
+                pool.query(sql, sqlParams, function (err_1, result_1) {
                     if (err_1) throw err_1;
-        
+
                     sql = "INSERT INTO password (password_id, user_name, password) values (?, ?, ?)";
                     sqlParams = [max_id, req.body.username, req.body.password];
-                    pool.query(sql, sqlParams, function(err_2, result_2) {
+                    pool.query(sql, sqlParams, function (err_2, result_2) {
                         if (err_2) throw err_2;
-        
+
                         res.status(200).send("Account successfully created!");
                     });
                 });
             });
         }
     });
-    
+
 });
 
 // TODO change to async & promises to have more readable code
@@ -539,7 +539,7 @@ app.get('/api/my/login', (req, res) => {
     // checks to see if username/password pair exist
     var sql = "SELECT * FROM password WHERE user_name = ? AND password = ?"
     var sqlParams = [req.body.username, req.body.password];
-    pool.query(sql, sqlParams, function(err, result) {
+    pool.query(sql, sqlParams, function (err, result) {
         if (err) {
             throw err;
         }
@@ -547,7 +547,7 @@ app.get('/api/my/login', (req, res) => {
             res.status(400).send("Invalid username/password combination.");
         }
         else {
-            res.status(200).send({token: result[0].password_id});
+            res.status(200).send({ token: result[0].password_id });
         }
     });
 
