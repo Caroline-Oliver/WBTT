@@ -67,17 +67,20 @@ function getTicketList(user_id) {
 }
 
 function ticketListToInfoList(ticket_list) {
-    var info_list = [];
-    var sql = "SELECT * FROM tickets WHERE ";
-    var i = -1;
-    while (++i < ticket_list.length) {
-        if (i < ticket_list.length - 1)
-            sql += "ticket_id = ? OR ";
-        else
-            sql += "ticket_id = ?;";
-    }
-
     return new Promise((resolve, reject) => {
+        var info_list = [];
+        var sql = "SELECT * FROM tickets WHERE ";
+        var i = -1;
+        if (ticket_list == null) {
+            reject(new Error("ticket_list undefined"));
+        }
+        while (++i < ticket_list.length) {
+            if (i < ticket_list.length - 1)
+                sql += "ticket_id = ? OR ";
+            else
+                sql += "ticket_id = ?;";
+        }
+
         pool.query(sql, ticket_list, function (err, result) {
             if (err) {
                 console.log(err.message);
@@ -308,15 +311,29 @@ app.get('/my/account', authenticate, (req, res) => {
 });
 // TODO: pending page
 app.get('/my/cart', authenticate, (req, res) => {
-    checkTimestamps()
+    checkTimestamps("WHERE user_name = ?")
         .catch((err) => {
             console.log(err.message);
         })
         .finally(() => {
+            var tickets;
             getTicketList()
+                .catch((err) => {
+                    console.log(err.message);
+                })
                 .then((ticket_list) => {
-                    ticketListToInfoList()
+                    tickets = ticket_list;
+                })
+                .finally(() => {
+                    var info;
+                    ticketListToInfoList(tickets)
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
                         .then((info_list) => {
+                            info = info_list;
+                        })
+                        .finally(() => {
                             var loggedIn = '';
                             accountStatus(req.cookies.token)
                                 .catch((err) => {
@@ -327,7 +344,7 @@ app.get('/my/cart', authenticate, (req, res) => {
                                 })
                                 .finally(() => {
                                     res.render('pages/cart', {
-                                        cart: info_list,
+                                        cart: info,
                                         status: loggedIn
                                     });
                                 });
@@ -338,15 +355,29 @@ app.get('/my/cart', authenticate, (req, res) => {
 
 // TODO: pending page
 app.get('/my/checkout', authenticate, (req, res) => {
-    checkTimestamps()
+    checkTimestamps("WHERE user_name = ?")
         .catch((err) => {
             console.log(err.message);
         })
         .finally(() => {
+            var tickets;
             getTicketList()
+                .catch((err) => {
+                    console.log(err.message);
+                })
                 .then((ticket_list) => {
-                    ticketListToInfoList()
+                    tickets = ticket_list;
+                })
+                .finally(() => {
+                    var info;
+                    ticketListToInfoList(tickets)
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
                         .then((info_list) => {
+                            info = info_list;
+                        })
+                        .finally(() => {
                             var loggedIn = '';
                             accountStatus(req.cookies.token)
                                 .catch((err) => {
@@ -357,7 +388,7 @@ app.get('/my/checkout', authenticate, (req, res) => {
                                 })
                                 .finally(() => {
                                     res.render('pages/checkout', {
-                                        cart: info_list,
+                                        cart: info,
                                         status: loggedIn
                                     });
                                 });
@@ -400,15 +431,29 @@ app.get('/logout', (req, res) => {
 
 // TODO: pending page
 app.get('/my/tickets', authenticate, (req, res) => {
-    checkTimestamps()
+    checkTimestamps("WHERE user_name = ?")
         .catch((err) => {
             console.log(err.message);
         })
         .finally(() => {
+            var tickets;
             getTicketList()
+                .catch((err) => {
+                    console.log(err.message);
+                })
                 .then((ticket_list) => {
-                    ticketListToInfoList()
+                    tickets = ticket_list;
+                })
+                .finally(() => {
+                    var info;
+                    ticketListToInfoList(tickets)
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
                         .then((info_list) => {
+                            info = info_list;
+                        })
+                        .finally(() => {
                             var loggedIn = '';
                             accountStatus(req.cookies.token)
                                 .catch((err) => {
@@ -419,7 +464,7 @@ app.get('/my/tickets', authenticate, (req, res) => {
                                 })
                                 .finally(() => {
                                     res.render('pages/my-tickets', {
-                                        cart: info_list,
+                                        cart: info,
                                         status: loggedIn
                                     });
                                 });
