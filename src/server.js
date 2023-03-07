@@ -32,7 +32,7 @@ function authenticate(req, res, next) {
 // #region db helper functions
 function checkTimestamps(search_terms) {
     var sql = "UPDATE ticket SET hold = null, hold_time = null, user_name = null ";
-    sql += "WHERE (" + search_terms + ") AND hold_time > " + Date.now() + ";";
+    sql += "WHERE " + search_terms + " AND hold_time > " + Date.now() + ";";
 
     return new Promise((resolve, reject) => {
         pool.query(sql, function (err, result) {
@@ -431,7 +431,7 @@ app.get('/logout', (req, res) => {
 
 // TODO: pending page
 app.get('/my/tickets', authenticate, (req, res) => {
-    checkTimestamps("WHERE user_name = " + req.cookies.token)
+    checkTimestamps("WHERE user_name = ?" + req.cookies.token)
         .catch((err) => {
             console.log(err.message);
         })
