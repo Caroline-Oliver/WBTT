@@ -311,7 +311,7 @@ app.get('/my/account', authenticate, (req, res) => {
 });
 // TODO: pending page
 app.get('/my/cart', authenticate, (req, res) => {
-    checkTimestamps("WHERE user_name = ?")
+    checkTimestamps("WHERE user_name = " + req.cookies.token)
         .catch((err) => {
             console.log(err.message);
         })
@@ -355,7 +355,7 @@ app.get('/my/cart', authenticate, (req, res) => {
 
 // TODO: pending page
 app.get('/my/checkout', authenticate, (req, res) => {
-    checkTimestamps("WHERE user_name = ?")
+    checkTimestamps("WHERE user_name = " + req.cookies.token)
         .catch((err) => {
             console.log(err.message);
         })
@@ -431,7 +431,7 @@ app.get('/logout', (req, res) => {
 
 // TODO: pending page
 app.get('/my/tickets', authenticate, (req, res) => {
-    checkTimestamps("WHERE user_name = ?")
+    checkTimestamps("WHERE user_name = " + req.cookies.token)
         .catch((err) => {
             console.log(err.message);
         })
