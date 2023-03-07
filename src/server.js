@@ -519,7 +519,7 @@ app.get('/api/my/login', (req, res) => {
             res.status(400).send("Invalid username/password combination.");
         }
         else {
-            res.cookie(`token`,`${result[0].pass_id}`);
+            res.cookie(`token`,`${result[0].password_id}`);
             res.status(200).send("Logged in successfully");
         }
     });
