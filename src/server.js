@@ -309,6 +309,9 @@ app.get('/my/account', authenticate, (req, res) => {
 // TODO: pending page
 app.get('/my/cart', authenticate, (req, res) => {
     checkTimestamps()
+        .catch((err) => {
+            console.log(err.message);
+        })
         .finally(() => {
             getTicketList()
                 .then((ticket_list) => {
@@ -336,6 +339,9 @@ app.get('/my/cart', authenticate, (req, res) => {
 // TODO: pending page
 app.get('/my/checkout', authenticate, (req, res) => {
     checkTimestamps()
+        .catch((err) => {
+            console.log(err.message);
+        })
         .finally(() => {
             getTicketList()
                 .then((ticket_list) => {
@@ -395,6 +401,9 @@ app.get('/logout', (req, res) => {
 // TODO: pending page
 app.get('/my/tickets', authenticate, (req, res) => {
     checkTimestamps()
+        .catch((err) => {
+            console.log(err.message);
+        })
         .finally(() => {
             getTicketList()
                 .then((ticket_list) => {
@@ -519,7 +528,7 @@ app.get('/api/my/login', (req, res) => {
             res.status(400).send("Invalid username/password combination.");
         }
         else {
-            res.cookie(`token`,`${result[0].password_id}`);
+            res.cookie(`token`, `${result[0].password_id}`);
             res.status(200).send("Logged in successfully");
         }
     });
