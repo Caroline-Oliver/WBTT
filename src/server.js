@@ -1,12 +1,12 @@
 // #region authenticate middleware
 function authenticate(req, res, next) {
-    if (req.body.token == null) {
+    if (req.cookies.token == null) {
         res.status(400).redirect('/my/login');
     }
     else {
         // parameterized MySQL requests are immune to SQL injection
         var sql = "SELECT * FROM user WHERE user_id = ?;"
-        sqlParams = [req.body.token];
+        sqlParams = [req.cookies.token];
         pool.query(sql, sqlParams, function (err, result) {
             if (err) throw err;
             else if (result.length == 0) {
@@ -134,6 +134,7 @@ function accountStatus(token) {
 // #region require
 const express = require('express');
 const mysql = require('mysql');
+const cookieParser = require('cookie-parser');
 // #endregion
 
 // #region init
@@ -144,6 +145,7 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(express.static("src/public"));
 app.use(express.static("src/views/pages"));
+app.use(cookieParser());
 app.use(express.json());
 
 const pool = mysql.createPool({
@@ -173,7 +175,7 @@ app.get('/', (req, res) => {
     ]
 
     var loggedIn = '';
-    accountStatus(req.body.token)
+    accountStatus(req.cookies.token)
         .catch((err) => {
             loggedIn = 'na';
         })
@@ -191,7 +193,7 @@ app.get('/', (req, res) => {
 // good ejs
 app.get('/about', (req, res) => {
     var loggedIn = '';
-    accountStatus(req.body.token)
+    accountStatus(req.cookies.token)
         .catch((err) => {
             loggedIn = 'na';
         })
@@ -208,7 +210,7 @@ app.get('/about', (req, res) => {
 // good ejs
 app.get('/contact', (req, res) => {
     var loggedIn = '';
-    accountStatus(req.body.token)
+    accountStatus(req.cookies.token)
         .catch((err) => {
             loggedIn = 'na';
         })
@@ -227,7 +229,7 @@ app.get('/contact', (req, res) => {
 // TODO: pending page
 app.get('/event/:event', (req, res) => {
     var loggedIn = '';
-    accountStatus(req.body.token)
+    accountStatus(req.cookies.token)
         .catch((err) => {
             loggedIn = 'na';
         })
@@ -244,7 +246,7 @@ app.get('/event/:event', (req, res) => {
 // TODO: pending pages
 app.get('/events/:category', (req, res) => {
     var loggedIn = '';
-    accountStatus(req.body.token)
+    accountStatus(req.cookies.token)
         .catch((err) => {
             loggedIn = 'na';
         })
@@ -283,7 +285,7 @@ app.get('/events/:category', (req, res) => {
 // TODO: pending page
 app.get('/my/account', authenticate, (req, res) => {
     var sql = "SELECT * FROM user WHERE user_id = ?;"
-    sqlParams = [req.body.token];
+    sqlParams = [req.cookies.token];
     pool.query(sql, sqlParams, function (err, result) {
         if (err) throw err;
 
@@ -313,7 +315,7 @@ app.get('/my/cart', authenticate, (req, res) => {
                     ticketListToInfoList()
                         .then((info_list) => {
                             var loggedIn = '';
-                            accountStatus(req.body.token)
+                            accountStatus(req.cookies.token)
                                 .catch((err) => {
                                     loggedIn = 'na';
                                 })
@@ -340,7 +342,7 @@ app.get('/my/checkout', authenticate, (req, res) => {
                     ticketListToInfoList()
                         .then((info_list) => {
                             var loggedIn = '';
-                            accountStatus(req.body.token)
+                            accountStatus(req.cookies.token)
                                 .catch((err) => {
                                     loggedIn = 'na';
                                 })
@@ -360,7 +362,7 @@ app.get('/my/checkout', authenticate, (req, res) => {
 
 app.get('/login', (req, res) => {
     var loggedIn = '';
-    accountStatus(req.body.token)
+    accountStatus(req.cookies.token)
         .catch((err) => {
             loggedIn = 'na';
         })
@@ -376,7 +378,7 @@ app.get('/login', (req, res) => {
 
 app.get('/logout', (req, res) => {
     var loggedIn = '';
-    accountStatus(req.body.token)
+    accountStatus(req.cookies.token)
         .catch((err) => {
             loggedIn = 'na';
         })
@@ -399,7 +401,7 @@ app.get('/my/tickets', authenticate, (req, res) => {
                     ticketListToInfoList()
                         .then((info_list) => {
                             var loggedIn = '';
-                            accountStatus(req.body.token)
+                            accountStatus(req.cookies.token)
                                 .catch((err) => {
                                     loggedIn = 'na';
                                 })
@@ -517,7 +519,8 @@ app.get('/api/my/login', (req, res) => {
             res.status(400).send("Invalid username/password combination.");
         }
         else {
-            res.status(200).send({ token: result[0].password_id });
+            res.cookie(`token`,result[0].user_id);
+            res.status(200).send("Logged in successfully");
         }
     });
 
