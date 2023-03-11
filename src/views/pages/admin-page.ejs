@@ -225,7 +225,7 @@
         </div>
         <div id="createDiv">
           <h2>Create User</h2>
-          <form>
+          <form action="/api/my/create" method="post">
             <div class="form-group">
               <label for="username">User Name</label>
               <input type="text" class="form-control" id="username" placeholder="Username">
@@ -249,6 +249,7 @@
             <button onclick="createUser()">Submit</button>
             <button type="reset" value="Reset">Reset</button>
           </form>
+          <p id="results"></p>
         </div>
       </main>
     </div>
