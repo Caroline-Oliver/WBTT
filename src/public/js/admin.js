@@ -21,15 +21,17 @@ function createUser() {
 		"url": "http://18.219.2.17:3000/api/my/create",
 		"method": "POST",
 		"headers": {
-		  "Content-Type": "application/json"
+			"Content-Type": "application/json"
 		},
 		"processData": false,
 		"data": `{\n    \"username\" : \"${document.getElementById('username').value}\",\n    \"password\" : \"${document.getElementById('password').value}\",\n    \"email\" : \"${document.getElementById('email').value}\",\n    \"first_name\" : \"${document.getElementById('first_name').value}\",\n    \"last_name\" : \"${document.getElementById('last_name').value}\"\n}\n`
-	  };
+	};
 
-	  console.log(settings);
-	  
-	  $.ajax(settings).done(function (response) {
+	console.log(settings);
+
+	$.ajax(settings).done(function (response) {
 		console.log(response);
-	  });
+		var printThing = document.getElementById('results').innerHTML;
+		printThing = response;
+	});
 }
