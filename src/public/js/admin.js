@@ -31,6 +31,7 @@ function createUser() {
 	//   $.ajax(settings).done(function (response) {
 	// 	console.log(response);
 	//   });
+	console.log('sending request...');
 
 	const settings = {
 		"async": true,
@@ -43,6 +44,8 @@ function createUser() {
 		"processData": false,
 		"data": "{\n    \"username\" : \"billyBob12333\",\n    \"password\" : \"secretPass123\",\n    \"email\" : \"billybob\",\n    \"first_name\" : \"Billy\",\n    \"last_name\" : \"Bob\"\n}\n"
 	  };
+
+	  console.log(settings);
 	  
 	  $.ajax(settings).done(function (response) {
 		console.log(response);
