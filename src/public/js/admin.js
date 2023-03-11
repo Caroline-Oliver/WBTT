@@ -27,5 +27,13 @@ function createUser() {
 
 	$.ajax(settings).done(function (response) {
 		console.log(response);
+
 	});
+	setMessage("This one worked")
+
+}
+
+function setMessage(message) {
+	var printThing = document.getElementById('results');
+	printThing.innerHTML = '<P>' + message + '</P>'//response;
 }
