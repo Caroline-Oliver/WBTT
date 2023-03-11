@@ -19,7 +19,7 @@ function createUser() {
 	const settings = {
 		"async": true,
 		"crossDomain": true,
-		"url": "http://18.219.2.17:3000/api/my/create",
+		"url": "18.219.2.17:3000/api/my/create",
 		"method": "POST",
 		"headers": {
 		  "Content-Type": "application/json"
