@@ -13,8 +13,6 @@ function createUser() {
 	// 	'last_name': document.getElementById('last_name').value,
 	// }
 
-	console.log('sending request...');
-
 	const settings = {
 		"async": true,
 		"crossDomain": true,
@@ -27,11 +25,7 @@ function createUser() {
 		"data": `{\n    \"username\" : \"${document.getElementById('username').value}\",\n    \"password\" : \"${document.getElementById('password').value}\",\n    \"email\" : \"${document.getElementById('email').value}\",\n    \"first_name\" : \"${document.getElementById('first_name').value}\",\n    \"last_name\" : \"${document.getElementById('last_name').value}\"\n}\n`
 	};
 
-	console.log(settings);
-
 	$.ajax(settings).done(function (response) {
 		console.log(response);
-		var printThing = document.getElementById('results').innerHTML;
-		printThing = response;
 	});
 }
