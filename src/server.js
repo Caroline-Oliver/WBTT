@@ -360,7 +360,7 @@ app.get('/api/my/login', (req, res) => {
 
 // #region admin
 app.get('/admin', (req, res) => {
-    res.render('/pages/admin-page');
+    res.render('pages/admin-page');
 });
 
 
