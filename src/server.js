@@ -291,7 +291,7 @@ app.post('/api/my/create', (req, res) => {
     if (req.body.username == null || req.body.password == null
         || req.body.email == null || req.body.first_name == null
         || req.body.last_name == null) {
-        console.log(req.body);
+        console.log(req);
         res.status(403).send("Missing body parts");
         return;
     }
