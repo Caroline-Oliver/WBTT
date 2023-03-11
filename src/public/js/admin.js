@@ -2,11 +2,11 @@
 
 function createUser() {
 	var data = {
-		username: document.getElementById('username'),
-		password: document.getElementById('password'),
-		email: document.getElementById('email'),
-		first_name: document.getElementById('first_name'),
-		last_name: document.getElementById('last_name')
+		username: document.getElementById('username').value,
+		password: document.getElementById('password').value,
+		email: document.getElementById('email').value,
+		first_name: document.getElementById('first_name').value,
+		last_name: document.getElementById('last_name').value
 	}
 	fetch("/api/my/create", {
 		method: "POST",
