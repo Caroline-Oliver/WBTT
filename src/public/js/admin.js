@@ -1,27 +1,19 @@
 // JavaScript Document
 
-	function createUser(userName,password,email,first,last) {
-		var data = {
-			username: userName,
-			password: password,
-			email: email,
-			first_name: first,
-			last_name: last
-		}	
-	}
-	/////////////////////
+function createUser() {
 	var data = {
-		user: userJS,
-		game: "sudoku",
-		score: null,
-		time_score: document.getElementById('time').innerHTML
+		username: document.getElementById('username'),
+		password: document.getElementById('password'),
+		email: document.getElementById('email'),
+		first_name: document.getElementById('first_name'),
+		last_name: document.getElementById('last_name')
 	}
-	fetch("https://ec2-18-117-249-143.us-east-2.compute.amazonaws.com/api/?save_score", {
+	fetch("/api/my/create", {
 		method: "POST",
-		header: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8"},
+		header: { "Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
 		body: JSON.stringify(data)
 	})
-	.then(resp=>resp.text())
-	.then(data=> console.log("Response: "+data))
+		.then(resp => resp.text())
+		.then(data => console.log("Response: " + data))
 	console.log(data);
-	/////////////////////
+}
