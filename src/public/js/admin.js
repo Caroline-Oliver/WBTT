@@ -1,5 +1,11 @@
 // JavaScript Document
 
+var tab1=document.getElementById('orders');
+var tab2=document.getElementById('users');
+
+tab1.addEventListener('click',function() {setView('orders-body')},false);
+tab2.addEventListener('click',function() {setView('users-body')},false);
+
 function createUser() {
 	// headers = {
 	// 	'Content-Type': 'application/json',
