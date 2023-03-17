@@ -25,10 +25,11 @@
                   <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
                 Dashboard <span class="sr-only">(current)</span>
+                <!--Do we want to include a specific "dashboard" or just links to the things the admin needs?"-->
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="#" id="orders">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                   class="feather feather-file">
@@ -39,7 +40,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="#" id="products">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                   class="feather feather-shopping-cart">
@@ -51,7 +52,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="#" id="customers">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                   class="feather feather-users">
@@ -62,7 +63,7 @@
                 </svg>
                 Customers
               </a>
-            </li>
+            </li><!--
             <li class="nav-item">
               <a class="nav-link" href="#">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -74,7 +75,7 @@
                 </svg>
                 Reports
               </a>
-            </li>
+            </li>-->
             <li class="nav-item">
               <a class="nav-link" href="#createDiv" id="test-create">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -84,11 +85,11 @@
                   <polyline points="2 17 12 22 22 17"></polyline>
                   <polyline points="2 12 12 17 22 12"></polyline>
                 </svg>
-                Test Create
+                Create User
               </a>
             </li>
           </ul>
-
+          <!--
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             <span>Saved reports</span>
             <a class="d-flex align-items-center text-muted" href="#">
@@ -158,7 +159,7 @@
                 Year-end sale
               </a>
             </li>
-          </ul>
+          </ul>-->
         </div>
       </nav>
 
@@ -204,11 +205,11 @@
           <table class="table table-striped table-sm">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Header</th>
-                <th>Header</th>
-                <th>Header</th>
-                <th>Header</th>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>User Type</th>
               </tr>
             </thead>
             <tbody>
@@ -251,6 +252,31 @@
           </form>
           <div id="results"></div>
         </div>
+        <h2>Change User</h2>
+        <form>
+            <div class="form-group">
+              <label for="username">User Name</label>
+              <input type="text" class="form-control" id="change_username" placeholder="Username">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="text" class="form-control" id="change_password" placeholder="Password">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" class="form-control" id="change_email" placeholder="Email Address">
+            </div>
+            <div class="form-group">
+              <label for="first_name">First</label>
+              <input type="text" class="form-control" id="change_first_name" placeholder="First Name">
+            </div>
+            <div class="form-group">
+              <label for="last_name">Last</label>
+              <input type="text" class="form-control" id="change_last_name" placeholder="Last Name">
+            </div>
+            <button onclick="createUser()" id="change_user">Update</button>
+            <button type="reset" value="Reset">Reset</button>
+          </form>
       </main>
     </div>
   </div>
