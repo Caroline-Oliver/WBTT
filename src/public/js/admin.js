@@ -37,3 +37,11 @@ function setMessage(message) {
 	var printThing = document.getElementById('results');
 	printThing.innerHTML = '<P>' + message + '</P>'//response;
 }
+
+function setView(id) {
+	var items = document.getElementsByClassName('admin-menu');
+	for (var i = 0; i < items.length; i++) {
+		items[i].hidden = true;
+	}
+	document.getElementById(id).hidden = false;
+}
