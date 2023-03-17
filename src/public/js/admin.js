@@ -1,10 +1,16 @@
 // JavaScript Document
 
-var tab1=document.getElementById('orders');
-var tab2=document.getElementById('users');
+var tabOrders=document.getElementById('orders');
+var tabUsers=document.getElementById('users');
+var tabTickets=document.getElementById('tickets');
+var tabVenues=document.getElementById('venues');
+var tabEvents=document.getElementById('events');
 
-tab1.addEventListener('click',function() {setView('orders-body')},false);
-tab2.addEventListener('click',function() {setView('users-body')},false);
+tabOrders.addEventListener('click',function() {setView('orders-body')},true);
+tabUsers.addEventListener('click',function() {setView('users-body')},false);
+tabTickets.addEventListener('click',function() {setView('tickets-body')},false);
+tabVenues.addEventListener('click',function() {setView('venues-body')},false);
+tabEvents.addEventListener('click',function() {setView('events-body')},false);
 
 function createUser() {
 	// headers = {
