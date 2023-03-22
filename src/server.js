@@ -210,6 +210,10 @@ app.get('/events/:category', (req, res) => {
         res.redirect('/events/other');
     }
 });
+
+app.get('/events/test', /*, authenticate, */ (req, res) => {
+    res.render('pages/test-arena');
+});
 // #endregion
 
 // #region user account pages
