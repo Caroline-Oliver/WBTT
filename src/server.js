@@ -189,7 +189,7 @@ app.get('/contact', (req, res) => {
 // #region event information
 // TODO: pending page
 app.get('/event/:event', (req, res) => {
-    res.render('pages/event');
+    res.render('pages/test-arena');
 });
 
 // TODO: pending pages
