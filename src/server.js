@@ -211,7 +211,7 @@ app.get('/events/:category', (req, res) => {
     }
 });
 
-app.get('/events/test', /*, authenticate, */ (req, res) => {
+app.get('/event/test', /*, authenticate, */ (req, res) => {
     res.render('pages/test-arena');
 });
 // #endregion
