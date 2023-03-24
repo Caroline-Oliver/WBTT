@@ -1,34 +1,29 @@
 // #region authenticate middleware
 function authenticate(req, res, next) {
-    if (req.body.token == null) {
+    if (req.cookies.token == null) {
         res.status(400).redirect('/my/login');
     }
     else {
         // parameterized MySQL requests are immune to SQL injection
         var sql = "SELECT * FROM user WHERE user_id = ?;"
-        sqlParams = [req.body.token];
+        sqlParams = [req.cookies.token];
         pool.query(sql, sqlParams, function (err, result) {
-            // parameterized MySQL requests are immune to SQL injection
-            var sql = "SELECT * FROM user WHERE user_id = ?;"
-            sqlParams = [req.body.token];
-            pool.query(sql, sqlParams, function (err, result) {
-                if (err) throw err;
-                else if (result.length == 0) {
-                    res.status(404).send("Token not valid");
+            if (err) throw err;
+            else if (result.length == 0) {
+                res.status(404).send("Token not valid");
+            }
+            else {
+                if (req.url.includes("/my/")) {
+                    next();
+                }
+                else if (req.url.includes("/admin/") && result.type == 0) {
+                    next();
                 }
                 else {
-                    if (req.url.includes("/my/")) {
-                        next();
-                    }
-                    else if (req.url.includes("/admin/") && result.type == 0) {
-                        next();
-                    }
-                    else {
-                        res.redirect(403, "/");
-                    }
-
+                    res.redirect(403, "/");
                 }
-            });
+
+            }
         });
     }
 }
@@ -36,42 +31,17 @@ function authenticate(req, res, next) {
 
 // #region db helper functions
 function checkTimestamps(search_terms) {
-    var sql = "SELECT * FROM tickets WHERE " + search_terms + ";";
+    var sql = "UPDATE ticket SET hold = null, hold_time = null, user_name = null ";
+    sql += "WHERE (" + search_terms + ") AND hold_time > " + Date.now() + ";";
 
     return new Promise((resolve, reject) => {
-        pool.query(sql, function (err_1, result_1) {
-            if (err_1) {
-                console.log(err_1);
-                reject(err_1);
+        pool.query(sql, function (err, result) {
+            if (err) {
+                console.log(err);
+                reject(err);
             }
-            bad_tickets = [];
-            var i = -1;
-            var now = Date.now();
-            while (++i < result_1.length) {
-                if (result_1[i].hold_time <= now) {
-                    bad_tickets.push(result_1[i].ticket_id);
-                }
-            }
-            var sql = "UPDATE tickets SET hold = null, hold_time = null WHERE ";
-            if (bad_tickets.length > 0) {
-                var i = -1;
-                while (++i < result_1.length) {
-                    if (i < result_1.length - 1) {
-                        sql += "ticket_id = ? OR ";
-                    }
-                    else {
-                        sql += "ticket_id = ?;";
-                    }
-                }
-                pool.query(sql, bad_tickets, function (err_2, result_2) {
-                    if (err_2) {
-                        console.log(err_2);
-                        reject(err_2);
-                    }
-                    else {
-                        resolve();
-                    }
-                });
+            else {
+                resolve();
             }
         });
     });
@@ -97,42 +67,77 @@ function getTicketList(user_id) {
 }
 
 function ticketListToInfoList(ticket_list) {
-    var info_list = [];
-    var sql = "SELECT * FROM tickets WHERE ";
-    var i = -1;
-    while (++i < ticket_list.length) {
-        if (i < ticket_list.length - 1)
-            sql += "ticket_id = ? OR ";
-        else
-            sql += "ticket_id = ?;";
-    }
-
     return new Promise((resolve, reject) => {
+        var info_list = [];
+        var sql = "SELECT * FROM tickets WHERE ";
+        var i = -1;
+        if (ticket_list == null) {
+            reject(new Error("ticket_list undefined"));
+        }
+        while (++i < ticket_list.length) {
+            if (i < ticket_list.length - 1)
+                sql += "ticket_id = ? OR ";
+            else
+                sql += "ticket_id = ?;";
+        }
+
         pool.query(sql, ticket_list, function (err, result) {
             if (err) {
                 console.log(err.message);
                 reject(err);
             }
-            cart = [];
-            let i = -1;
-            while (++i < result.length) {
-                info_list.push({
-                    event_name: result[i].event_name,
-                    section: result[i].section,
-                    seat: result[i].seat,
-                    price: result[i].price
-                });
+            else {
+                cart = [];
+                let i = -1;
+                while (++i < result.length) {
+                    info_list.push({
+                        event_name: result[i].event_name,
+                        section: result[i].section,
+                        seat: result[i].seat,
+                        price: result[i].price
+                    });
+                }
+                resolve(info_list);
             }
-            resolve(info_list);
         });
     });
 
+}
+
+function accountStatus(token) {
+    var sql = "SELECT * FROM user WHERE user_id = ?";
+    var sqlParams = [token];
+    return new Promise((resolve, reject) => {
+        if (token == null) {
+            resolve('na');
+        }
+        else {
+            pool.query(sql, sqlParams, function (err, result) {
+                if (err) {
+                    console.log(err.message);
+                    reject(err);
+                }
+                else {
+                    if (result.length == 0) {
+                        resolve('na');
+                    }
+                    else if (result[0].type == 0) {
+                        resolve('admin');
+                    }
+                    else {
+                        resolve('user');
+                    }
+                }
+            });
+        }
+    });
 }
 // #endregion
 
 // #region require
 const express = require('express');
 const mysql = require('mysql');
+const cookieParser = require('cookie-parser');
 // #endregion
 
 // #region init
@@ -143,6 +148,7 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(express.static("src/public"));
 app.use(express.static("src/views/pages"));
+app.use(cookieParser());
 app.use(express.json());
 
 const pool = mysql.createPool({
@@ -170,49 +176,111 @@ app.get('/', (req, res) => {
             imgSrc: '/images/event-field.jpg'
         }
     ]
-    res.render('pages/index', {
-        events: events
-    });
+
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/index', {
+                events: events,
+                status: loggedIn
+            });
+        });
 });
 
 // good ejs
 app.get('/about', (req, res) => {
-    res.render('pages/about');
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/about', {
+                status: loggedIn
+            });
+        });
 });
 
 // good ejs
 app.get('/contact', (req, res) => {
-    res.render('pages/contact');
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/contact', {
+                status: loggedIn
+            });
+        });
 });
 // #endregion
 
 // #region event information
 // TODO: pending page
 app.get('/event/:event', (req, res) => {
-    res.render('pages/test-arena');
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/event', {
+                status: loggedIn
+            });
+        });
 });
 
 // TODO: pending pages
 app.get('/events/:category', (req, res) => {
-    if (req.params.category.toLowerCase() === 'concerts') {
-        res.render('pages/concerts-info');
-    }
-    else if (req.params.category.toLowerCase() === 'sports') {
-        res.render('pages/theater-info');
-    }
-    else if (req.params.category.toLowerCase() === 'theater') {
-        res.render('pages/theater-info');
-    }
-    else if (req.params.category.toLowerCase() === 'other') {
-        res.render('pages/other-info');
-    }
-    else {
-        res.redirect('/events/other');
-    }
-});
-
-app.get('/event/test', /*, authenticate, */ (req, res) => {
-    res.render('pages/test-arena');
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            if (req.params.category.toLowerCase() === 'concerts') {
+                res.render('pages/concerts-info', {
+                    status: loggedIn
+                });
+            }
+            else if (req.params.category.toLowerCase() === 'sports') {
+                res.render('pages/theater-info', {
+                    status: loggedIn
+                });
+            }
+            else if (req.params.category.toLowerCase() === 'theater') {
+                res.render('pages/theater-info', {
+                    status: loggedIn
+                });
+            }
+            else if (req.params.category.toLowerCase() === 'other') {
+                res.render('pages/other-info', {
+                    status: loggedIn
+                });
+            }
+            else {
+                res.redirect('/events/other');
+            }
+        });
 });
 // #endregion
 
@@ -220,15 +288,20 @@ app.get('/event/test', /*, authenticate, */ (req, res) => {
 // TODO: pending page
 app.get('/my/account', authenticate, (req, res) => {
     var sql = "SELECT * FROM user WHERE user_id = ?;"
-    sqlParams = [req.body.token];
+    sqlParams = [req.cookies.token];
     pool.query(sql, sqlParams, function (err, result) {
         if (err) throw err;
+
+        var loggedIn = '';
+        if (result[0].type == 1) loggedIn = 'user';
+        if (result[0].type == 0) loggedIn = 'admin';
 
         if (result.length != 0) {
             res.render('pages/account', {
                 username: result[0].user_name,
                 first_name: result[0].first_name,
                 last_name: result[0].last_name,
+                status: loggedIn
             });
         }
         else {
@@ -238,15 +311,43 @@ app.get('/my/account', authenticate, (req, res) => {
 });
 // TODO: pending page
 app.get('/my/cart', authenticate, (req, res) => {
-    checkTimestamps()
+    checkTimestamps("user_name = " + req.cookies.token)
+        .catch((err) => {
+            console.log(err.message);
+        })
         .finally(() => {
+            var tickets;
             getTicketList()
+                .catch((err) => {
+                    console.log(err.message);
+                })
                 .then((ticket_list) => {
-                    ticketListToInfoList()
+                    tickets = ticket_list;
+                })
+                .finally(() => {
+                    var info;
+                    ticketListToInfoList(tickets)
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
                         .then((info_list) => {
-                            res.render('pages/cart', {
-                                cart: info_list
-                            });
+                            info = info_list;
+                        })
+                        .finally(() => {
+                            var loggedIn = '';
+                            accountStatus(req.cookies.token)
+                                .catch((err) => {
+                                    loggedIn = 'na';
+                                })
+                                .then((status) => {
+                                    loggedIn = status;
+                                })
+                                .finally(() => {
+                                    res.render('pages/cart', {
+                                        cart: info,
+                                        status: loggedIn
+                                    });
+                                });
                         });
                 });
         });
@@ -254,35 +355,119 @@ app.get('/my/cart', authenticate, (req, res) => {
 
 // TODO: pending page
 app.get('/my/checkout', authenticate, (req, res) => {
-    checkTimestamps()
+    checkTimestamps("user_name = " + req.cookies.token)
+        .catch((err) => {
+            console.log(err.message);
+        })
         .finally(() => {
+            var tickets;
             getTicketList()
+                .catch((err) => {
+                    console.log(err.message);
+                })
                 .then((ticket_list) => {
-                    ticketListToInfoList()
+                    tickets = ticket_list;
+                })
+                .finally(() => {
+                    var info;
+                    ticketListToInfoList(tickets)
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
                         .then((info_list) => {
-                            res.render('pages/checkout', {
-                                cart: info_list
-                            });
+                            info = info_list;
+                        })
+                        .finally(() => {
+                            var loggedIn = '';
+                            accountStatus(req.cookies.token)
+                                .catch((err) => {
+                                    loggedIn = 'na';
+                                })
+                                .then((status) => {
+                                    loggedIn = status;
+                                })
+                                .finally(() => {
+                                    res.render('pages/checkout', {
+                                        cart: info,
+                                        status: loggedIn
+                                    });
+                                });
                         });
                 });
         });
 });
 
 app.get('/login', (req, res) => {
-    res.render('pages/login');
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/login', {
+                status: loggedIn
+            });
+        });
+});
+
+app.get('/logout', (req, res) => {
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/logout', {
+                status: loggedIn
+            });
+        });
 });
 
 // TODO: pending page
 app.get('/my/tickets', authenticate, (req, res) => {
-    checkTimestamps()
+    checkTimestamps("user_name = ?" + req.cookies.token)
+        .catch((err) => {
+            console.log(err.message);
+        })
         .finally(() => {
+            var tickets;
             getTicketList()
+                .catch((err) => {
+                    console.log(err.message);
+                })
                 .then((ticket_list) => {
-                    ticketListToInfoList()
+                    tickets = ticket_list;
+                })
+                .finally(() => {
+                    var info;
+                    ticketListToInfoList(tickets)
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
                         .then((info_list) => {
-                            res.render('/pages/my-tickets', {
-                                tickets: info_list
-                            });
+                            info = info_list;
+                        })
+                        .finally(() => {
+                            var loggedIn = '';
+                            accountStatus(req.cookies.token)
+                                .catch((err) => {
+                                    loggedIn = 'na';
+                                })
+                                .then((status) => {
+                                    loggedIn = status;
+                                })
+                                .finally(() => {
+                                    res.render('pages/my-tickets', {
+                                        cart: info,
+                                        status: loggedIn
+                                    });
+                                });
                         });
                 });
         });
@@ -295,46 +480,43 @@ app.post('/api/my/create', (req, res) => {
     if (req.body.username == null || req.body.password == null
         || req.body.email == null || req.body.first_name == null
         || req.body.last_name == null) {
-        console.log(req);
         res.status(403).send("Missing body parts");
         return;
     }
-    else {
-        // make sure user account doesn't already exist
-        var sql = "SELECT * FROM user WHERE user_name = ?;"
-        sqlParams = [req.body.username];
-        pool.query(sql, sqlParams, function (err_1, result_1) {
-            if (err_1) throw err_1;
-            else if (result_1.length != 0) {
-                res.status(400).send("Username already in user");
-            }
-            else {
-                var max_id = null;
-                var sql = "SELECT MAX(user_id) AS max_id FROM user";
-                sqlParams = [];
-                pool.query(sql, sqlParams, function (err_2, result_2) {
-                    if (err_2) throw err_2;
+    // make sure user account doesn't already exist
+    var sql = "SELECT * FROM user WHERE user_name = ?;"
+    sqlParams = [req.body.username];
+    pool.query(sql, sqlParams, function (err_1, result_1) {
+        if (err_1) throw err_1;
+        else if (result_1.length != 0) {
+            res.status(400).send("Username already in user");
+        }
+        else {
+            var max_id = null;
+            var sql = "SELECT MAX(user_id) AS max_id FROM user";
+            sqlParams = [];
+            pool.query(sql, sqlParams, function (err_2, result_2) {
+                if (err_2) throw err_2;
 
-                    max_id = result_2[0].max_id + 1;
+                max_id = result_2[0].max_id + 1;
 
-                    // inserts new user into user table
-                    sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, ?, 1)";
-                    sqlParams = [max_id, req.body.username, req.body.first_name, req.body.last_name, req.body.email];
-                    pool.query(sql, sqlParams, function (err_3, result_3) {
-                        if (err_3) throw err_3;
+                // inserts new user into user table
+                sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, ?, 1)";
+                sqlParams = [max_id, req.body.username, req.body.first_name, req.body.last_name, req.body.email];
+                pool.query(sql, sqlParams, function (err_3, result_3) {
+                    if (err_3) throw err_3;
 
-                        sql = "INSERT INTO password (password_id, user_name, password) values (?, ?, ?)";
-                        sqlParams = [max_id, req.body.username, req.body.password];
-                        pool.query(sql, sqlParams, function (err_4, result_4) {
-                            if (err_4) throw err_4;
+                    sql = "INSERT INTO password (password_id, user_name, password) values (?, ?, ?)";
+                    sqlParams = [max_id, req.body.username, req.body.password];
+                    pool.query(sql, sqlParams, function (err_4, result_4) {
+                        if (err_4) throw err_4;
 
-                            res.status(200).send("Account successfully created!");
-                        });
+                        res.status(200).send("Account successfully created!");
                     });
                 });
-            }
-        });
-    }
+            });
+        }
+    });
 
 });
 
@@ -357,7 +539,8 @@ app.get('/api/my/login', (req, res) => {
             res.status(400).send("Invalid username/password combination.");
         }
         else {
-            res.status(200).send({ token: result[0].password_id });
+            res.cookie(`token`, `${result[0].password_id}`);
+            res.status(200).send("Logged in successfully");
         }
     });
 
@@ -365,11 +548,6 @@ app.get('/api/my/login', (req, res) => {
 // #endregion
 
 // #region admin
-app.get('/admin', (req, res) => {
-    res.render('pages/admin-page');
-});
-
-
 app.post('/api/admin/upload', authenticate, (req, res) => {
     fs.writeFile(`venues/${req.body.name}.html`, req.body.html, (err) => {
         if (err) return console.log(err);
