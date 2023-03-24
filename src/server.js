@@ -129,6 +129,10 @@ function ticketListToInfoList(ticket_list) {
 
 }
 
+function searchEvents(search_terms) {
+
+}
+
 function accountStatus(token) {
     var sql = "SELECT * FROM user WHERE user_id = ?";
     var sqlParams = [token];
@@ -571,6 +575,14 @@ app.get('/api/my/login', (req, res) => {
     });
 
 });
+// #endregion
+
+// #region search api
+app.get('/api/search', (req, res) => {
+    const search_terms = req.body.search_terms.split(' ');
+
+});
+
 // #endregion
 
 // #region admin
