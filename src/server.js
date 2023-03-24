@@ -90,6 +90,7 @@ function ticketListToInfoList(ticket_list) {
         }
         console.log(ticket_list.length);
         if (ticket_list.length == 0) {
+            console.log('resolved early');
             resolve([]);
         }
         while (++i < ticket_list.length) {
