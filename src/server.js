@@ -1,7 +1,7 @@
 // #region authenticate middleware
 function authenticate(req, res, next) {
     if (req.cookies.token == null) {
-        res.status(400).redirect('/my/login');
+        res.status(400).redirect('/login');
     }
     else {
         // parameterized MySQL requests are immune to SQL injection
@@ -31,8 +31,19 @@ function authenticate(req, res, next) {
 
 // #region db helper functions
 function checkTimestamps(search_terms) {
+    const dt = new Date();
+    const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
+
+    const datetime = `${
+        padL(dt.getMonth()+1)}-${
+        padL(dt.getDate())}-${
+        dt.getFullYear()} ${
+        padL(dt.getHours())}:${
+        padL(dt.getMinutes())}:${
+        padL(dt.getSeconds())}`
+    
     var sql = "UPDATE ticket SET hold = null, hold_time = null, user_name = null ";
-    sql += "WHERE (" + search_terms + ") AND hold_time > " + Date.now() + ";";
+    sql += "WHERE (" + search_terms + ") AND hold_time > " + datetime + ";";
 
     return new Promise((resolve, reject) => {
         pool.query(sql, function (err, result) {
