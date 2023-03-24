@@ -87,11 +87,12 @@ function ticketListToInfoList(ticket_list) {
         var i = -1;
         if (ticket_list == null) {
             reject(new Error("ticket_list undefined"));
+            return;
         }
-        console.log(ticket_list.length);
+        
         if (ticket_list.length == 0) {
-            console.log('resolved early');
             resolve([]);
+            return;
         }
         while (++i < ticket_list.length) {
             if (i < ticket_list.length - 1)
