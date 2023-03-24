@@ -1,74 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <%- include('../partials/head') %>
+	<%- include('../partials/head') %>
 </head>
-
 <body>
-	<header>
-		<%- include('../partials/header') %>
-	</header>
+	<%- include('../partials/header') %>
+	
 	<div class="jumbotron-fluid" style="background-color: #14213D; padding: 30px">
-		<h1 style="color: #FCA311; font-size: 50px">Contact Us</h1>
+	  <h1 style="color: #FCA311; font-size: 50px">Contact Us</h1>
 	</div>
 	<hr>
 	<div style="padding-top: 10px; padding-left: 30px; padding-right: 30px; color: #14213D; text-align: center">
 		<h3>
-			Have any questions? Please contact us via the information below.
+			Have any questions? Please contact us via the information below. 
 		</h3>
 		<br>
 	</div>
 
-	<div class="row" style="padding-left: 30px; padding-right: 30px; text-align: center">
-		<div class="col-sm">
-			<h4>Address</h4>
-			<address>
-				<strong>WBTT, Inc.</strong><br>
-				1 UTSA Circle<br>
-				San Antonio, TX 78249<br>
-			</address>
+      <div class="row" style="padding-left: 30px; padding-right: 30px; text-align: center">
+        <div class="col-sm">
+          <h4>Address</h4>
+          <address>
+            <strong>WBTT, Inc.</strong><br>
+            1 UTSA Circle<br>
+			San Antonio, TX 78249<br>
+          </address>
 		</div>
 		<div class="col-sm">
-			<h4>Call or Email Us</h4>
-			<p>
-				1-800-555-WBTT (1-800-555-9288)<br>
+          <h4>Call or Email Us</h4>
+          	<p>
+				1-800-555-WBTT (1-800-555-9288)<br> 
 				(U.S. or Canada)<br>
 				WBTT@gmail.com
 			</p>
 		</div>
+		
+		  <div class="form-group">
+			<label for="username">Username</label>
+			<input type="text" class="form-control" id="username" aria-describedby="username" placeholder="Enter Username">
+			<small id="emailHelp" class="form-text text-muted">This should NOT be your e-mail address.</small>
+		  </div>
+		  <div class="form-group">
+			<label for="exampleInputPassword1">Password</label>
+			<input type="password" class="form-control" id="password" placeholder="Password">
+		  </div>
+		  
+		<div class="col-sm" align = center >
+          <h4>Fill out the form below to get in touch with us.</h4>
+		  <form style="text-align: right;margin-right: 45px;">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" style="text-align: right;width: 300px;" required="">
+                <br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required="" style="width: 300px;">
+                <br>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required="" style="width: 300px;"></textarea>
+                <br>
+                <button type="submit" class="btn btn-dark" style="background-color: #14213D;color: #FCA311;margin-right: 95px;" href="contact">Send Message</button>
 
+            </form> 
 
-		<div class="col-sm">
-			<h4>Fill out the form below to get in touch with us.</h4>
-			<form style="text-align: left">
-				<label for="name">Name:</label>
-				<input type="text" id="name" name="name" style="text-align: right" required>
-				<br>
-				<label for="email">Email:</label>
-				<input type="email" id="email" name="email" required>
-				<br>
-				<label for="message">Message:</label>
-				<textarea id="message" name="message" required></textarea>
-				<br>
-				<button type="submit" class="btn btn-dark" style="background-color: #14213D; color: #FCA311"
-					href="contact">Send Message</button>
-
-			</form>
-
+		  
 		</div>
 	</div>
 	<br>
 	<footer class="text-center">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<p>Copyright © WBTT. All rights reserved.</p>
-				</div>
-			</div>
+	  <div class="container">
+		<div class="row">
+		  <div class="col-12">
+			<p>Copyright © WBTT. All rights reserved.</p>
+		  </div>
 		</div>
+	  </div>
 	</footer>
 	<%- include('../partials/scripts') %>
 </body>
-
 </html>
