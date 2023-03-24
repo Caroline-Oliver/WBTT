@@ -44,7 +44,7 @@ function checkTimestamps(search_terms) {
         padL(dt.getSeconds())}`
     
     var sql = "UPDATE ticket\nSET hold = null, hold_time = null, user_id = null\n";
-    sql += "WHERE (" + search_terms + ") AND hold_time > \'" + datetime + "\';";
+    sql += "WHERE (" + search_terms + ") AND hold_time < \'" + datetime + "\';";
 
     return new Promise((resolve, reject) => {
         pool.query(sql, function (err, result) {
@@ -67,7 +67,7 @@ function getTicketList(user_id) {
     return new Promise((resolve, reject) => {
         pool.query(sql, sqlParams, function (err, result) {
             if (err) {
-                console.log('errored in ');
+                console.log('errored in getTicketList');
                 console.log(err.message);
                 reject(err);
             }
@@ -97,6 +97,7 @@ function ticketListToInfoList(ticket_list) {
 
         pool.query(sql, ticket_list, function (err, result) {
             if (err) {
+                console.log('errored in ticketListToInfoList');
                 console.log(err.message);
                 reject(err);
             }
@@ -128,6 +129,7 @@ function accountStatus(token) {
         else {
             pool.query(sql, sqlParams, function (err, result) {
                 if (err) {
+                console.log('errored in accountStatus');
                     console.log(err.message);
                     reject(err);
                 }
