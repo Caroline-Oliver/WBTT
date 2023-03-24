@@ -41,19 +41,19 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/admin-page.html">Admin Page</a>
                 </li>
-                <% } if (status=='admin'||status=='user') { %>
-                <li>
-                    <button type="button" class="btn btn-inverse" id="cart">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-cart" viewBox="0 0 16 16">
-                            <path
-                                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z">
-                            </path>
-                        </svg>
-                        Cart
-                    </button>
-                </li>
-                <% } %>
+                <% } if (status=='admin' ||status=='user' ) { %>
+                    <li>
+                        <button type="button" class="btn btn-inverse" id="cart">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cart" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z">
+                                </path>
+                            </svg>
+                            Cart
+                        </button>
+                    </li>
+                    <% } %>
 
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -61,14 +61,41 @@
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 
         </form>
-        <% if (status=='na') { %>
-        <a class="btn btn-nav" href="/login" role="button" id="login">
-            Login
-        </a>
-        <% } if (status=='admin' || status=='user') { %>
-            <a class="btn btn-nav" href="/logout" role="button" id="logout">
-                Logout
+        <% if (status=='na' ) { %>
+            <a class="btn btn-inverse my-2 my-sm-0" role="button" id="login" data-toggle="modal" data-target="#exampleModalCenter">
+                Login
             </a>
-        <% } %>
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Welcome! Please Login</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <label for="username">Username:</label><br>
+                                <input type="text" id="username" name="username"><br>
+                                <label for="password">Password:</label><br>
+                                <input type="password" id="password" name="password">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" onclick="register()">Register</button>
+                            <button type="button" class="btn btn-primary" onclick="login()">Login</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } if (status=='admin' || status=='user' ) { %>
+                <a class="btn btn-nav" href="/logout" role="button" id="logout">
+                    Logout
+                </a>
+                <% } %>
     </div>
 </nav>
