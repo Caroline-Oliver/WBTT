@@ -85,9 +85,10 @@ function ticketListToInfoList(ticket_list) {
         var info_list = [];
         var sql = "SELECT * FROM tickets WHERE ";
         var i = -1;
-        if (ticket_list == null) {
+        if (ticket_list == NULL) {
             reject(new Error("ticket_list undefined"));
         }
+        console.log(ticket_list.length);
         if (ticket_list.length == 0) {
             resolve([]);
         }
