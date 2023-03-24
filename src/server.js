@@ -34,6 +34,7 @@ function checkTimestamps(search_terms) {
     const dt = new Date();
     const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
 
+    // YYYY-MM-DD HH:MM:SS format
     const datetime = `${
         padL(dt.getFullYear())}-${
         padL(dt.getMonth()+1)}-${
@@ -43,11 +44,12 @@ function checkTimestamps(search_terms) {
         padL(dt.getSeconds())}`
     
     var sql = "UPDATE ticket SET hold = null, hold_time = null, user_id = null ";
-    sql += "WHERE (" + search_terms + ") AND hold_time > \'" + datetime + "\';";
+    sql += "WHERE (" + search_terms + ") AND hold_time > " + datetime + ";";
 
     return new Promise((resolve, reject) => {
         pool.query(sql, function (err, result) {
             if (err) {
+                console.log('errored in checkTimestamps');
                 console.log(err);
                 reject(err);
             }
@@ -65,6 +67,7 @@ function getTicketList(user_id) {
     return new Promise((resolve, reject) => {
         pool.query(sql, sqlParams, function (err, result) {
             if (err) {
+                console.log('errored in ');
                 console.log(err.message);
                 reject(err);
             }
