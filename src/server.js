@@ -35,9 +35,9 @@ function checkTimestamps(search_terms) {
     const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
 
     const datetime = `${
+        padL(dt.getFullYear())}-${
         padL(dt.getMonth()+1)}-${
-        padL(dt.getDate())}-${
-        dt.getFullYear()} ${
+            dt.getDate()} ${
         padL(dt.getHours())}:${
         padL(dt.getMinutes())}:${
         padL(dt.getSeconds())}`
