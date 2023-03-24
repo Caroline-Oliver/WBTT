@@ -95,6 +95,9 @@ function ticketListToInfoList(ticket_list) {
                 sql += "ticket_id = ?;";
         }
 
+        console.log(sql);
+        console.log(ticket_list);
+
         pool.query(sql, ticket_list, function (err, result) {
             if (err) {
                 console.log('errored in ticketListToInfoList');
@@ -329,13 +332,13 @@ app.get('/my/account', authenticate, (req, res) => {
 app.get('/my/cart', authenticate, (req, res) => {
     checkTimestamps("user_name = " + req.cookies.token)
         .catch((err) => {
-            console.log(err.message);
+            
         })
         .finally(() => {
             var tickets;
             getTicketList()
                 .catch((err) => {
-                    console.log(err.message);
+                    
                 })
                 .then((ticket_list) => {
                     tickets = ticket_list;
@@ -344,7 +347,7 @@ app.get('/my/cart', authenticate, (req, res) => {
                     var info;
                     ticketListToInfoList(tickets)
                         .catch((err) => {
-                            console.log(err.message);
+                            
                         })
                         .then((info_list) => {
                             info = info_list;
