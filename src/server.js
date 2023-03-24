@@ -87,43 +87,44 @@ function ticketListToInfoList(ticket_list) {
         var i = -1;
         if (ticket_list == null) {
             reject(new Error("ticket_list undefined"));
-            return;
         }
         
-        if (ticket_list.length == 0) {
+        else if (ticket_list.length == 0) {
             resolve([]);
-            return;
-        }
-        while (++i < ticket_list.length) {
-            if (i < ticket_list.length - 1)
-                sql += "ticket_id = ? OR ";
-            else
-                sql += "ticket_id = ?;";
         }
 
-        console.log(sql);
-        console.log(ticket_list);
-
-        pool.query(sql, ticket_list, function (err, result) {
-            if (err) {
-                console.log('errored in ticketListToInfoList');
-                console.log(err.message);
-                reject(err);
+        else {
+            while (++i < ticket_list.length) {
+                if (i < ticket_list.length - 1)
+                    sql += "ticket_id = ? OR ";
+                else
+                    sql += "ticket_id = ?;";
             }
-            else {
-                cart = [];
-                let i = -1;
-                while (++i < result.length) {
-                    info_list.push({
-                        event_name: result[i].event_name,
-                        section: result[i].section,
-                        seat: result[i].seat,
-                        price: result[i].price
-                    });
+
+            console.log(sql);
+            console.log(ticket_list);
+
+            pool.query(sql, ticket_list, function (err, result) {
+                if (err) {
+                    console.log('errored in ticketListToInfoList');
+                    console.log(err.message);
+                    reject(err);
                 }
-                resolve(info_list);
-            }
-        });
+                else {
+                    cart = [];
+                    let i = -1;
+                    while (++i < result.length) {
+                        info_list.push({
+                            event_name: result[i].event_name,
+                            section: result[i].section,
+                            seat: result[i].seat,
+                            price: result[i].price
+                        });
+                    }
+                    resolve(info_list);
+                }
+            });
+        }
     });
 
 }
