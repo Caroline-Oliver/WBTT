@@ -88,6 +88,9 @@ function ticketListToInfoList(ticket_list) {
         if (ticket_list == null) {
             reject(new Error("ticket_list undefined"));
         }
+        if (len(ticket_list) == 0) {
+            resolve([]);
+        }
         while (++i < ticket_list.length) {
             if (i < ticket_list.length - 1)
                 sql += "ticket_id = ? OR ";
@@ -95,8 +98,8 @@ function ticketListToInfoList(ticket_list) {
                 sql += "ticket_id = ?;";
         }
 
-        console.log(sql);
-        console.log(ticket_list);
+        // console.log(sql);
+        // console.log(ticket_list);
 
         pool.query(sql, ticket_list, function (err, result) {
             if (err) {
