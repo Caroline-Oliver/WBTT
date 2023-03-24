@@ -88,7 +88,7 @@ function ticketListToInfoList(ticket_list) {
         if (ticket_list == null) {
             reject(new Error("ticket_list undefined"));
         }
-        if (len(ticket_list) == 0) {
+        if (ticket_list.length == 0) {
             resolve([]);
         }
         while (++i < ticket_list.length) {
