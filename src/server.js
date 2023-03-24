@@ -442,7 +442,7 @@ app.get('/logout', (req, res) => {
 
 // TODO: pending page
 app.get('/my/tickets', authenticate, (req, res) => {
-    checkTimestamps("user_name = " + req.cookies.token)
+    checkTimestamps("user_id = " + req.cookies.token)
         .catch((err) => {
             console.log(err.message);
         })
