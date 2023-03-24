@@ -43,7 +43,7 @@ function checkTimestamps(search_terms) {
         padL(dt.getMinutes())}:${
         padL(dt.getSeconds())}`
     
-    var sql = "UPDATE ticket\nSET hold = null, hold_time = null, user_id = null\n";
+    var sql = "UPDATE ticket\nSET hold = 0, hold_time = null, user_id = null\n";
     sql += "WHERE (" + search_terms + ") AND hold_time < \'" + datetime + "\';";
 
     return new Promise((resolve, reject) => {
