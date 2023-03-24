@@ -98,8 +98,8 @@ function ticketListToInfoList(ticket_list) {
                 sql += "ticket_id = ?;";
         }
 
-        // console.log(sql);
-        // console.log(ticket_list);
+        console.log(sql);
+        console.log(ticket_list);
 
         pool.query(sql, ticket_list, function (err, result) {
             if (err) {
