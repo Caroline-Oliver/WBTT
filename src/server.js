@@ -582,7 +582,7 @@ app.get('/api/search', (req, res) => {
     const search_terms = (req.body.search_terms+'').split(' ');
     let terms = []; 
     
-    search_terms.split(' ').forEach( element => {
+    search_terms.forEach( element => {
         terms.push(`'${element}'`);
     });
     
