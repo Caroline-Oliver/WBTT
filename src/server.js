@@ -588,12 +588,9 @@ app.get('/api/search', (req, res) => {
     
     terms = terms.toString();
 
-    const sql = 'SELECT * FROM event WHERE event_name IN (?) ORDER BY date DESC';
+    const sql = 'SELECT * FROM event WHERE event_name IN (' + terms + ') ORDER BY date DESC';
 
-    console.log(sql);
-    console.log(terms);
-
-    pool.query(sql, terms, (err, result) => {
+    pool.query(sql, (err, result) => {
         if (err) {
             console.log('/api/search errored');
             console.log(err.message);
