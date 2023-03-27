@@ -589,8 +589,8 @@ app.get('/api/search', (req, res) => {
     console.log(terms);
 
     const sql = 'SELECT * FROM event WHERE\n' +
-                terms + '\n'
-                'ORDER BY date DESC';
+                terms + '\n' +
+                'ORDER BY date DESC;';
 
     console.log(sql);
 
