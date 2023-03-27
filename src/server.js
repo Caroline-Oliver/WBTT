@@ -145,6 +145,7 @@ function searchEvents(search_terms) {
             pool.query(sql, (err, result) => {
                 if (err) {
                     console.log('search function errored');
+                    console.log(sql);
                     reject(err);
                 }
                 else {
