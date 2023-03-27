@@ -588,7 +588,7 @@ app.get('/api/search', (req, res) => {
     
     terms = terms.toString();
 
-    const sql = 'SELECT * FROM event WHERE event_name LIKE IN (' + terms + ') ORDER BY date DESC';
+    const sql = 'SELECT * FROM event WHERE event_name IN LIKE (' + terms + ') ORDER BY date DESC';
 
     console.log(sql);
 
