@@ -579,7 +579,7 @@ app.get('/api/my/login', (req, res) => {
 
 // #region search api
 app.get('/api/search', (req, res) => {
-    const search_terms = req.body.search_terms.split(' ');
+    const search_terms = (req.body.search_terms+'').split(' ');
     let terms = []; 
     
     search_terms.split(' ').forEach( element => {
