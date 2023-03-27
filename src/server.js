@@ -580,7 +580,30 @@ app.get('/api/my/login', (req, res) => {
 // #region search api
 app.get('/api/search', (req, res) => {
     const search_terms = req.body.search_terms.split(' ');
+    let terms = []; 
+    
+    search_terms.split(' ').forEach( element => {
+        terms.push(`'${element}'`);
+    });
+    
+    terms = terms.toString();
 
+    const sql = 'SELECT * FROM event WHERE event_name IN (?) ORDER BY [date] DESC';
+
+    pool.query(sql, terms, (err, result) => {
+        if (err) {
+            console.log('/api/search errored');
+            console.log(err.message);
+            res.status(400).send('Search function is not currently working at this time.');
+        }
+        else {
+            let events = [];
+            result.forEach( event => {
+                events.push({name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date});
+            });
+            res.send(JSON.stringify(result));
+        }
+    });
 });
 
 // #endregion
