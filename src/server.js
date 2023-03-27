@@ -580,15 +580,17 @@ app.get('/api/my/login', (req, res) => {
 // #region search api
 app.get('/api/search', (req, res) => {
     const search_terms = (req.body.search_terms+'').split(' ');
-    let terms = []; 
+    let terms = ''; 
     
     search_terms.forEach( element => {
-        terms.push(`'${element}'`);
+        terms += `event_name LIKE '${element}' OR\n`;
     });
-    
-    terms = terms.toString();
+    terms = terms.substring(0, terms.length-3);
+    console.log(terms);
 
-    const sql = 'SELECT * FROM event WHERE event_name IN LIKE (' + terms + ') ORDER BY date DESC';
+    const sql = 'SELECT * FROM event WHERE\n' +
+                terms + '\n'
+                'ORDER BY date DESC';
 
     console.log(sql);
 
