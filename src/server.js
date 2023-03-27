@@ -124,7 +124,39 @@ function ticketListToInfoList(ticket_list) {
 }
 
 function searchEvents(search_terms) {
-
+    return new Promise( (resolve, reject) => {
+        if (search_terms == '') {
+            resolve([]);
+        }
+        else {
+            const search_terms = (search_terms + '').split(' ');
+            let terms = '';
+    
+            search_terms.forEach(element => {
+                terms += `event_name LIKE '\%${element}\%' OR\n`;
+            });
+            // removes final OR\n
+            terms = terms.substring(0, terms.length - 3);
+    
+            const sql = 'SELECT * FROM event WHERE\n' +
+                terms + '\n' +
+                'ORDER BY date DESC;';
+    
+            pool.query(sql, (err, result) => {
+                if (err) {
+                    console.log('search function errored');
+                    reject(err);
+                }
+                else {
+                    let events = [];
+                    result.forEach(event => {
+                        events.push({ name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date });
+                    });
+                    resolve(events);
+                }
+            });
+        }
+    });
 }
 
 function accountStatus(token) {
@@ -573,38 +605,18 @@ app.get('/api/my/login', (req, res) => {
 
 // #region search api
 app.get('/api/search', (req, res) => {
-    const search_terms = (req.body.search_terms + '').split(' ');
-    let terms = '';
-
-    search_terms.forEach(element => {
-        terms += `event_name LIKE '\%${element}\%' OR\n`;
+    event_list = []
+    searchEvents(req.body.search_terms)
+    .catch( (err) => {
+        console.log('errored in /api/search');
+        console.log(err.message);
+    })
+    .then( (events) => {
+        event_list = events;
+    })
+    .finally( () => {
+        res.send(JSON.stringify(event_list));
     });
-    // removes final OR\n
-    if (terms.length > 3) {
-        terms = terms.substring(0, terms.length - 3);
-
-        const sql = 'SELECT * FROM event WHERE\n' +
-            terms + '\n' +
-            'ORDER BY date DESC;';
-
-        pool.query(sql, (err, result) => {
-            if (err) {
-                console.log('/api/search errored');
-                console.log(err.message);
-                res.status(400).send('Search function is not currently working at this time.');
-            }
-            else {
-                let events = [];
-                result.forEach(event => {
-                    events.push({ name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date });
-                });
-                res.send(JSON.stringify(events));
-            }
-        });
-    }
-    else {
-        res.status(400).send('No search provided')
-    }
 });
 
 // #endregion
