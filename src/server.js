@@ -128,6 +128,9 @@ function searchEvents(search_terms) {
         if (search_terms == '') {
             resolve([]);
         }
+        else if (search_terms.includes('--') || search_terms.includes(';')) {
+            reject(new Error('attempted SQL injection in search function'));
+        }
         else {
             search_terms = (search_terms + '').split(' ');
             let terms = '';
