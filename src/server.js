@@ -35,14 +35,8 @@ function checkTimestamps(search_terms) {
     const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
 
     // YYYY-MM-DD HH:MM:SS format
-    const datetime = `${
-        padL(dt.getFullYear())}-${
-        padL(dt.getMonth()+1)}-${
-            dt.getDate()} ${
-        padL(dt.getHours())}:${
-        padL(dt.getMinutes())}:${
-        padL(dt.getSeconds())}`
-    
+    const datetime = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`
+
     var sql = "UPDATE ticket\nSET hold = 0, hold_time = null, user_id = null\n";
     sql += "WHERE (" + search_terms + ") AND hold_time < \'" + datetime + "\';";
 
@@ -88,7 +82,7 @@ function ticketListToInfoList(ticket_list) {
         if (ticket_list == null) {
             reject(new Error("ticket_list undefined"));
         }
-        
+
         else if (ticket_list.length == 0) {
             resolve([]);
         }
@@ -143,7 +137,7 @@ function accountStatus(token) {
         else {
             pool.query(sql, sqlParams, function (err, result) {
                 if (err) {
-                console.log('errored in accountStatus');
+                    console.log('errored in accountStatus');
                     console.log(err.message);
                     reject(err);
                 }
@@ -343,13 +337,13 @@ app.get('/my/account', authenticate, (req, res) => {
 app.get('/my/cart', authenticate, (req, res) => {
     checkTimestamps("user_name = " + req.cookies.token)
         .catch((err) => {
-            
+
         })
         .finally(() => {
             var tickets;
             getTicketList()
                 .catch((err) => {
-                    
+
                 })
                 .then((ticket_list) => {
                     tickets = ticket_list;
@@ -358,7 +352,7 @@ app.get('/my/cart', authenticate, (req, res) => {
                     var info;
                     ticketListToInfoList(tickets)
                         .catch((err) => {
-                            
+
                         })
                         .then((info_list) => {
                             info = info_list;
@@ -579,35 +573,38 @@ app.get('/api/my/login', (req, res) => {
 
 // #region search api
 app.get('/api/search', (req, res) => {
-    const search_terms = (req.body.search_terms+'').split(' ');
-    let terms = ''; 
-    
-    search_terms.forEach( element => {
+    const search_terms = (req.body.search_terms + '').split(' ');
+    let terms = '';
+
+    search_terms.forEach(element => {
         terms += `event_name LIKE '\%${element}\%' OR\n`;
     });
-    terms = terms.substring(0, terms.length-3);
-    console.log(terms);
+    // removes final OR\n
+    if (terms.length > 3) {
+        terms = terms.substring(0, terms.length - 3);
 
-    const sql = 'SELECT * FROM event WHERE\n' +
-                terms + '\n' +
-                'ORDER BY date DESC;';
+        const sql = 'SELECT * FROM event WHERE\n' +
+            terms + '\n' +
+            'ORDER BY date DESC;';
 
-    console.log(sql);
-
-    pool.query(sql, (err, result) => {
-        if (err) {
-            console.log('/api/search errored');
-            console.log(err.message);
-            res.status(400).send('Search function is not currently working at this time.');
-        }
-        else {
-            let events = [];
-            result.forEach( event => {
-                events.push({name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date});
-            });
-            res.send(JSON.stringify(events));
-        }
-    });
+        pool.query(sql, (err, result) => {
+            if (err) {
+                console.log('/api/search errored');
+                console.log(err.message);
+                res.status(400).send('Search function is not currently working at this time.');
+            }
+            else {
+                let events = [];
+                result.forEach(event => {
+                    events.push({ name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date });
+                });
+                res.send(JSON.stringify(events));
+            }
+        });
+    }
+    else {
+        res.status(400).send('No search provided')
+    }
 });
 
 // #endregion
