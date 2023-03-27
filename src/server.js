@@ -605,7 +605,7 @@ app.get('/api/search', (req, res) => {
             result.forEach( event => {
                 events.push({name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date});
             });
-            res.send(JSON.stringify(result));
+            res.send(JSON.stringify(events));
         }
     });
 });
