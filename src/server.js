@@ -129,7 +129,7 @@ function searchEvents(search_terms) {
             resolve([]);
         }
         else {
-            const search_terms = (search_terms + '').split(' ');
+            search_terms = (search_terms + '').split(' ');
             let terms = '';
     
             search_terms.forEach(element => {
