@@ -583,7 +583,7 @@ app.get('/api/search', (req, res) => {
     let terms = ''; 
     
     search_terms.forEach( element => {
-        terms += `event_name LIKE '\$${element}\$' OR\n`;
+        terms += `event_name LIKE '\%${element}\%' OR\n`;
     });
     terms = terms.substring(0, terms.length-3);
     console.log(terms);
