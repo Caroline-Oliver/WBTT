@@ -591,6 +591,7 @@ app.get('/api/search', (req, res) => {
     const sql = 'SELECT * FROM event WHERE event_name IN (?) ORDER BY date DESC';
 
     console.log(sql);
+    console.log(terms);
 
     pool.query(sql, terms, (err, result) => {
         if (err) {
