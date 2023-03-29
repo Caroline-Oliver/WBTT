@@ -333,6 +333,7 @@ app.get('/contact', (req, res) => {
 // #region event information
 // TODO: pending page
 app.get('/search', (req, res) => {
+    console.log(req.query);
     var loggedIn = '';
     accountStatus(req.cookies.token)
     .catch((err) => {
