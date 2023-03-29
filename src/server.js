@@ -217,7 +217,7 @@ function getCurrentEvents() {
                 else {
                     current_events = []
                     result.forEach(event => {
-                        current_events.push({ name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date, imgSrc: '/images/home-page-concert.jpg' });
+                        current_events.push({ name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date, imgSrc: event.image_url });
                     });
                     resolve(current_events);
                 }
