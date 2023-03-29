@@ -132,7 +132,7 @@ function searchEvents(search_terms) {
             reject(new Error('attempted SQL injection in search function'));
         }
         else {
-            search_terms = (search_terms + '').split(' ');
+            search_terms = ((search_terms + '').replace("'", "\\'")).split(' ');
             let terms = '';
 
             search_terms.forEach(element => {
