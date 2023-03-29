@@ -43,6 +43,7 @@ function login() {
 	// })
 	var settings = {
 		"url": "http://18.219.2.17:3000/api/my/login",
+		"crossDomain": true,
 		"method": "GET",
 		"timeout": 0,
 		"headers": {

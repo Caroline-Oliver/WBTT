@@ -626,7 +626,6 @@ app.post('/api/my/create', (req, res) => {
 app.get('/api/my/login', (req, res) => {
     // make sure request contains all elements of a user account
     if (req.body.username == null || req.body.password == null) {
-        console.log(req);
         res.status(403).send(`Missing body parts ${JSON.stringify(req.body)}`);
         return;
     }
