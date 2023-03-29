@@ -76,7 +76,7 @@ function login() {
 }
 
 function logout() {
-	document.cookie = "cookiename=token; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+	document.cookie = "cookiename=token-18.219.2.17-/; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 	location.reload();
 }
 
