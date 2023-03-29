@@ -154,7 +154,7 @@ function searchEvents(search_terms) {
                 else {
                     let events = [];
                     result.forEach(event => {
-                        events.push({ id: event.event_id, name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date });
+                        events.push({ id: event.event_id, name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date, imgSrc: event.image_url });
                     });
                     resolve(events);
                 }
