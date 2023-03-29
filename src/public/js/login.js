@@ -48,7 +48,7 @@ function login() {
 		"headers": {
 		  "Content-Type": "application/json"
 		},
-		"data": JSON.stringify({
+		"body": JSON.stringify({
 		  "username": `${document.getElementById('username').value}`,
 		  "password": `${document.getElementById('password').value}`
 		}),
