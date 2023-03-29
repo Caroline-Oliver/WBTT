@@ -390,7 +390,7 @@ app.get('/event/:event_id', (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            getEvent(event_id)
+            getEvent(req.params.event_id)
             .catch ( (err) => {
                 res.redirect('/');
             })
