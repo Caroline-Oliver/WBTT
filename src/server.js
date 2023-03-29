@@ -623,7 +623,7 @@ app.post('/api/my/create', (req, res) => {
 });
 
 // TODO change to async & promises to have more readable code
-app.get('/api/my/login', (req, res) => {
+app.put('/api/my/login', (req, res) => {
     console.log(req);
     // make sure request contains all elements of a user account
     if (req.body.username == null || req.body.password == null) {
