@@ -57,11 +57,11 @@
                     <% } %>
 
         </ul>
-        <form class="form-inline my-2 my-lg-0" onsubmit="location.replace(`/search?s=${document.getElementById('eventSearch').value}`);">
-            <button class="btn btn-inverse my-2 my-sm-0" style="margin-right:10px">Search</button>
-            <input class="form-control mr-sm-2" id='eventSearch' placeholder="Search" aria-label="eventSearch">
+        <div class="form-inline my-2 my-lg-0">
+            <button class="btn btn-inverse my-2 my-sm-0" style="margin-right:10px" onclick="location.replace(`/search?s=${document.getElementById('eventSearch').value}`);">Search</button>
+            <input class="form-control mr-sm-2" id='eventSearch' placeholder="Search" aria-label="eventSearch" onsubmit="location.replace(`/search?s=${document.getElementById('eventSearch').value}`);">
 
-        </form>
+        </div>
         <% if (status=='na' ) { %>
             <a class="btn btn-nav" role="button" id="login" data-toggle="modal" data-target="#exampleModalCenter">
                 Login
