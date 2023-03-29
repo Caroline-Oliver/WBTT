@@ -625,7 +625,7 @@ app.post('/api/my/create', (req, res) => {
 // TODO change to async & promises to have more readable code
 app.get('/api/my/login', (req, res) => {
     console.log(req.body);
-    console.log(JSON.parse(req.query));
+    console.log(req.query[0]);
     // make sure request contains all elements of a user account
     if (req.body.username == null || req.body.password == null) {
         res.status(403).send(`Missing body parts ${JSON.stringify(req.body)}`);
