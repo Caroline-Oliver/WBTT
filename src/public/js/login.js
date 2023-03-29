@@ -69,7 +69,7 @@ function login() {
 			"password": `${document.getElementById('password').value}`
 		}),
 		processData: false,
-		success: function(data, textStatus, jQxhr) {
+		complete: function(data, textStatus, jQxhr) {
 			location.reload();
 		}
 	});
