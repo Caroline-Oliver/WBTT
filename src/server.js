@@ -625,10 +625,17 @@ app.post('/api/my/create', (req, res) => {
 // TODO change to async & promises to have more readable code
 app.get('/api/my/login', (req, res) => {
     console.log(req.body);
-    console.log(JSON.parse(Object.keys(req.query)[0]));
+    var query = JSON.parse(Object.keys(req.query)[0]);
+    var user;
     // make sure request contains all elements of a user account
-    if (req.body.username == null || req.body.password == null) {
-        res.status(403).send(`Missing body parts ${JSON.stringify(req.body)}`);
+    if (req.body.username != null && req.body.password != null) {
+        user = req.body;
+    }
+    else if (query.username != null && query.password != null) {
+        user = query;
+    }
+    else {
+        res.status(403).send(`Missing body parts`);
         return;
     }
 
