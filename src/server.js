@@ -154,7 +154,7 @@ function searchEvents(search_terms) {
                 else {
                     let events = [];
                     result.forEach(event => {
-                        events.push({ name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date });
+                        events.push({ id: event.event_id, name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date });
                     });
                     resolve(events);
                 }
@@ -332,6 +332,34 @@ app.get('/contact', (req, res) => {
 
 // #region event information
 // TODO: pending page
+app.get('/search', (req, res) => {
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+    .catch((err) => {
+        loggedIn = 'na';
+    })
+    .then((status) => {
+        loggedIn = status;
+    })
+    .finally(() => {
+        event_list = []
+
+    searchEvents(req.body.search_terms)
+        .catch((err) => {
+            console.log('errored in /api/search');
+            console.log(err.message);
+        })
+        .then((events) => {
+            event_list = events;
+        })
+        .finally(() => {
+            res.render('pages/search', {
+                status: loggedIn,
+                events: event_list
+            });
+        });
+    });
+})
 app.get('/event/:event', (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
@@ -661,7 +689,7 @@ app.get('/api/my/login', (req, res) => {
 // #region search api
 app.get('/api/search', (req, res) => {
     event_list = []
-    
+
     searchEvents(req.body.search_terms)
         .catch((err) => {
             console.log('errored in /api/search');

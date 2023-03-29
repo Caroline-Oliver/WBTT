@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<body>
+    <header>
+        <%- include('../partials/header') %>
+    </header>
+
+    <div class="jumbotron-fluid" style="background-color: #14213D; padding: 50px">
+        <h1 style="color: #FCA311; font-size: 50px">Search</h1>
+    </div>
+
+    <% let idx = 0; %>
+    <% events.forEach(function(event) { %>
+      
+      <div class="row" style="margin-top: 25px">
+        <div class="col-lg-9 col-12" style="margin-top: 10px">
+          <h3 style="text-align: center">
+            <a href="/event/<%= event.id %>"></a>
+            <%= event.name %>
+          </h3>
+          <p>
+            <%= event.desc %>
+          </p>
+        </div>
+        <div class="col-lg-3 col-12" style="margin-top: 10px">
+          <img class="img-fluid" alt="<%= event.name %>" src="<%= event.imgSrc %>" style="max-height: 500px">
+        </div>
+      </div>
+      <% }); %>
+
+    <%- include('../partials/scripts') %>
+</body>
