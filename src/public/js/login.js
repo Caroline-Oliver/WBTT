@@ -63,8 +63,7 @@ function login() {
 		url: '/api/my/login',
 		dataType: 'json',
 		type: 'get',
-		contentType: 'application/json',
-		accessControlAllowOrigin : "*",
+		contentType: 'application/jsonp',
 		data: JSON.stringify({
 			"username": `${document.getElementById('username').value}`,
 			"password": `${document.getElementById('password').value}`
