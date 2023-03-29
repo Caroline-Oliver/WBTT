@@ -641,7 +641,7 @@ app.get('/api/my/login', (req, res) => {
 
     // checks to see if username/password pair exist
     var sql = "SELECT * FROM password WHERE user_name = ? AND password = ?"
-    var sqlParams = [req.body.username, req.body.password];
+    var sqlParams = [user.username, user.password];
     pool.query(sql, sqlParams, function (err, result) {
         if (err) {
             throw err;
