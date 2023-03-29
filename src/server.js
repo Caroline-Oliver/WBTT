@@ -124,7 +124,7 @@ function ticketListToInfoList(ticket_list) {
 }
 
 function searchEvents(search_terms) {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         if (search_terms == '') {
             resolve([]);
         }
@@ -134,17 +134,17 @@ function searchEvents(search_terms) {
         else {
             search_terms = (search_terms + '').split(' ');
             let terms = '';
-    
+
             search_terms.forEach(element => {
                 terms += `event_name LIKE '\%${element}\%' OR\n`;
             });
             // removes final OR\n
             terms = terms.substring(0, terms.length - 3);
-    
+
             const sql = 'SELECT * FROM event WHERE\n' +
                 terms + '\n' +
                 'ORDER BY date DESC;';
-    
+
             pool.query(sql, (err, result) => {
                 if (err) {
                     console.log('search function errored\n');
@@ -187,6 +187,38 @@ function accountStatus(token) {
                     else {
                         resolve('user');
                     }
+                }
+            });
+        }
+    });
+}
+
+var current_date = ""
+var current_events = []
+function getCurrentEvents() {
+    return new Promise((resolve, reject) => {
+        const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
+
+        // YYYY-MM-DD format
+        const date = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()}`
+
+        if (current_date == date) {
+            resolve(current_events);
+        }
+        else {
+            current_date = date;
+            const sql = "SELECT * FROM event WHERE date >= ? LIMIT 5;"
+            pool.query(sql, date, (err, result) => {
+                if (err) {
+                    console.log('errored in getCurrentEvents');
+                    reject(err);
+                }
+                else {
+                    current_events = []
+                    result.forEach(event => {
+                        current_events.push({ name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date, imgSrc: '/images/home-page-concert.jpg' });
+                    });
+                    resolve(current_events);
                 }
             });
         }
@@ -237,19 +269,28 @@ app.get('/', (req, res) => {
         }
     ]
 
-    var loggedIn = '';
-    accountStatus(req.cookies.token)
+    getCurrentEvents()
         .catch((err) => {
-            loggedIn = 'na';
+            console.log(err);
         })
-        .then((status) => {
-            loggedIn = status;
+        .then((current_events) => {
+            events = current_events;
         })
         .finally(() => {
-            res.render('pages/index', {
-                events: events,
-                status: loggedIn
-            });
+            var loggedIn = '';
+            accountStatus(req.cookies.token)
+                .catch((err) => {
+                    loggedIn = 'na';
+                })
+                .then((status) => {
+                    loggedIn = status;
+                })
+                .finally(() => {
+                    res.render('pages/index', {
+                        events: events,
+                        status: loggedIn
+                    });
+                });
         });
 });
 
@@ -611,16 +652,16 @@ app.get('/api/my/login', (req, res) => {
 app.get('/api/search', (req, res) => {
     event_list = []
     searchEvents(req.body.search_terms)
-    .catch( (err) => {
-        console.log('errored in /api/search');
-        console.log(err.message);
-    })
-    .then( (events) => {
-        event_list = events;
-    })
-    .finally( () => {
-        res.send(JSON.stringify(event_list));
-    });
+        .catch((err) => {
+            console.log('errored in /api/search');
+            console.log(err.message);
+        })
+        .then((events) => {
+            event_list = events;
+        })
+        .finally(() => {
+            res.send(JSON.stringify(event_list));
+        });
 });
 
 // #endregion
