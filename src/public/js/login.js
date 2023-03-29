@@ -23,8 +23,8 @@ function logout() {
 }
 
 function eventSearch() {
-	alert(`/search?s=${document.getElementById('search').value}`);
-	//location.replace(`/search?s=${document.getElementById('search').value}`);
+	//alert(`/search?s=${document.getElementById('search').value}`);
+	location.replace(`/search?s=${document.getElementById('search').value}`);
 }
 
 function setMessage(message) {
