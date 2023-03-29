@@ -41,37 +41,23 @@ function login() {
 	// 		console.log(response);
 	// 	}
 	// })
-	// var settings = {
-	// 	"url": "http://18.219.2.17:3000/api/my/login",
-	// 	"crossDomain": true,
-	// 	"method": "GET",
-	// 	"timeout": 0,
-	// 	"headers": {
-	// 		"Content-Type": "application/json"
-	// 	},
-	// 	"body": JSON.stringify({
-	// 		"username": `${document.getElementById('username').value}`,
-	// 		"password": `${document.getElementById('password').value}`
-	// 	}),
-	// };
-
-	// $.ajax(settings).done(function (response) {
-	// 	console.log(response);
-	// });
-
-	$.ajax({
-		url: 'http://18.219.2.17:3000/api/my/login',
-		dataType: 'json',
-		type: 'get',
-		contentType: 'application/json',
-		data: JSON.stringify({
+	var settings = {
+		"url": "http://18.219.2.17:3000/api/my/login",
+		"crossDomain": true,
+		"method": "GET",
+		"timeout": 0,
+		"headers": {
+			"Content-Type": "application/json",
+			"Access-Control-Allow-Origin":"*"
+		},
+		"body": JSON.stringify({
 			"username": `${document.getElementById('username').value}`,
 			"password": `${document.getElementById('password').value}`
 		}),
-		processData: false,
-		success: function(data, textStatus, jQxhr) {
-			console.log(data, textStatus, jQxhr);
-		}
+	};
+
+	$.ajax(settings).done(function (response) {
+		console.log(response);
 	});
 }
 
