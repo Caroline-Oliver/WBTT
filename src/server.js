@@ -225,6 +225,26 @@ function getCurrentEvents() {
         }
     });
 }
+
+function getEvent(id) {
+    return new Promise( (resolve, reject) => {
+        const sql = "SELECT * FROM event WHERE event_id = ?;";
+        pool.query(sql, id, (err, res) => {
+            if (err) {
+                console.log('errored in getEvent');
+                reject(err);
+            }
+            else {
+                if (res.length >= 1) {
+                    resolve(res[0]);
+                }
+                else {
+                    reject(new Error('no such event found'));
+                }
+            }
+        });
+    });
+}
 // #endregion
 
 // #region require
@@ -360,7 +380,7 @@ app.get('/search', (req, res) => {
         });
     });
 })
-app.get('/event/:event', (req, res) => {
+app.get('/event/:event_id', (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
         .catch((err) => {
@@ -370,8 +390,15 @@ app.get('/event/:event', (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            res.render('pages/event', {
-                status: loggedIn
+            getEvent(event_id)
+            .catch ( (err) => {
+                res.redirect('/');
+            })
+            .then( (this_event) => {
+                res.render('pages/event', {
+                    status: loggedIn,
+                    event: this_event
+                });
             });
         });
 });
