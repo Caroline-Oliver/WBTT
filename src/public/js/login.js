@@ -46,8 +46,7 @@ function login() {
 		"method": "GET",
 		"timeout": 0,
 		"headers": {
-		  "Content-Type": "application/json",
-		  "Cookie": "token=1"
+		  "Content-Type": "application/json"
 		},
 		"data": JSON.stringify({
 		  "username": `${document.getElementById('username').value}`,
