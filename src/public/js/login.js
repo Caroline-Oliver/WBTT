@@ -60,7 +60,7 @@ function login() {
 	// });
 
 	$.ajax({
-		url: 'http://18.219.2.17:3000/api/my/login',
+		url: '/api/my/login',
 		dataType: 'json',
 		type: 'get',
 		contentType: 'application/json',
