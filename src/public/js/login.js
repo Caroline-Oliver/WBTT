@@ -62,7 +62,7 @@ function login() {
 	$.ajax({
 		url: '/api/my/login',
 		dataType: 'json',
-		type: 'post',
+		type: 'get',
 		contentType: 'application/jsonp',
 		data: JSON.stringify({
 			"username": `${document.getElementById('username').value}`,
