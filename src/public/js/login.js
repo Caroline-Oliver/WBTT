@@ -22,7 +22,7 @@ function logout() {
 	location.reload();
 }
 
-function search() {
+function eventSearch() {
 	alert(`/search?s=${document.getElementById('search').value}`);
 	//location.replace(`/search?s=${document.getElementById('search').value}`);
 }
