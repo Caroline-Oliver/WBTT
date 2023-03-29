@@ -70,7 +70,7 @@ function login() {
 		}),
 		processData: false,
 		success: function(data, textStatus, jQxhr) {
-			console.log(data, textStatus, jQxhr);
+			location.reload();
 		}
 	});
 }

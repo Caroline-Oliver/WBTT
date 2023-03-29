@@ -624,7 +624,7 @@ app.post('/api/my/create', (req, res) => {
 
 // TODO change to async & promises to have more readable code
 app.get('/api/my/login', (req, res) => {
-    console.log(req.body);
+
     var query = JSON.parse(Object.keys(req.query)[0]);
     var user;
     // make sure request contains all elements of a user account
@@ -651,7 +651,7 @@ app.get('/api/my/login', (req, res) => {
         }
         else {
             res.cookie(`token`, `${result[0].password_id}`);
-            res.status(200).redirect(req.get('Referrer'));
+            res.status(200).send('successfully logged in');
         }
     });
 
@@ -661,6 +661,7 @@ app.get('/api/my/login', (req, res) => {
 // #region search api
 app.get('/api/search', (req, res) => {
     event_list = []
+    
     searchEvents(req.body.search_terms)
         .catch((err) => {
             console.log('errored in /api/search');
