@@ -333,7 +333,6 @@ app.get('/contact', (req, res) => {
 // #region event information
 // TODO: pending page
 app.get('/search', (req, res) => {
-    console.log(req.query);
     var loggedIn = '';
     accountStatus(req.cookies.token)
     .catch((err) => {
@@ -345,7 +344,7 @@ app.get('/search', (req, res) => {
     .finally(() => {
         event_list = []
 
-    searchEvents(req.body.search_terms)
+    searchEvents(req.query.s)
         .catch((err) => {
             console.log('errored in /api/search');
             console.log(err.message);
