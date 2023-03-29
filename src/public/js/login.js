@@ -41,17 +41,19 @@ function login() {
 	// 		console.log(response);
 	// 	}
 	// })
-	const settings = {
-		"async": true,
-		"crossDomain": true,
+	var settings = {
 		"url": "http://18.219.2.17:3000/api/my/login",
 		"method": "GET",
+		"timeout": 0,
 		"headers": {
-		  "Content-Type": "application/json"
+		  "Content-Type": "application/json",
+		  "Cookie": "token=1"
 		},
-		"processData": false,
-		"data": `{\n    \"username\" : \"${document.getElementById('username').value}\",\n    \"password\" : \"${document.getElementById('password').value}\"\n}\n`
-	};
+		"data": JSON.stringify({
+		  "username": `${document.getElementById('username').value}`,
+		  "password": `${document.getElementById('password').value}`
+		}),
+	  };
 	  
 	  $.ajax(settings).done(function (response) {
 		console.log(response);
