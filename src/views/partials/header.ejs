@@ -59,7 +59,7 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <button type="button" class="btn btn-inverse my-2 my-sm-0" onclick="location.replace(`/search?s=${document.getElementById('eventSearch').value}`);" style="margin-right:10px">Search</button>
-            <input class="form-control mr-sm-2" id='eventSearch' placeholder="Search" aria-label="eventSearch">
+            <input class="form-control mr-sm-2" id='eventSearch' placeholder="Search" aria-label="eventSearch" onsubmit="location.replace(`/search?s=${document.getElementById('eventSearch').value}`);">
 
         </form>
         <% if (status=='na' ) { %>
