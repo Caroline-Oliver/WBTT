@@ -24,7 +24,7 @@ function logout() {
 
 function eventSearch() {
 	//alert(`/search?s=${document.getElementById('search').value}`);
-	location.replace(`/search?s=${document.getElementById('search').value}`);
+	location.replace(`/search?s=${document.getElementById('eventSearch').value}`);
 }
 
 function setMessage(message) {
