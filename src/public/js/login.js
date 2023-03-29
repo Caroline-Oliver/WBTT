@@ -23,7 +23,7 @@ function logout() {
 }
 
 function search() {
-	location.replace('/search?s='+`${document.getElementById('search').value}`);
+	location.replace(`/search?s=${document.getElementById('search').value}`);
 }
 
 function setMessage(message) {
