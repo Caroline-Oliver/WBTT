@@ -133,17 +133,21 @@ function searchEvents(search_terms) {
         }
         else {
             search_terms = ((search_terms + '').replace("'", "\\'")).split(' ');
-            let terms = '';
+            let where_search = '';
+            let count_search = '( ';
 
             search_terms.forEach(element => {
-                terms += `event_name LIKE '\%${element}\%' OR\n`;
+                where_search += `event_name LIKE '\%${element}\%' OR\n`;
+                count_search += `(event_name LIKE '\%${element}\%') + `
             });
             // removes final OR\n
-            terms = terms.substring(0, terms.length - 3);
+            where_search = where_search.substring(0, where_search.length - 3);
+            count_search = count_search.substring(0, count_search.length - 2) + ') as count_words';
 
-            const sql = 'SELECT * FROM event WHERE\n' +
-                terms + '\n' +
-                'ORDER BY date DESC;';
+            const sql = 'SELECT *, ' + count_search + '\n' +
+                'FROM event WHERE\n' +
+                where_search + '\n' +
+                'ORDER BY count_words DESC;';
 
             pool.query(sql, (err, result) => {
                 if (err) {
