@@ -30,18 +30,32 @@ function login() {
 
 	// });
 	// setMessage("This one worked")
-	$.ajax({
-		dataType: "json",
-		url: "http://18.219.2.17:3000/api/my/login",
-		data: {
-			username: `${document.getElementById('username').value}`,
-			password: `${document.getElementById('password').value}`
+	// $.ajax({
+	// 	dataType: "json",
+	// 	url: "http://18.219.2.17:3000/api/my/login",
+	// 	data: {
+	// 		username: `${document.getElementById('username').value}`,
+	// 		password: `${document.getElementById('password').value}`
+	// 	},
+	// 	success: (response, status, xhr) => {
+	// 		console.log(response);
+	// 	}
+	// })
+	const settings = {
+		"async": true,
+		"crossDomain": true,
+		"url": "http://18.219.2.17:3000/api/my/login",
+		"method": "GET",
+		"headers": {
+		  "Content-Type": "application/json"
 		},
-		success: (response, status, xhr) => {
-			console.log(response);
-		}
-	})
-
+		"processData": false,
+		"data": `{\n    \"username\" : \"${document.getElementById('username').value}\",\n    \"password\" : \"${document.getElementById('password').value}\"\n}\n`
+	};
+	  
+	  $.ajax(settings).done(function (response) {
+		console.log(response);
+	  });
 }
 
 function setMessage(message) {
