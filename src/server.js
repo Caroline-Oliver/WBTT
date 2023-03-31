@@ -419,22 +419,22 @@ app.get('/events/:category', (req, res) => {
         })
         .finally(() => {
             if (req.params.category.toLowerCase() === 'concerts') {
-                res.render('pages/concerts-info', {
+                res.render('pages/category', {
                     status: loggedIn
                 });
             }
             else if (req.params.category.toLowerCase() === 'sports') {
-                res.render('pages/theater-info', {
+                res.render('pages/category', {
                     status: loggedIn
                 });
             }
             else if (req.params.category.toLowerCase() === 'theater') {
-                res.render('pages/theater-info', {
+                res.render('pages/category', {
                     status: loggedIn
                 });
             }
             else if (req.params.category.toLowerCase() === 'other') {
-                res.render('pages/other-info', {
+                res.render('pages/category', {
                     status: loggedIn
                 });
             }
