@@ -159,13 +159,14 @@ function searchEvents(search_terms) {
             // removes final OR\n
             if (special_only == false) {
                 where_search = where_search.substring(0, where_search.length - 3) + ')';
-                special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
+                count_search = count_search.substring(0, count_search.length - 2) + ') as count_words';
             }
             else {
                 where_search += ')';
-                special_terms += ')';
+                count_search += ') as count_words';
             }
-            count_search = count_search.substring(0, count_search.length - 2) + ') as count_words';
+            
+            special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
 
             const sql = 'SELECT *, ' + count_search + '\n' +
                 'FROM event WHERE\n' +
