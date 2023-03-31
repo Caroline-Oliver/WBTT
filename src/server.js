@@ -137,12 +137,14 @@ function searchEvents(search_terms) {
             let count_search = ', ( ';
             let special_terms = '( ';
             let special_only = true;
+            let normal_only = true;
             search_terms.forEach(element => {
                 if (element.includes(':')) {
                     let type = element.substring(0, element.indexOf(':'));
                     let term = element.substring(element.indexOf(':') + 1);
 
                     if (type != '' && term != '') {
+                        normal_only = false;
                         switch (type) {
                             case 'category':
                             case 'cat':
@@ -165,6 +167,9 @@ function searchEvents(search_terms) {
             else {
                 where_search = '';
                 count_search = '';
+            }
+            if (normal_only) {
+                special_terms = '';
             }
             
             special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
