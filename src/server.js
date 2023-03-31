@@ -168,11 +168,12 @@ function searchEvents(search_terms) {
                 where_search = '';
                 count_search = '';
             }
+
+            special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
+
             if (normal_only) {
                 special_terms = '';
             }
-            
-            special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
 
             let sql = 'SELECT *' + count_search + '\n' +
                 'FROM event WHERE\n' +
