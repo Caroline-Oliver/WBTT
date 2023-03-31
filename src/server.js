@@ -737,6 +737,10 @@ app.get('/api/search', (req, res) => {
 // #endregion
 
 // #region admin
+app.get('/admin/dashboard', authenticate, (req, res) => {
+    res.render('pages/admin-page');
+});
+
 app.post('/api/admin/upload', authenticate, (req, res) => {
     fs.writeFile(`venues/${req.body.name}.html`, req.body.html, (err) => {
         if (err) return console.log(err);
