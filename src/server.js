@@ -271,15 +271,15 @@ function adminDashboard(filters) {
                                     "FROM ticket AS t" + '\n' +
                                     "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
                                     "JOIN event AS e ON e.event_id = t.event_id" + '\n' +
-                                    "WHERE sold=1 AND e.date >= '?'" + '\n' +
-                                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;;",
+                                    "WHERE sold=1 AND e.date >= ?" + '\n' +
+                                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;",
                                     date);
             var h_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
                                     "FROM ticket AS t" + '\n' +
                                     "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
                                     "JOIN event AS e ON e.event_id = t.event_id" + '\n' +
-                                    "WHERE sold=1 AND e.date < '?'" + '\n' +
-                                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;;",
+                                    "WHERE sold=1 AND e.date < ?" + '\n' +
+                                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;",
                                     date);
             var u_promise = query("SELECT * FROM user", []);
             Promise.all([c_o_promise, h_o_promise, u_promise])
