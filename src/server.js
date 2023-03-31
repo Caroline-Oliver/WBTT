@@ -738,7 +738,19 @@ app.get('/api/search', (req, res) => {
 
 // #region admin
 app.get('/admin/dashboard', authenticate, (req, res) => {
-    res.render('pages/admin-page');
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/admin-page', {
+                status: loggedIn
+            });
+        });
 });
 
 app.post('/api/admin/upload', authenticate, (req, res) => {
