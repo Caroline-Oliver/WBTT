@@ -459,6 +459,7 @@ app.get('/events/:category', (req, res) => {
                         event_list = events;
                     })
                     .finally(() => {
+                        console.log(event_list);
                         res.render('pages/category', {
                             category: req.params.category.toLowerCase(),
                             events: event_list,
