@@ -221,7 +221,7 @@ function getCurrentEvents() {
                 else {
                     current_events = []
                     result.forEach(event => {
-                        current_events.push({ name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date, imgSrc: event.image_url });
+                        current_events.push({ id: event.event_id, name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date, imgSrc: event.image_url });
                     });
                     resolve(current_events);
                 }
@@ -420,25 +420,25 @@ app.get('/events/:category', (req, res) => {
         .finally(() => {
             if (req.params.category.toLowerCase() === 'concerts') {
                 res.render('pages/category', {
-                    category: 'concerts',
+                    category: 'Concerts',
                     status: loggedIn
                 });
             }
             else if (req.params.category.toLowerCase() === 'sports') {
                 res.render('pages/category', {
-                    category: 'sports',
+                    category: 'Sports',
                     status: loggedIn
                 });
             }
             else if (req.params.category.toLowerCase() === 'theater') {
                 res.render('pages/category', {
-                    category: 'theater',
+                    category: 'Theater',
                     status: loggedIn
                 });
             }
             else if (req.params.category.toLowerCase() === 'other') {
                 res.render('pages/category', {
-                    category: 'other',
+                    category: 'Other',
                     status: loggedIn
                 });
             }
