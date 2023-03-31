@@ -134,7 +134,7 @@ function searchEvents(search_terms) {
         else {
             search_terms = ((search_terms + '').replace("'", "\\'")).split(' ');
             let where_search = '( ';
-            let count_search = ',( ';
+            let count_search = ', ( ';
             let special_terms = '( ';
             let special_only = true;
             search_terms.forEach(element => {
@@ -169,7 +169,7 @@ function searchEvents(search_terms) {
             
             special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
 
-            let sql = 'SELECT * ' + count_search + '\n' +
+            let sql = 'SELECT *' + count_search + '\n' +
                 'FROM event WHERE\n' +
                 where_search + '\n' +
                 special_terms + '\n';
