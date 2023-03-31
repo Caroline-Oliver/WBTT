@@ -135,7 +135,7 @@ function searchEvents(search_terms) {
             search_terms = ((search_terms + '').replace("'", "\\'")).split(' ');
             let where_search = '( ';
             let count_search = '( ';
-            let special_terms = 'AND ( ';
+            let special_terms = '( ';
             let special_only = true;
             search_terms.forEach(element => {
                 if (element.includes(':')) {
@@ -160,6 +160,7 @@ function searchEvents(search_terms) {
             if (special_only == false) {
                 where_search = where_search.substring(0, where_search.length - 3) + ')';
                 count_search = count_search.substring(0, count_search.length - 2) + ') as count_words';
+                special_terms = "AND " + special_terms;
             }
             else {
                 where_search = '';
