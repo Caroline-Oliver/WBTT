@@ -162,8 +162,8 @@ function searchEvents(search_terms) {
                 count_search = count_search.substring(0, count_search.length - 2) + ') as count_words';
             }
             else {
-                where_search += ')';
-                count_search += ') as count_words';
+                where_search = '';
+                count_search = '';
             }
             
             special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
