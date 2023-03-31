@@ -268,16 +268,16 @@ function adminDashboard(filters) {
             })
             cur_event_ids = cur_event_ids.toString();
             var c_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
-                                    "FROM wbtt.ticket AS t" + '\n' +
-                                    "JOIN wbtt.user AS u ON u.user_id = t.user_id" + '\n' +
-                                    "JOIN wbtt.event AS e ON e.event_id = t.event_id" + '\n' +
+                                    "FROM ticket AS t" + '\n' +
+                                    "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
+                                    "JOIN event AS e ON e.event_id = t.event_id" + '\n' +
                                     "WHERE sold=1 AND e.date >= '?'" + '\n' +
                                     "GROUP BY u.user_name, e.event_name, e.venue, e.date;;",
                                     date);
             var h_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
-                                    "FROM wbtt.ticket AS t" + '\n' +
-                                    "JOIN wbtt.user AS u ON u.user_id = t.user_id" + '\n' +
-                                    "JOIN wbtt.event AS e ON e.event_id = t.event_id" + '\n' +
+                                    "FROM ticket AS t" + '\n' +
+                                    "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
+                                    "JOIN event AS e ON e.event_id = t.event_id" + '\n' +
                                     "WHERE sold=1 AND e.date < '?'" + '\n' +
                                     "GROUP BY u.user_name, e.event_name, e.venue, e.date;;",
                                     date);
