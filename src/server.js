@@ -16,7 +16,7 @@ function authenticate(req, res, next) {
                 if (req.url.includes("/my/")) {
                     next();
                 }
-                else if (req.url.includes("/admin/") && result.type == 0) {
+                else if (req.url.includes("/admin/") && result[0].type == 0) {
                     next();
                 }
                 else {
