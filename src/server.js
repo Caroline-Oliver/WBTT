@@ -146,7 +146,7 @@ function searchEvents(search_terms) {
                         switch (type) {
                             case 'category':
                             case 'cat':
-                                special_terms += `category=${term} AND\n`;
+                                special_terms += `category='${term}' AND\n`;
                                 break;
                         }
                     }
