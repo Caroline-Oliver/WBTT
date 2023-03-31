@@ -871,11 +871,6 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
                     users_l = values[3];
             })
             .finally( () => {
-                console.log(`logged in ${JSON.stringify(loggedIn)}`);
-                console.log(`events l ${JSON.stringify(events_l)}`);
-                console.log(`current orders l ${JSON.stringify(current_orders_l)}`);
-                console.log(`historical orders l ${JSON.stringify(historical_orders_l)}`);
-                console.log(`users l ${JSON.stringify(users_l)}`);
                 res.render('pages/admin-page', {
                     status: loggedIn,
                     events: events_l,
