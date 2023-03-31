@@ -133,20 +133,37 @@ function searchEvents(search_terms) {
         }
         else {
             search_terms = ((search_terms + '').replace("'", "\\'")).split(' ');
-            let where_search = '';
+            let where_search = '( ';
             let count_search = '( ';
+            let special_terms = 'AND ( ';
 
             search_terms.forEach(element => {
-                where_search += `event_name LIKE '\%${element}\%' OR\n`;
-                count_search += `(event_name LIKE '\%${element}\%') + `
+                if (element.includes(':')) {
+                    let type = element.substring(0,element.indexOf(':'));
+                    let term = element.substring(element.indexOf(':')+1);
+
+                    if (type != '' && term != ''){
+                        switch (type) {
+                            case 'category' :
+                            case 'cat' : 
+                                special_terms += `category=${term} AND\n`;
+                                break;
+                        }
+                    }
+                } else {
+                    where_search += `event_name LIKE '\%${element}\%' OR\n`;
+                    count_search += `(event_name LIKE '\%${element}\%') + `
+                }
             });
             // removes final OR\n
-            where_search = where_search.substring(0, where_search.length - 3);
+            where_search = where_search.substring(0, where_search.length - 3) + ')';
+            special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
             count_search = count_search.substring(0, count_search.length - 2) + ') as count_words';
 
             const sql = 'SELECT *, ' + count_search + '\n' +
                 'FROM event WHERE\n' +
                 where_search + '\n' +
+                special_terms + '\n' +
                 'ORDER BY count_words DESC, date DESC;';
 
             pool.query(sql, (err, result) => {
@@ -231,7 +248,7 @@ function getCurrentEvents() {
 }
 
 function getEvent(id) {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM event WHERE event_id = ?;";
         pool.query(sql, id, (err, res) => {
             if (err) {
@@ -359,30 +376,30 @@ app.get('/contact', (req, res) => {
 app.get('/search', (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
-    .catch((err) => {
-        loggedIn = 'na';
-    })
-    .then((status) => {
-        loggedIn = status;
-    })
-    .finally(() => {
-        event_list = []
-
-    searchEvents(req.query.s)
         .catch((err) => {
-            console.log('errored in /api/search');
-            console.log(err.message);
+            loggedIn = 'na';
         })
-        .then((events) => {
-            event_list = events;
+        .then((status) => {
+            loggedIn = status;
         })
         .finally(() => {
-            res.render('pages/search', {
-                status: loggedIn,
-                events: event_list
-            });
+            event_list = []
+
+            searchEvents(req.query.s)
+                .catch((err) => {
+                    console.log('errored in /api/search');
+                    console.log(err.message);
+                })
+                .then((events) => {
+                    event_list = events;
+                })
+                .finally(() => {
+                    res.render('pages/search', {
+                        status: loggedIn,
+                        events: event_list
+                    });
+                });
         });
-    });
 })
 app.get('/event/:event_id', (req, res) => {
     var loggedIn = '';
@@ -395,15 +412,15 @@ app.get('/event/:event_id', (req, res) => {
         })
         .finally(() => {
             getEvent(req.params.event_id)
-            .catch ( (err) => {
-                res.redirect('/');
-            })
-            .then( (this_event) => {
-                res.render('pages/event', {
-                    status: loggedIn,
-                    event: this_event
+                .catch((err) => {
+                    res.redirect('/');
+                })
+                .then((this_event) => {
+                    res.render('pages/event', {
+                        status: loggedIn,
+                        event: this_event
+                    });
                 });
-            });
         });
 });
 
@@ -418,32 +435,22 @@ app.get('/events/:category', (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            if (req.params.category.toLowerCase() === 'concerts') {
-                res.render('pages/category', {
-                    category: 'Concerts',
-                    status: loggedIn
+            if (req.params.category != null) {
+                let event_list = []
+                searchEvents(`cat:${req.params.category.toLowerCase()}`)
+                .catch( (err) => {
+                    console.log(err);
+                })
+                .then ( (events) => {
+                    event_list = events;
+                })
+                .finally( () => {
+                    res.render('pages/category', {
+                        category: req.params.category.toLowerCase(),
+                        events: event_list,
+                        status: loggedIn
+                    });
                 });
-            }
-            else if (req.params.category.toLowerCase() === 'sports') {
-                res.render('pages/category', {
-                    category: 'Sports',
-                    status: loggedIn
-                });
-            }
-            else if (req.params.category.toLowerCase() === 'theater') {
-                res.render('pages/category', {
-                    category: 'Theater',
-                    status: loggedIn
-                });
-            }
-            else if (req.params.category.toLowerCase() === 'other') {
-                res.render('pages/category', {
-                    category: 'Other',
-                    status: loggedIn
-                });
-            }
-            else {
-                res.redirect('/events/other');
             }
         });
 });
