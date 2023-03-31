@@ -180,6 +180,8 @@ function searchEvents(search_terms) {
                 sql += 'ORDER BY count_words DESC, date DESC;';
             }
 
+            console.log(sql);
+
             pool.query(sql, (err, result) => {
                 if (err) {
                     console.log('search function errored\n');
