@@ -871,11 +871,11 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
                     users_l = values[3];
             })
             .finally( () => {
-                console.log(loggedIn);
-                console.log(events_l);
-                console.log(current_orders_l);
-                console.log(historical_orders_l);
-                console.log(users_l);
+                console.log(`logged in ${loggedIn}`);
+                console.log(`events l ${events_l}`);
+                console.log(`current orders l ${current_orders_l}`);
+                console.log(`historical orders l ${historical_orders_l}`);
+                console.log(`users l ${users_l}`);
                 res.render('pages/admin-page', {
                     status: loggedIn,
                     events: events_l,
