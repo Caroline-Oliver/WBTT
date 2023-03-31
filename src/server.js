@@ -861,10 +861,14 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
                 console.log(err);
             })
             .then( (values) => {
-                events_l = values[0];
-                current_orders_l = values[1];
-                historical_orders_l = values[2];
-                users_l = values[3];
+                if (values[0] != null)
+                    events_l = values[0];
+                if (values[1] != null)
+                    current_orders_l = values[1];
+                if (values[2] != null)
+                    historical_orders_l = values[2];
+                if (values[3] != null)
+                    users_l = values[3];
             })
             .finally( () => {
                 res.render('pages/admin-page', {
