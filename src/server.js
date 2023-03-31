@@ -284,7 +284,7 @@ function adminDashboard(filters) {
             var u_promise = query("SELECT * FROM user", []);
             Promise.all([c_o_promise, h_o_promise, u_promise])
             .then( (values) => {
-                resolve(events, values[0], values[1], values[2]);
+                resolve([events, values[0], values[1], values[2]]);
             });
         });
     
