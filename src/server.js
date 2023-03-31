@@ -172,8 +172,13 @@ function searchEvents(search_terms) {
             const sql = 'SELECT *, ' + count_search + '\n' +
                 'FROM event WHERE\n' +
                 where_search + '\n' +
-                special_terms + '\n' +
-                'ORDER BY count_words DESC, date DESC;';
+                special_terms + '\n';
+            
+            if (special_only){
+                sql += 'ORDER BY date DESC;';
+            } else {
+                sql += 'ORDER BY count_words DESC, date DESC;';
+            }
 
             pool.query(sql, (err, result) => {
                 if (err) {
