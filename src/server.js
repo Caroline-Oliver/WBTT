@@ -136,16 +136,16 @@ function searchEvents(search_terms) {
             let where_search = '( ';
             let count_search = '( ';
             let special_terms = 'AND ( ';
-
+            let special_only = true;
             search_terms.forEach(element => {
                 if (element.includes(':')) {
-                    let type = element.substring(0,element.indexOf(':'));
-                    let term = element.substring(element.indexOf(':')+1);
+                    let type = element.substring(0, element.indexOf(':'));
+                    let term = element.substring(element.indexOf(':') + 1);
 
-                    if (type != '' && term != ''){
+                    if (type != '' && term != '') {
                         switch (type) {
-                            case 'category' :
-                            case 'cat' : 
+                            case 'category':
+                            case 'cat':
                                 special_terms += `category=${term} AND\n`;
                                 break;
                         }
@@ -153,11 +153,18 @@ function searchEvents(search_terms) {
                 } else {
                     where_search += `event_name LIKE '\%${element}\%' OR\n`;
                     count_search += `(event_name LIKE '\%${element}\%') + `
+                    special_only = false;
                 }
             });
             // removes final OR\n
-            where_search = where_search.substring(0, where_search.length - 3) + ')';
-            special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
+            if (special_only == false) {
+                where_search = where_search.substring(0, where_search.length - 3) + ')';
+                special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
+            }
+            else {
+                where_search += ')';
+                special_terms += ')';
+            }
             count_search = count_search.substring(0, count_search.length - 2) + ') as count_words';
 
             const sql = 'SELECT *, ' + count_search + '\n' +
@@ -438,19 +445,19 @@ app.get('/events/:category', (req, res) => {
             if (req.params.category != null) {
                 let event_list = []
                 searchEvents(`cat:${req.params.category.toLowerCase()}`)
-                .catch( (err) => {
-                    console.log(err);
-                })
-                .then ( (events) => {
-                    event_list = events;
-                })
-                .finally( () => {
-                    res.render('pages/category', {
-                        category: req.params.category.toLowerCase(),
-                        events: event_list,
-                        status: loggedIn
+                    .catch((err) => {
+                        console.log(err);
+                    })
+                    .then((events) => {
+                        event_list = events;
+                    })
+                    .finally(() => {
+                        res.render('pages/category', {
+                            category: req.params.category.toLowerCase(),
+                            events: event_list,
+                            status: loggedIn
+                        });
                     });
-                });
             }
         });
 });
