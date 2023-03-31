@@ -234,7 +234,65 @@ function accountStatus(token) {
     });
 }
 
-var current_date = ""
+function query(sql, params) {
+    return new Promise((resolve, reject) => {
+        pool.query(sql, params, (err, result) => {
+            if (err) reject(err);
+            else resolve(result);
+        });
+    });
+}
+
+function adminDashboard(filters) {
+    return new Promise((resolve, reject) => {
+        // check if ad_current_date has elapsed, if not, use cached data
+        const dt = new Date();
+        const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
+
+        // YYYY-MM-DD format
+        const date = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()}`
+
+        events = [];
+        query('SELECT * FROM event', [])
+        .catch( (err) => {
+            reject(err);
+        })
+        .then( (result) => {
+            events = result;
+        })
+        .finally( () => {
+            var cur_event_ids = [];
+            events.forEach( event => {
+                if (event.date >= date)
+                    cur_event_ids.push(event.event_id)
+            })
+            cur_event_ids = cur_event_ids.toString();
+            var c_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
+                                    "FROM wbtt.ticket AS t" + '\n' +
+                                    "JOIN wbtt.user AS u ON u.user_id = t.user_id" + '\n' +
+                                    "JOIN wbtt.event AS e ON e.event_id = t.event_id" + '\n' +
+                                    "WHERE sold=1 AND e.date >= '?'" + '\n' +
+                                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;;",
+                                    date);
+            var h_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
+                                    "FROM wbtt.ticket AS t" + '\n' +
+                                    "JOIN wbtt.user AS u ON u.user_id = t.user_id" + '\n' +
+                                    "JOIN wbtt.event AS e ON e.event_id = t.event_id" + '\n' +
+                                    "WHERE sold=1 AND e.date < '?'" + '\n' +
+                                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;;",
+                                    date);
+            var u_promise = query("SELECT * FROM user", []);
+            Promise.all([c_o_promise, h_o_promise, u_promise])
+            .then( (values) => {
+                resolve(events, values[0], values[1], values[2]);
+            });
+        });
+    
+        
+    });
+}
+
+var gce_current_date = ""
 var current_events = []
 function getCurrentEvents() {
     return new Promise((resolve, reject) => {
@@ -244,11 +302,11 @@ function getCurrentEvents() {
         // YYYY-MM-DD format
         const date = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()}`
 
-        if (current_date == date) {
+        if (gce_current_date == date) {
             resolve(current_events);
         }
         else {
-            current_date = date;
+            gce_current_date = date;
             const sql = "SELECT * FROM event WHERE date >= ? LIMIT 5;"
             pool.query(sql, date, (err, result) => {
                 if (err) {
@@ -768,6 +826,21 @@ app.get('/api/search', (req, res) => {
 // #endregion
 
 // #region admin
+/*
+current_orders {
+{name: "name", venue: "venue", user_id: 123, quantity: 123, date: "10/15/2002"}
+}
+historical_orders {
+{name: "name", venue: "venue", user_id: 123, quantity: 123, date: "10/15/2002"}
+}
+// venues
+events {
+{name: "name", desc: "description", date: "10/15/2002"}
+}
+users {
+{id: 123, name: "name", first_name: "first", last_name: "last", email: "email", type: 0}
+}
+*/
 app.get('/admin/dashboard', authenticate, (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
@@ -778,8 +851,29 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            res.render('pages/admin-page', {
-                status: loggedIn
+
+            var events_l = [];
+            var current_orders_l = [];
+            var historical_orders_l = [];
+            var users_l = [];
+            adminDashboard()
+            .catch( (err) => {
+                console.log(err);
+            })
+            .then( (values) => {
+                events_l = values[0];
+                current_orders_l = values[1];
+                historical_orders_l = values[2];
+                users_l = values[3];
+            })
+            .finally( () => {
+                res.render('pages/admin-page', {
+                    status: loggedIn,
+                    events: events_l,
+                    current_orders: current_orders_l,
+                    historical_orders: historical_orders_l,
+                    users: users_l
+                });
             });
         });
 });
