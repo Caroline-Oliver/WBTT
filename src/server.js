@@ -420,21 +420,25 @@ app.get('/events/:category', (req, res) => {
         .finally(() => {
             if (req.params.category.toLowerCase() === 'concerts') {
                 res.render('pages/category', {
+                    category: 'concerts',
                     status: loggedIn
                 });
             }
             else if (req.params.category.toLowerCase() === 'sports') {
                 res.render('pages/category', {
+                    category: 'sports',
                     status: loggedIn
                 });
             }
             else if (req.params.category.toLowerCase() === 'theater') {
                 res.render('pages/category', {
+                    category: 'theater',
                     status: loggedIn
                 });
             }
             else if (req.params.category.toLowerCase() === 'other') {
                 res.render('pages/category', {
+                    category: 'other',
                     status: loggedIn
                 });
             }
