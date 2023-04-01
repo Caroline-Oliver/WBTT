@@ -23,11 +23,13 @@
   <hr style="margin-bottom: 15px; margin-top: 15px">
   <div class="container">
     <h2 style="text-align: center">Upcoming Events</h2>
+    <% let idx = 0; %>
     <% events.forEach(function(event) { %>
+      <% if (idx % 2 == 0) { %>
       <div class="row" style="margin-top: 25px">
         <div class="col-lg-9 col-12" style="margin-top: 10px">
           <h3 style="text-align: center">
-            <%= event.name %>
+            <a href="/event/<%= event.id %>"><%= event.name %></a>
           </h3>
           <p>
             <%= event.desc %>
@@ -37,6 +39,22 @@
           <img class="img-fluid" alt="<%= event.name %>" src="<%= event.imgSrc %>" style="max-height: 500px">
         </div>
       </div>
+      <% } else { %>
+        <div class="row" style="margin-top: 25px">
+          <div class="col-lg-3 col-12" style="margin-top: 10px">
+            <img class="img-fluid" alt="<%= event.name %>" src="<%= event.imgSrc %>" style="max-height: 500px">
+          </div>
+          <div class="col-lg-9 col-12" style="margin-top: 10px">
+            <h3 style="text-align: center">
+              <a href="/event/<%= event.id %>"><%= event.name %></a>
+            </h3>
+            <p>
+              <%= event.desc %>
+            </p>
+          </div>
+        </div>
+      <% } %>
+      <% idx += 1 %>
       <% }); %>
   </div>
   <hr>

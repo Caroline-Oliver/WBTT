@@ -1,7 +1,7 @@
 // #region authenticate middleware
 function authenticate(req, res, next) {
     if (req.cookies.token == null) {
-        res.status(400).redirect('/my/login');
+        res.status(400).redirect('/login');
     }
     else {
         // parameterized MySQL requests are immune to SQL injection
@@ -16,7 +16,7 @@ function authenticate(req, res, next) {
                 if (req.url.includes("/my/")) {
                     next();
                 }
-                else if (req.url.includes("/admin/") && result.type == 0) {
+                else if (req.url.includes("/admin/") && result[0].type == 0) {
                     next();
                 }
                 else {
@@ -31,12 +31,19 @@ function authenticate(req, res, next) {
 
 // #region db helper functions
 function checkTimestamps(search_terms) {
-    var sql = "UPDATE ticket SET hold = null, hold_time = null, user_name = null ";
-    sql += "WHERE (" + search_terms + ") AND hold_time > " + Date.now() + ";";
+    const dt = new Date();
+    const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
+
+    // YYYY-MM-DD HH:MM:SS format
+    const datetime = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`
+
+    var sql = "UPDATE ticket\nSET hold = 0, hold_time = null, user_id = null\n";
+    sql += "WHERE (" + search_terms + ") AND hold_time < \'" + datetime + "\';";
 
     return new Promise((resolve, reject) => {
         pool.query(sql, function (err, result) {
             if (err) {
+                console.log('errored in checkTimestamps');
                 console.log(err);
                 reject(err);
             }
@@ -54,6 +61,7 @@ function getTicketList(user_id) {
     return new Promise((resolve, reject) => {
         pool.query(sql, sqlParams, function (err, result) {
             if (err) {
+                console.log('errored in getTicketList');
                 console.log(err.message);
                 reject(err);
             }
@@ -74,34 +82,126 @@ function ticketListToInfoList(ticket_list) {
         if (ticket_list == null) {
             reject(new Error("ticket_list undefined"));
         }
-        while (++i < ticket_list.length) {
-            if (i < ticket_list.length - 1)
-                sql += "ticket_id = ? OR ";
-            else
-                sql += "ticket_id = ?;";
+
+        else if (ticket_list.length == 0) {
+            resolve([]);
         }
 
-        pool.query(sql, ticket_list, function (err, result) {
-            if (err) {
-                console.log(err.message);
-                reject(err);
+        else {
+            while (++i < ticket_list.length) {
+                if (i < ticket_list.length - 1)
+                    sql += "ticket_id = ? OR ";
+                else
+                    sql += "ticket_id = ?;";
             }
-            else {
-                cart = [];
-                let i = -1;
-                while (++i < result.length) {
-                    info_list.push({
-                        event_name: result[i].event_name,
-                        section: result[i].section,
-                        seat: result[i].seat,
-                        price: result[i].price
-                    });
+
+            console.log(sql);
+            console.log(ticket_list);
+
+            pool.query(sql, ticket_list, function (err, result) {
+                if (err) {
+                    console.log('errored in ticketListToInfoList');
+                    console.log(err.message);
+                    reject(err);
                 }
-                resolve(info_list);
-            }
-        });
+                else {
+                    cart = [];
+                    let i = -1;
+                    while (++i < result.length) {
+                        info_list.push({
+                            event_name: result[i].event_name,
+                            section: result[i].section,
+                            seat: result[i].seat,
+                            price: result[i].price
+                        });
+                    }
+                    resolve(info_list);
+                }
+            });
+        }
     });
 
+}
+
+function searchEvents(search_terms) {
+    return new Promise((resolve, reject) => {
+        if (search_terms == '') {
+            resolve([]);
+        }
+        else if (search_terms.includes('--') || search_terms.includes(';')) {
+            reject(new Error('attempted SQL injection in search function'));
+        }
+        else {
+            search_terms = ((search_terms + '').replace("'", "\\'")).split(' ');
+            let where_search = '( ';
+            let count_search = ', ( ';
+            let special_terms = '( ';
+            let special_only = true;
+            let normal_only = true;
+            search_terms.forEach(element => {
+                if (element.includes(':')) {
+                    let type = element.substring(0, element.indexOf(':'));
+                    let term = element.substring(element.indexOf(':') + 1);
+
+                    if (type != '' && term != '') {
+                        normal_only = false;
+                        switch (type) {
+                            case 'category':
+                            case 'cat':
+                                special_terms += `category='${term}' AND\n`;
+                                break;
+                        }
+                    }
+                } else {
+                    where_search += `event_name LIKE '\%${element}\%' OR\n`;
+                    count_search += `(event_name LIKE '\%${element}\%') + `
+                    special_only = false;
+                }
+            });
+            // removes final OR\n
+            if (special_only == false) {
+                where_search = where_search.substring(0, where_search.length - 3) + ')';
+                count_search = count_search.substring(0, count_search.length - 2) + ') as count_words';
+                special_terms = "AND " + special_terms;
+            }
+            else {
+                where_search = '';
+                count_search = '';
+            }
+
+            special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
+
+            if (normal_only) {
+                special_terms = '';
+            }
+
+            let sql = 'SELECT *' + count_search + '\n' +
+                'FROM event WHERE\n' +
+                where_search + '\n' +
+                special_terms + '\n';
+            
+            if (special_only){
+                sql += 'ORDER BY date DESC;';
+            } else {
+                sql += 'ORDER BY count_words DESC, date DESC;';
+            }
+
+            pool.query(sql, (err, result) => {
+                if (err) {
+                    console.log('search function errored\n');
+                    console.log(sql);
+                    reject(err);
+                }
+                else {
+                    let events = [];
+                    result.forEach(event => {
+                        events.push({ id: event.event_id, name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date, imgSrc: event.image_url });
+                    });
+                    resolve(events);
+                }
+            });
+        }
+    });
 }
 
 function accountStatus(token) {
@@ -114,6 +214,7 @@ function accountStatus(token) {
         else {
             pool.query(sql, sqlParams, function (err, result) {
                 if (err) {
+                    console.log('errored in accountStatus');
                     console.log(err.message);
                     reject(err);
                 }
@@ -130,6 +231,117 @@ function accountStatus(token) {
                 }
             });
         }
+    });
+}
+
+function query(sql, params) {
+    return new Promise((resolve, reject) => {
+        pool.query(sql, params, (err, result) => {
+            if (err) reject(err);
+            else resolve(result);
+        });
+    });
+}
+
+function adminDashboard(filters) {
+    return new Promise((resolve, reject) => {
+        // check if ad_current_date has elapsed, if not, use cached data
+        const dt = new Date();
+        const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
+
+        // YYYY-MM-DD format
+        const date = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()}`
+
+        events = [];
+        query('SELECT * FROM event', [])
+        .catch( (err) => {
+            reject(err);
+        })
+        .then( (result) => {
+            events = result;
+        })
+        .finally( () => {
+            var cur_event_ids = [];
+            events.forEach( event => {
+                if (event.date >= date)
+                    cur_event_ids.push(event.event_id)
+            })
+            cur_event_ids = cur_event_ids.toString();
+            var c_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
+                                    "FROM ticket AS t" + '\n' +
+                                    "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
+                                    "JOIN event AS e ON e.event_id = t.event_id" + '\n' +
+                                    "WHERE sold=1 AND e.date >= ?" + '\n' +
+                                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;",
+                                    date);
+            var h_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
+                                    "FROM ticket AS t" + '\n' +
+                                    "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
+                                    "JOIN event AS e ON e.event_id = t.event_id" + '\n' +
+                                    "WHERE sold=1 AND e.date < ?" + '\n' +
+                                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;",
+                                    date);
+            var u_promise = query("SELECT * FROM user", []);
+            Promise.all([c_o_promise, h_o_promise, u_promise])
+            .then( (values) => {
+                resolve([events, values[0], values[1], values[2]]);
+            });
+        });
+    
+        
+    });
+}
+
+var gce_current_date = ""
+var current_events = []
+function getCurrentEvents() {
+    return new Promise((resolve, reject) => {
+        const dt = new Date();
+        const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
+
+        // YYYY-MM-DD format
+        const date = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()}`
+
+        if (gce_current_date == date) {
+            resolve(current_events);
+        }
+        else {
+            gce_current_date = date;
+            const sql = "SELECT * FROM event WHERE date >= ? LIMIT 5;"
+            pool.query(sql, date, (err, result) => {
+                if (err) {
+                    console.log('errored in getCurrentEvents');
+                    reject(err);
+                }
+                else {
+                    current_events = []
+                    result.forEach(event => {
+                        current_events.push({ id: event.event_id, name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date, imgSrc: event.image_url });
+                    });
+                    resolve(current_events);
+                }
+            });
+        }
+    });
+}
+
+function getEvent(id) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM event WHERE event_id = ?;";
+        pool.query(sql, id, (err, res) => {
+            if (err) {
+                console.log('errored in getEvent');
+                reject(err);
+            }
+            else {
+                if (res.length >= 1) {
+                    resolve(res[0]);
+                }
+                else {
+                    reject(new Error('no such event found'));
+                }
+            }
+        });
     });
 }
 // #endregion
@@ -177,19 +389,28 @@ app.get('/', (req, res) => {
         }
     ]
 
-    var loggedIn = '';
-    accountStatus(req.cookies.token)
+    getCurrentEvents()
         .catch((err) => {
-            loggedIn = 'na';
+            console.log(err);
         })
-        .then((status) => {
-            loggedIn = status;
+        .then((current_events) => {
+            events = current_events;
         })
         .finally(() => {
-            res.render('pages/index', {
-                events: events,
-                status: loggedIn
-            });
+            var loggedIn = '';
+            accountStatus(req.cookies.token)
+                .catch((err) => {
+                    loggedIn = 'na';
+                })
+                .then((status) => {
+                    loggedIn = status;
+                })
+                .finally(() => {
+                    res.render('pages/index', {
+                        events: events,
+                        status: loggedIn
+                    });
+                });
         });
 });
 
@@ -230,7 +451,7 @@ app.get('/contact', (req, res) => {
 
 // #region event information
 // TODO: pending page
-app.get('/event/:event', (req, res) => {
+app.get('/search', (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
         .catch((err) => {
@@ -240,9 +461,44 @@ app.get('/event/:event', (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            res.render('pages/event', {
-                status: loggedIn
-            });
+            event_list = []
+
+            searchEvents(req.query.s)
+                .catch((err) => {
+                    console.log('errored in /api/search');
+                    console.log(err.message);
+                })
+                .then((events) => {
+                    event_list = events;
+                })
+                .finally(() => {
+                    res.render('pages/search', {
+                        status: loggedIn,
+                        events: event_list
+                    });
+                });
+        });
+})
+app.get('/event/:event_id', (req, res) => {
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            getEvent(req.params.event_id)
+                .catch((err) => {
+                    res.redirect('/');
+                })
+                .then((this_event) => {
+                    res.render('pages/event', {
+                        status: loggedIn,
+                        event: this_event
+                    });
+                });
         });
 });
 
@@ -257,28 +513,22 @@ app.get('/events/:category', (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            if (req.params.category.toLowerCase() === 'concerts') {
-                res.render('pages/concerts-info', {
-                    status: loggedIn
-                });
-            }
-            else if (req.params.category.toLowerCase() === 'sports') {
-                res.render('pages/theater-info', {
-                    status: loggedIn
-                });
-            }
-            else if (req.params.category.toLowerCase() === 'theater') {
-                res.render('pages/theater-info', {
-                    status: loggedIn
-                });
-            }
-            else if (req.params.category.toLowerCase() === 'other') {
-                res.render('pages/other-info', {
-                    status: loggedIn
-                });
-            }
-            else {
-                res.redirect('/events/other');
+            if (req.params.category != null) {
+                let event_list = []
+                searchEvents(`cat:${req.params.category.toLowerCase()}`)
+                    .catch((err) => {
+                        console.log(err);
+                    })
+                    .then((events) => {
+                        event_list = events;
+                    })
+                    .finally(() => {
+                        res.render('pages/category', {
+                            category: req.params.category.toLowerCase(),
+                            events: event_list,
+                            status: loggedIn
+                        });
+                    });
             }
         });
 });
@@ -311,15 +561,15 @@ app.get('/my/account', authenticate, (req, res) => {
 });
 // TODO: pending page
 app.get('/my/cart', authenticate, (req, res) => {
-    checkTimestamps("user_name = " + req.cookies.token)
+    checkTimestamps("user_id = " + req.cookies.token)
         .catch((err) => {
-            console.log(err.message);
+
         })
         .finally(() => {
             var tickets;
             getTicketList()
                 .catch((err) => {
-                    console.log(err.message);
+
                 })
                 .then((ticket_list) => {
                     tickets = ticket_list;
@@ -328,7 +578,7 @@ app.get('/my/cart', authenticate, (req, res) => {
                     var info;
                     ticketListToInfoList(tickets)
                         .catch((err) => {
-                            console.log(err.message);
+
                         })
                         .then((info_list) => {
                             info = info_list;
@@ -355,7 +605,7 @@ app.get('/my/cart', authenticate, (req, res) => {
 
 // TODO: pending page
 app.get('/my/checkout', authenticate, (req, res) => {
-    checkTimestamps("user_name = " + req.cookies.token)
+    checkTimestamps("user_id = " + req.cookies.token)
         .catch((err) => {
             console.log(err.message);
         })
@@ -431,7 +681,7 @@ app.get('/logout', (req, res) => {
 
 // TODO: pending page
 app.get('/my/tickets', authenticate, (req, res) => {
-    checkTimestamps("user_name = ?" + req.cookies.token)
+    checkTimestamps("user_id = " + req.cookies.token)
         .catch((err) => {
             console.log(err.message);
         })
@@ -522,15 +772,24 @@ app.post('/api/my/create', (req, res) => {
 
 // TODO change to async & promises to have more readable code
 app.get('/api/my/login', (req, res) => {
+
+    var query = JSON.parse(Object.keys(req.query)[0]);
+    var user;
     // make sure request contains all elements of a user account
-    if (req.body.username == null || req.body.password == null) {
-        res.status(403).send("Missing body parts");
+    if (req.body.username != null && req.body.password != null) {
+        user = req.body;
+    }
+    else if (query.username != null && query.password != null) {
+        user = query;
+    }
+    else {
+        res.status(403).send(`Missing body parts`);
         return;
     }
 
     // checks to see if username/password pair exist
     var sql = "SELECT * FROM password WHERE user_name = ? AND password = ?"
-    var sqlParams = [req.body.username, req.body.password];
+    var sqlParams = [user.username, user.password];
     pool.query(sql, sqlParams, function (err, result) {
         if (err) {
             throw err;
@@ -540,14 +799,89 @@ app.get('/api/my/login', (req, res) => {
         }
         else {
             res.cookie(`token`, `${result[0].password_id}`);
-            res.status(200).send("Logged in successfully");
+            res.status(200).send('successfully logged in');
         }
     });
 
 });
 // #endregion
 
+// #region search api
+app.get('/api/search', (req, res) => {
+    event_list = []
+
+    searchEvents(req.body.search_terms)
+        .catch((err) => {
+            console.log('errored in /api/search');
+            console.log(err.message);
+        })
+        .then((events) => {
+            event_list = events;
+        })
+        .finally(() => {
+            res.send(JSON.stringify(event_list));
+        });
+});
+
+// #endregion
+
 // #region admin
+/*
+current_orders {
+{name: "name", venue: "venue", user_id: 123, quantity: 123, date: "10/15/2002"}
+}
+historical_orders {
+{name: "name", venue: "venue", user_id: 123, quantity: 123, date: "10/15/2002"}
+}
+// venues
+events {
+{name: "name", desc: "description", date: "10/15/2002"}
+}
+users {
+{id: 123, name: "name", first_name: "first", last_name: "last", email: "email", type: 0}
+}
+*/
+app.get('/admin/dashboard', authenticate, (req, res) => {
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+
+            var events_l = [];
+            var current_orders_l = [];
+            var historical_orders_l = [];
+            var users_l = [];
+            adminDashboard()
+            .catch( (err) => {
+                console.log(err);
+            })
+            .then( (values) => {
+                if (values[0] != null)
+                    events_l = values[0];
+                if (values[1] != null)
+                    current_orders_l = values[1];
+                if (values[2] != null)
+                    historical_orders_l = values[2];
+                if (values[3] != null)
+                    users_l = values[3];
+            })
+            .finally( () => {
+                res.render('pages/admin-page', {
+                    status: loggedIn,
+                    events: events_l,
+                    current_orders: current_orders_l,
+                    historical_orders: historical_orders_l,
+                    users: users_l
+                });
+            });
+        });
+});
+
 app.post('/api/admin/upload', authenticate, (req, res) => {
     fs.writeFile(`venues/${req.body.name}.html`, req.body.html, (err) => {
         if (err) return console.log(err);

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<body>
+    <header>
+        <%- include('../partials/header') %>
+    </header>
+
+    <div class="jumbotron-fluid" style="background-color: #14213D; padding: 50px">
+        <h1 style="color: #FCA311; font-size: 50px"><%= event.event_name %></h1>
+    </div>
+
+      <div class="row" style="margin-top: 25px">
+        <div class="col-lg-9 col-12" style="margin-top: 10px">
+          <h3 style="text-align: left"><%= event.event_description %></h3>
+        </div>
+        <div class="col-lg-3 col-12" style="margin-top: 10px">
+          <img class="img-fluid" alt="<%= event.event_name %>" src="<%= event.image_url %>" style="max-height: 500px">
+        </div>
+      </div>
+
+    <%- include('../partials/scripts') %>
+</body>
