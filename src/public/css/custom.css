@@ -79,3 +79,36 @@ hr {
 	background-color: #BF7C0E;
 }
 
+.modal-title {
+    color: #14213D;
+}
+
+.modal-body {
+    color: #14213D;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+
+.seats {
+	fill: rgb(255 241 224);
+}	
+.seats:hover {
+	fill:#00678F;	
+}
+
+.available {
+	fill: green;
+}
+
+.available:hover {
+	fill: #ffffff;
+}
+
+.stage {
+	fill:#242424;
+}
+
+.stage-label {
+	fill: white;
+}
+

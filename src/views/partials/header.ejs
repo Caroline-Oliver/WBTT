@@ -63,10 +63,10 @@
 
         </div>
         <% if (status=='na' ) { %>
-            <a class="btn btn-nav" role="button" id="login" data-toggle="modal" data-target="#exampleModalCenter">
+            <a class="btn btn-nav my-2 my-sm-0" role="button" href id="login" data-toggle="modal" data-target="#loginModal">
                 Login
             </a>
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -85,7 +85,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" href="/my/register">Register</button>
+                            <button type="button" class="btn btn-primary" onclick="location.href='/my/register'">Register</button>
                             <button type="button" class="btn btn-primary" onclick="login()">Login</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             
