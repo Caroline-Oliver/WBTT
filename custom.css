@@ -1,0 +1,90 @@
+/* CSS Document This is the one that admin-page is using*/
+.navbar-dark .navbar-brand {
+    color: #FCA311;
+}
+
+.navbar-dark .navbar-nav .show > .nav-link, .navbar-dark .navbar-nav .active > .nav-link, .navbar-dark .navbar-nav .nav-link.show, .navbar-dark .navbar-nav .nav-link.active {
+    color: #FCA311;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #FCA311;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
+    color: #FCA311;
+}
+
+.bg-dark {
+  	background-color: #14213D !important;
+	color: #FCA311;
+}
+
+.jumbotron {
+  	background-image: url("/images/home-page-concert.jpg");
+  	background-size: cover;
+ 	height: 100%;
+  	width: 100%;
+	min-height: 275px;
+}
+
+.sports{
+	background-image: url("/images/sports-category.jpg");
+	color:#FCA311;
+}
+
+.concert{
+	background-image: url("/images/concert-category.jpg");
+}
+
+.theater{
+	background-image: url("/images/theater-category.jpg");
+}
+
+.other-category{
+	background-image: url("/images/other-category.jpg");
+}
+
+hr {
+	color: #14213D;
+}
+
+.btn-inverse {
+	background-color: #14213D;
+	border-color: #FCA311;
+	color: #FCA311;
+}
+
+
+.btn-inverse:hover {
+	border-color: white;
+	color: white;
+}
+
+.nav-link:hover {
+	font-size:larger;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: #14213D;
+  color: #FCA311;
+}
+
+.btn-nav {
+	background-color: #FCA311;
+	color: #14213D;
+}
+
+.btn-nav:hover {
+	background-color: #BF7C0E;
+}
+
+.modal-title {
+    color: #14213D;
+}
+
+.modal-body {
+    color: #14213D;
+}
+
+
