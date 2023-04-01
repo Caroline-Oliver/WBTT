@@ -97,7 +97,7 @@ hr {
 @media(max-width: 996px){
 	.flex-row {
 		display: flex;
-  		flex-direction: column-reverse;
+  		flex-direction: column-reverse !important;
 	}
 }
 
