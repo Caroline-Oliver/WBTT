@@ -59,6 +59,10 @@ hr {
 	font-size: 50px;
 }
 
+.padded-row {
+	padding:30px;
+}
+
 .btn-inverse {
 	background-color: #14213D;
 	border-color: #FCA311;
