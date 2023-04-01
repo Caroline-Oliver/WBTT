@@ -53,6 +53,9 @@ hr {
 	background-color: #14213D;
 	color: #FCA311;
 	padding: 30px;
+}
+
+.jumbo-header .h1 {
 	font-size: 50px;
 }
 
