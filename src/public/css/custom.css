@@ -49,6 +49,13 @@ hr {
 	color: #14213D;
 }
 
+.jumbo-header {
+	background-color: #14213D;
+	color: #FCA311;
+	padding: 30px;
+	font-size: 50px;
+}
+
 .btn-inverse {
 	background-color: #14213D;
 	border-color: #FCA311;
