@@ -94,6 +94,13 @@ hr {
 	background-color: #BF7C0E;
 }
 
+@media(max-width: 996px){
+	.flex-row {
+		display: flex;
+  		flex-direction: column-reverse;
+	}
+}
+
 .modal-title {
     color: #14213D;
 }
