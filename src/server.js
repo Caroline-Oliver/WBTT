@@ -889,6 +889,23 @@ app.post('/api/admin/upload', authenticate, (req, res) => {
 });
 //#endregion
 
+// #region testing
+app.get('/tmp/event-tickets', (req, res) => {
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/event-tickets', {
+                status: loggedIn
+            });
+        });
+});
+
 // #region listen on port
 app.listen(port, () => {
     console.log('WBTT server listening at 3.141.202.74:3000');
