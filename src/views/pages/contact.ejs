@@ -6,8 +6,8 @@
 <body>
 	<%- include('../partials/header') %>
 	
-	<div class="jumbotron-fluid" style="background-color: #14213D; padding: 30px">
-	  <h1 style="color: #FCA311; font-size: 50px">Contact Us</h1>
+	<div class="jumbotron-fluid jumbo-header">
+	  <h1>Contact Us</h1>
 	</div>
 	<hr>
 	<div style="padding-top: 10px; padding-left: 30px; padding-right: 30px; color: #14213D; text-align: center">
@@ -34,22 +34,12 @@
 				WBTT@gmail.com
 			</p>
 		</div>
-		
-		  <div class="form-group">
-			<label for="username">Username</label>
-			<input type="text" class="form-control" id="username" aria-describedby="username" placeholder="Enter Username">
-			<small id="emailHelp" class="form-text text-muted">This should NOT be your e-mail address.</small>
-		  </div>
-		  <div class="form-group">
-			<label for="exampleInputPassword1">Password</label>
-			<input type="password" class="form-control" id="password" placeholder="Password">
-		  </div>
-		  
-		<div class="col-sm" align = center >
+
+		<div class="col-sm" align="center" >
           <h4>Fill out the form below to get in touch with us.</h4>
 		  <form style="text-align: right;margin-right: 45px;">
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" style="text-align: right;width: 300px;" required="">
+                <input type="text" id="name" name="name" style="width: 300px;" required="">
                 <br>
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required="" style="width: 300px;">
@@ -57,12 +47,10 @@
                 <label for="message">Message:</label>
                 <textarea id="message" name="message" required="" style="width: 300px;"></textarea>
                 <br>
-                <button type="submit" class="btn btn-dark" style="background-color: #14213D;color: #FCA311;margin-right: 95px;" href="contact">Send Message</button>
-
-            </form> 
-
-		  
+                <button type="submit" class="btn btn-inverse" style="margin-right: 95px;" href="contact">Send Message</button>
+            </form> 		  
 		</div>
+		
 	</div>
 	<br>
 	<footer class="text-center">

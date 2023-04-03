@@ -9,13 +9,13 @@
   <header>
     <%- include('../partials/header') %>
   </header>
-  <div class="jumbotron-fluid" style="background-color: #14213D; padding: 50px">
-    <h1 style="color: #FCA311; font-size: 50px">Our Story</h1>
+  <div class="jumbotron-fluid jumbo-header">
+    <h1>Our Story</h1>
   </div>
   <hr>
-  <div class="row" style="padding: 30px; align-content: center">
+  <div class="row padded-row">
     <div class="col-sm-7">
-      <img src="images/groupStockPic.jpeg" alt="Photo of Founders">
+      <img class="img-fluid" src="images/groupStockPic.jpeg" alt="Photo of Founders">
     </div>
     <div class="col-sm-5" style="align-content: center; padding-right: 30px; color: #14213D">
       <h4 style="justify-content: center">
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <div class="row" style="padding: 20px; align-content: center">
+  <div class="row padded-row">
     <div class="col-sm-4" style="display: flex; align-items: center">
       <h1 style="font-weight: bolder; color: #14213D">
         Our industry <br>
@@ -41,7 +41,7 @@
       <br>
     </div>
     <div class="col-sm-6" style="align-content: center">
-      <img src="images/event-singer.jpg">
+      <img  class="img-fluid" src="images/event-singer.jpg">
     </div>
     <br>
   </div>
@@ -54,13 +54,12 @@
       If you're in San Antonio, contact our local team and get in touch today.
     </p>
     <div style="text-align: center">
-      <button type="button" class="btn btn-dark" style="background-color: #14213D; color: #FCA311" href="contact.html">
+      <button type="button" class="btn btn-inverse" onclick="location.href='/contact'">
         Contact us
       </button>
     </div>
   </div>
   <hr style="margin-bottom: 15px; margin-top: 15px">
-  <hr>
   <footer class="text-center">
     <div class="container">
       <div class="row">
