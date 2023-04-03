@@ -918,13 +918,11 @@ app.post('/api/admin/createTickets', (req, res) => {
                 price = query.price;
             }
             else {
-                console.log('missing body parts in createTickets');
                 res.send('missing parts');
                 return;
             }
         }
         
-        console.log('escaped head of function');
         var sql = "INSERT INTO ticket (ticket_id, event_id, section_name, seat, hold, sold, price) VALUES ";
         var format = (index, section_name, seat) => {
             return `('${index}', '${event_id}', '${section_name}', '${seat}', '0', '0', '${price}'),\n`
@@ -970,8 +968,7 @@ app.post('/api/admin/createTickets', (req, res) => {
             }
         });
         sql = sql.substring(0,sql.length-2)+';'
-        console.log('finished writing sql query');
-        console.log(sql);
+
         query(sql, [])
         .catch( (err) => {
             console.log(err.message);
@@ -979,7 +976,6 @@ app.post('/api/admin/createTickets', (req, res) => {
             return;
         })
         .then( (result) => {
-            console.log('success!');
             res.send('success!')
             return;
         });
