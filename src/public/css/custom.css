@@ -57,6 +57,21 @@ hr {
 	color: #14213D;
 }
 
+.jumbo-header {
+	background-color: #14213D;
+	color: #FCA311;
+	padding: 30px;
+}
+
+.jumbo-header h1 {
+	font-size: 50px;
+}
+
+.padded-row {
+	padding:30px;
+	align-content: center;
+}
+
 .btn-inverse {
 	background-color: #14213D;
 	border-color: #FCA311;
@@ -85,6 +100,13 @@ hr {
 
 .btn-nav:hover {
 	background-color: #BF7C0E;
+}
+
+@media(max-width: 996px){
+	.flex-row {
+		display: flex;
+  		flex-direction: column-reverse !important;
+	}
 }
 
 .modal-title {
