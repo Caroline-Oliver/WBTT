@@ -921,9 +921,9 @@ app.post('/api/admin/createTickets', (req, res) => {
             return;
         }
         console.log('escaped head of function');
-        var sql = "";
+        var sql = "INSERT INTO ticket (ticket_id, event_id, section_name, seat, hold, sold, price) VALUES ";
         var format = (index, section_name, seat) => {
-            return `INSERT INTO ticket (ticket_id, event_id, section_name, seat, hold, sold, price) VALUES ('${index}', '${event_id}', '${section_name}', '${seat}', '0', '0', '${price}');\n`
+            return `('${index}', '${event_id}', '${section_name}', '${seat}', '0', '0', '${price}'),\n`
         }
         // 4 rows x 10 seats
         var short_rectangles = ["bottom-center-center-lower", "bottom-center-center-lower", "bottom-center-left-lower", "bottom-center-left-lower", "bottom-center-right-lower","bottom-center-right-upper", "top-center-center-lower", "top-center-center-lower", "top-center-left-lower", "top-center-left-upper", "top-center-right-lower", "top-center-right-upper"];
@@ -965,6 +965,7 @@ app.post('/api/admin/createTickets', (req, res) => {
                 }
             }
         });
+        sql = sql.substring(0,sql.length-2)+';'
         console.log('finished writing sql query');
         console.log(sql);
         query(sql, [])
