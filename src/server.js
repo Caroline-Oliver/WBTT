@@ -902,6 +902,7 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
 app.post('/api/admin/createTickets', (req, res) => {
     query("SELECT MAX(ticket_id) as max_ticket_id FROM ticket", [])
     .catch( (err) => {
+        console.log('could not get max ticket id');
         res.send('error, ticket id not found')
     })
     .then( (result) => {
