@@ -882,6 +882,94 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
         });
 });
 
+/*app.get('/api/admin/largestTicket', authenticate, (req, res) => {
+
+    query("SELECT MAX(ticket_id) as max_ticket_id FROM ticket", [])
+    .catch( (err) => {
+        res.send('error, ticket id not found')
+    })
+    .then( (result) => {
+        res.send(result[0].max_ticket_id)
+    });
+
+})*/
+
+// res.body.
+app.post('/api/admin/createTickets', (req, res) => {
+    query("SELECT MAX(ticket_id) as max_ticket_id FROM ticket", [])
+    .catch( (err) => {
+        res.send('error, ticket id not found')
+    })
+    .then( (result) => {
+        var currentIndex = result[0].max_ticket_id + 1;
+        var event_id, price;
+        if (req.body.event_id != null && req.body.price != null) {
+            event_id = req.body.event_id;
+            price = req.body.price;
+        }
+        else if (req.query.event_id != null && req.query.price != null) {
+            event_id = req.query.event_id;
+            price = req.query.price;
+        }
+        else {
+            res.send('missing parts');
+            return;
+        }
+        var sql = "";
+        var format = (index, section_name, seat) => {
+            return `INSERT INTO ticket (ticket_id, event_id, section_name, seat, hold, sold, price) VALUES ('${index}', '${event_id}', '${section_name}', '${seat}', '0', '0', '${price}');\n`
+        }
+        // 4 rows x 10 seats
+        var short_rectangles = ["bottom-center-center-lower", "bottom-center-center-lower", "bottom-center-left-lower", "bottom-center-left-lower", "bottom-center-right-lower","bottom-center-right-upper", "top-center-center-lower", "top-center-center-lower", "top-center-left-lower", "top-center-left-upper", "top-center-right-lower", "top-center-right-upper"];
+        // 4 rows x 12 seats
+        var long_rectangles = ["center-far-left-lower", "center-far-left-upper", "center-far-right-lower", "center-far-right-upper"];
+        // row 1: 2 seats, row 2: 4 seats, row 3: 6 seats, row 4: 8 seats, row 5: 10 seats
+        var small_triangle = ["bottom-far-left-lower", "bottom-far-right-lower", "top-far-left-lower", "top-far-right-lower"];
+        // row 1: 7 seats, row 2: 8 seats, row 3: 9 seats, row 4: 10 seats
+        var large_triangle = ["bottom-far-left-upper", "bottom-far-right-upper", "top-far-left-upper", "top-far-right-upper"];
+
+        short_rectangles.forEach(section_name => {
+            for (var row = 1; row <= 4; row++) {
+                for (var seat = 1; seat <= 10; seat++) {
+                    sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                }
+            }
+        });
+
+        long_rectangles.forEach(section_name => {
+            for (var row = 1; row <= 4; row++) {
+                for (var seat = 1; seat <= 12; seat++) {
+                    sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                }
+            }
+        });
+
+        small_triangle.forEach(section_name => {
+            for (var row = 1; row <= 5; row++) {
+                for (var seat = 1; seat <= row*2; seat++) {
+                    sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                }
+            }
+        });
+
+        large_triangle.forEach(section_name => {
+            for (var row = 1; row <= 5; row++) {
+                for (var seat = 1; seat <= 6+row; seat++) {
+                    sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                }
+            }
+        });
+
+        query(sql, [])
+        .catch( (err) => {
+            res.send('failed');
+        })
+        .then( (result) => {
+            res.send('success!')
+        });
+    });
+})
+
 app.post('/api/admin/upload', authenticate, (req, res) => {
     fs.writeFile(`venues/${req.body.name}.html`, req.body.html, (err) => {
         if (err) return console.log(err);
