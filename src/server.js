@@ -902,7 +902,6 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
 app.post('/api/admin/createTickets', (req, res) => {
     query("SELECT MAX(ticket_id) as max_ticket_id FROM ticket", [])
     .catch( (err) => {
-        console.log('could not get max ticket id');
         res.send('error, ticket id not found')
     })
     .then( (result) => {
@@ -917,9 +916,11 @@ app.post('/api/admin/createTickets', (req, res) => {
             price = req.query.price;
         }
         else {
+            console.log('missing body parts in createTickets');
             res.send('missing parts');
             return;
         }
+        console.log('escaped head of function');
         var sql = "";
         var format = (index, section_name, seat) => {
             return `INSERT INTO ticket (ticket_id, event_id, section_name, seat, hold, sold, price) VALUES ('${index}', '${event_id}', '${section_name}', '${seat}', '0', '0', '${price}');\n`
@@ -964,7 +965,7 @@ app.post('/api/admin/createTickets', (req, res) => {
                 }
             }
         });
-
+        console.log('finished writing sql query');
         query(sql, [])
         .catch( (err) => {
             res.send('failed');
