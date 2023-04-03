@@ -968,7 +968,7 @@ app.post('/api/admin/createTickets', (req, res) => {
         console.log('finished writing sql query');
         query(sql, [])
         .catch( (err) => {
-            console.log('failed');
+            console.log(err.message);
             res.send('failed');
             return;
         })
