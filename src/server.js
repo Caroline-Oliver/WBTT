@@ -911,15 +911,19 @@ app.post('/api/admin/createTickets', (req, res) => {
             event_id = req.body.event_id;
             price = req.body.price;
         }
-        else if (req.query.event_id != null && req.query.price != null) {
-            event_id = req.query.event_id;
-            price = req.query.price;
-        }
         else {
-            console.log('missing body parts in createTickets');
-            res.send('missing parts');
-            return;
+            var query = JSON.parse(Object.keys(req.query)[0]);
+            if (req.query.event_id != null && req.query.price != null) {
+                event_id = query.event_id;
+                price = query.price;
+            }
+            else {
+                console.log('missing body parts in createTickets');
+                res.send('missing parts');
+                return;
+            }
         }
+        
         console.log('escaped head of function');
         var sql = "INSERT INTO ticket (ticket_id, event_id, section_name, seat, hold, sold, price) VALUES ";
         var format = (index, section_name, seat) => {
