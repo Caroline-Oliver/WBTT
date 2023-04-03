@@ -772,20 +772,24 @@ app.post('/api/my/create', (req, res) => {
 
 // TODO change to async & promises to have more readable code
 app.get('/api/my/login', (req, res) => {
-
-    var query = JSON.parse(Object.keys(req.query)[0]);
     var user;
     // make sure request contains all elements of a user account
     if (req.body.username != null && req.body.password != null) {
         user = req.body;
     }
-    else if (query.username != null && query.password != null) {
-        user = query;
-    }
     else {
-        res.status(403).send(`Missing body parts`);
-        return;
+        var query = JSON.parse(Object.keys(req.query)[0]);
+
+        if (query.username != null && query.password != null) {
+            user = query;
+        }
+        
+        else {
+            res.status(403).send(`Missing body parts`);
+            return;
+        }
     }
+    
 
     // checks to see if username/password pair exist
     var sql = "SELECT * FROM password WHERE user_name = ? AND password = ?"
