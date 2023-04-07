@@ -95,9 +95,6 @@ function ticketListToInfoList(ticket_list) {
                     sql += "ticket_id = ?;";
             }
 
-            console.log(sql);
-            console.log(ticket_list);
-
             pool.query(sql, ticket_list, function (err, result) {
                 if (err) {
                     console.log('errored in ticketListToInfoList');
@@ -140,7 +137,7 @@ function searchEvents(search_terms) {
             let normal_only = true;
             search_terms.forEach(element => {
                 if (element.includes(':')) {
-                    let type = element.substring(0, element.indexOf(':'));
+                    let type = element.substring(0, element.indexOf(':')).toLowerCase();
                     let term = element.substring(element.indexOf(':') + 1);
 
                     if (type != '' && term != '') {
@@ -149,6 +146,26 @@ function searchEvents(search_terms) {
                             case 'category':
                             case 'cat':
                                 special_terms += `category='${term}' AND\n`;
+                                break;
+                            case 'befored':
+                            case 'beforedate':
+                                special_terms += `date < ${term} AND\n`;
+                                break;
+                            case 'afterd':
+                            case 'afterdate':
+                                special_terms += `date > ${term} AND\n`;
+                                break;
+                            case 'ond':
+                            case 'ondate':
+                                special_terms += `date = ${term} AND\n`;
+                                break;
+                            case 'dotw':
+                            case 'dayoftheweek':
+                                special_terms += `day = ${term} AND\n`;
+                                break;
+                            case 'venue':
+                            case 'ven':
+                                special_terms += `venue = ${term} AND\n`
                                 break;
                         }
                     }
@@ -465,7 +482,7 @@ app.get('/search', (req, res) => {
 
             searchEvents(req.query.s)
                 .catch((err) => {
-                    console.log('errored in /api/search');
+                    console.log('errored in search');
                     console.log(err.message);
                 })
                 .then((events) => {
@@ -813,8 +830,15 @@ app.get('/api/my/login', (req, res) => {
 // #region search api
 app.get('/api/search', (req, res) => {
     event_list = []
+    search_terms = ''
+    if (req.body.search_terms != null) {
+        search_terms = req.body.search_terms;
+    }
+    else if (req.query.search_terms != null) {
+        search_terms = req.query.search_terms;
+    }
 
-    searchEvents(req.body.search_terms)
+    searchEvents(search_terms)
         .catch((err) => {
             console.log('errored in /api/search');
             console.log(err.message);
@@ -830,21 +854,6 @@ app.get('/api/search', (req, res) => {
 // #endregion
 
 // #region admin
-/*
-current_orders {
-{name: "name", venue: "venue", user_id: 123, quantity: 123, date: "10/15/2002"}
-}
-historical_orders {
-{name: "name", venue: "venue", user_id: 123, quantity: 123, date: "10/15/2002"}
-}
-// venues
-events {
-{name: "name", desc: "description", date: "10/15/2002"}
-}
-users {
-{id: 123, name: "name", first_name: "first", last_name: "last", email: "email", type: 0}
-}
-*/
 app.get('/admin/dashboard', authenticate, (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
@@ -885,18 +894,6 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
             });
         });
 });
-
-/*app.get('/api/admin/largestTicket', authenticate, (req, res) => {
-
-    query("SELECT MAX(ticket_id) as max_ticket_id FROM ticket", [])
-    .catch( (err) => {
-        res.send('error, ticket id not found')
-    })
-    .then( (result) => {
-        res.send(result[0].max_ticket_id)
-    });
-
-})*/
 
 // res.body.
 app.post('/api/admin/createTickets', (req, res) => {
