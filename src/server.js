@@ -141,36 +141,35 @@ function searchEvents(search_terms) {
                     let term = element.substring(element.indexOf(':') + 1);
                     
                     if (type != '' && term != '') {
-                        normal_only = false;
                         switch (type) {
                             case 'category':
                             case 'cat':
-                                if (special_terms == '') special_terms = '( ';
+                                if (special_terms == '') special_terms = '( '; normal_only = false;
                                 special_terms += `category='${term}' AND\n`;
                                 break;
                             case 'befored':
                             case 'beforedate':
-                                if (special_terms == '') special_terms = '( ';
+                                if (special_terms == '') special_terms = '( '; normal_only = false;
                                 special_terms += `date < '${term}' AND\n`;
                                 break;
                             case 'afterd':
                             case 'afterdate':
-                                if (special_terms == '') special_terms = '( ';
+                                if (special_terms == '') special_terms = '( '; normal_only = false;
                                 special_terms += `date > '${term}' AND\n`;
                                 break;
                             case 'ond':
                             case 'ondate':
-                                if (special_terms == '') special_terms = '( ';
+                                if (special_terms == '') special_terms = '( '; normal_only = false;
                                 special_terms += `date = '${term}' AND\n`;
                                 break;
                             case 'dotw':
                             case 'dayoftheweek':
-                                if (special_terms == '') special_terms = '( ';
+                                if (special_terms == '') special_terms = '( '; normal_only = false;
                                 special_terms += `day = '${term}' AND\n`;
                                 break;
                             case 'venue':
                             case 'ven':
-                                if (special_terms == '') special_terms = '( ';
+                                if (special_terms == '') special_terms = '( '; normal_only = false;
                                 special_terms += `venue = '${term}' AND\n`
                                 break;
                         }
