@@ -192,14 +192,19 @@ function updateTicket(target){
 
 //cart needs more work
 function addToCart(){
-	var cartSeats = document.getElementsByClassName('in-cart');
+	const cartSeats = document.getElementsByClassName('in-cart');
+
 	if (cartSeats.length != 0){
 		var tempCart = document.getElementById('rightPanelCart');
+		//Do we want this as a table?
+		//Shouldn't rely on array, should be pulling from cart
 		var cartString = "<p>";
-		var seatId;
-		for (i = 1; i < cartSeats.length; i++){
-			seatId = cartSeats[i].getAttribute('id');
-			cartSeats[i].setAttribute('class','sold');
+		var count = cartSeats.length;
+		for (var index = 0; index < count; index++){
+			console.log("index = "+index);
+			var seatId = cartSeats[0].getAttribute('id');
+			//change to 'in-cart sold'?
+			cartSeats[0].setAttribute('class','sold hold');
 			if (!cartArray.includes(seatId)){
 				
 				cartArray.push(i,seatId)
@@ -207,6 +212,8 @@ function addToCart(){
 				cartString += seatId+'<br>';
 			}
 		}
+		//probably better to create string using cartArray
 		tempCart.innerHTML = cartString+'</p>';
+		//also need to be able to remove from cart
 	}
 }
