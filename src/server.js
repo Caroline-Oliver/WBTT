@@ -130,60 +130,68 @@ function searchEvents(search_terms) {
         }
         else {
             search_terms = ((search_terms + '').replace("'", "\\'")).split(' ');
-            let where_search = '( ';
-            let count_search = ', ( ';
-            let special_terms = '( ';
+            let where_search = '';
+            let count_search = '';
+            let special_terms = '';
             let special_only = true;
             let normal_only = true;
             search_terms.forEach(element => {
                 if (element.includes(':')) {
                     let type = element.substring(0, element.indexOf(':')).toLowerCase();
                     let term = element.substring(element.indexOf(':') + 1);
-
+                    
                     if (type != '' && term != '') {
                         normal_only = false;
                         switch (type) {
                             case 'category':
                             case 'cat':
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `category='${term}' AND\n`;
                                 break;
                             case 'befored':
                             case 'beforedate':
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `date < ${term} AND\n`;
                                 break;
                             case 'afterd':
                             case 'afterdate':
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `date > ${term} AND\n`;
                                 break;
                             case 'ond':
                             case 'ondate':
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `date = ${term} AND\n`;
                                 break;
                             case 'dotw':
                             case 'dayoftheweek':
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `day = ${term} AND\n`;
                                 break;
                             case 'venue':
                             case 'ven':
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `venue = ${term} AND\n`
                                 break;
                         }
                     }
                 } else {
+                    if (where_search == '' && count_search == '') {
+                        where_search = '( ';
+                        count_search = ', ( ';
+                    }
                     where_search += `event_name LIKE '\%${element}\%' OR\n`;
                     count_search += `(event_name LIKE '\%${element}\%') + `
                     special_only = false;
                 }
             });
             // removes final OR\n
-            if (special_only == false) {
+            if (where_search != '' && count_search != '') {
                 where_search = where_search.substring(0, where_search.length - 3) + ')';
                 count_search = count_search.substring(0, count_search.length - 2) + ') as count_words';
-                special_terms = "AND " + special_terms;
-            }
-            else {
-                where_search = '';
-                count_search = '';
+                if (special_terms != '') {
+                    special_terms = "AND " + special_terms;
+                }
             }
 
             special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
