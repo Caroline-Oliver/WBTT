@@ -151,27 +151,27 @@ function searchEvents(search_terms) {
                             case 'befored':
                             case 'beforedate':
                                 if (special_terms == '') special_terms = '( ';
-                                special_terms += `date < ${term} AND\n`;
+                                special_terms += `date < '${term}' AND\n`;
                                 break;
                             case 'afterd':
                             case 'afterdate':
                                 if (special_terms == '') special_terms = '( ';
-                                special_terms += `date > ${term} AND\n`;
+                                special_terms += `date > '${term}' AND\n`;
                                 break;
                             case 'ond':
                             case 'ondate':
                                 if (special_terms == '') special_terms = '( ';
-                                special_terms += `date = ${term} AND\n`;
+                                special_terms += `date = '${term}' AND\n`;
                                 break;
                             case 'dotw':
                             case 'dayoftheweek':
                                 if (special_terms == '') special_terms = '( ';
-                                special_terms += `day = ${term} AND\n`;
+                                special_terms += `day = '${term}' AND\n`;
                                 break;
                             case 'venue':
                             case 'ven':
                                 if (special_terms == '') special_terms = '( ';
-                                special_terms += `venue = ${term} AND\n`
+                                special_terms += `venue = '${term}' AND\n`
                                 break;
                         }
                     }
@@ -210,8 +210,7 @@ function searchEvents(search_terms) {
             } else {
                 sql += 'ORDER BY count_words DESC, date DESC;';
             }
-            console.log(sql);
-
+            
             pool.query(sql, (err, result) => {
                 if (err) {
                     console.log('search function errored\n');
