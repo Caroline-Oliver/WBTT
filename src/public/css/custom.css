@@ -127,6 +127,11 @@ hr {
 	fill:#00678F;	
 }
 
+.unused {
+	fill:#757575;
+	cursor:not-allowed;
+}
+
 .legend-div {
 	/*padding-bottom: 50px;*/
 }
