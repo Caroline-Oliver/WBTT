@@ -95,9 +95,6 @@ function ticketListToInfoList(ticket_list) {
                     sql += "ticket_id = ?;";
             }
 
-            console.log(sql);
-            console.log(ticket_list);
-
             pool.query(sql, ticket_list, function (err, result) {
                 if (err) {
                     console.log('errored in ticketListToInfoList');
@@ -133,40 +130,68 @@ function searchEvents(search_terms) {
         }
         else {
             search_terms = ((search_terms + '').replace("'", "\\'")).split(' ');
-            let where_search = '( ';
-            let count_search = ', ( ';
-            let special_terms = '( ';
+            let where_search = '';
+            let count_search = '';
+            let special_terms = '';
             let special_only = true;
             let normal_only = true;
             search_terms.forEach(element => {
                 if (element.includes(':')) {
-                    let type = element.substring(0, element.indexOf(':'));
+                    let type = element.substring(0, element.indexOf(':')).toLowerCase();
                     let term = element.substring(element.indexOf(':') + 1);
-
+                    
                     if (type != '' && term != '') {
                         normal_only = false;
                         switch (type) {
                             case 'category':
                             case 'cat':
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `category='${term}' AND\n`;
+                                break;
+                            case 'befored':
+                            case 'beforedate':
+                                if (special_terms == '') special_terms = '( ';
+                                special_terms += `date < '${term}' AND\n`;
+                                break;
+                            case 'afterd':
+                            case 'afterdate':
+                                if (special_terms == '') special_terms = '( ';
+                                special_terms += `date > '${term}' AND\n`;
+                                break;
+                            case 'ond':
+                            case 'ondate':
+                                if (special_terms == '') special_terms = '( ';
+                                special_terms += `date = '${term}' AND\n`;
+                                break;
+                            case 'dotw':
+                            case 'dayoftheweek':
+                                if (special_terms == '') special_terms = '( ';
+                                special_terms += `day = '${term}' AND\n`;
+                                break;
+                            case 'venue':
+                            case 'ven':
+                                if (special_terms == '') special_terms = '( ';
+                                special_terms += `venue = '${term}' AND\n`
                                 break;
                         }
                     }
                 } else {
+                    if (where_search == '' && count_search == '') {
+                        where_search = '( ';
+                        count_search = ', ( ';
+                    }
                     where_search += `event_name LIKE '\%${element}\%' OR\n`;
                     count_search += `(event_name LIKE '\%${element}\%') + `
                     special_only = false;
                 }
             });
             // removes final OR\n
-            if (special_only == false) {
+            if (where_search != '' && count_search != '') {
                 where_search = where_search.substring(0, where_search.length - 3) + ')';
                 count_search = count_search.substring(0, count_search.length - 2) + ') as count_words';
-                special_terms = "AND " + special_terms;
-            }
-            else {
-                where_search = '';
-                count_search = '';
+                if (special_terms != '') {
+                    special_terms = "AND " + special_terms;
+                }
             }
 
             special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
@@ -465,7 +490,7 @@ app.get('/search', (req, res) => {
 
             searchEvents(req.query.s)
                 .catch((err) => {
-                    console.log('errored in /api/search');
+                    console.log('errored in search');
                     console.log(err.message);
                 })
                 .then((events) => {
@@ -772,20 +797,24 @@ app.post('/api/my/create', (req, res) => {
 
 // TODO change to async & promises to have more readable code
 app.get('/api/my/login', (req, res) => {
-
-    var query = JSON.parse(Object.keys(req.query)[0]);
     var user;
     // make sure request contains all elements of a user account
     if (req.body.username != null && req.body.password != null) {
         user = req.body;
     }
-    else if (query.username != null && query.password != null) {
-        user = query;
-    }
     else {
-        res.status(403).send(`Missing body parts`);
-        return;
+        var query = JSON.parse(Object.keys(req.query)[0]);
+
+        if (query.username != null && query.password != null) {
+            user = query;
+        }
+        
+        else {
+            res.status(403).send(`Missing body parts`);
+            return;
+        }
     }
+    
 
     // checks to see if username/password pair exist
     var sql = "SELECT * FROM password WHERE user_name = ? AND password = ?"
@@ -809,8 +838,15 @@ app.get('/api/my/login', (req, res) => {
 // #region search api
 app.get('/api/search', (req, res) => {
     event_list = []
+    search_terms = ''
+    if (req.body.search_terms != null) {
+        search_terms = req.body.search_terms;
+    }
+    else if (req.query.search_terms != null) {
+        search_terms = req.query.search_terms;
+    }
 
-    searchEvents(req.body.search_terms)
+    searchEvents(search_terms)
         .catch((err) => {
             console.log('errored in /api/search');
             console.log(err.message);
@@ -826,21 +862,6 @@ app.get('/api/search', (req, res) => {
 // #endregion
 
 // #region admin
-/*
-current_orders {
-{name: "name", venue: "venue", user_id: 123, quantity: 123, date: "10/15/2002"}
-}
-historical_orders {
-{name: "name", venue: "venue", user_id: 123, quantity: 123, date: "10/15/2002"}
-}
-// venues
-events {
-{name: "name", desc: "description", date: "10/15/2002"}
-}
-users {
-{id: 123, name: "name", first_name: "first", last_name: "last", email: "email", type: 0}
-}
-*/
 app.get('/admin/dashboard', authenticate, (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
@@ -882,12 +903,113 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
         });
 });
 
+// res.body.
+app.post('/api/admin/createTickets', (req, res) => {
+    query("SELECT MAX(ticket_id) as max_ticket_id FROM ticket", [])
+    .catch( (err) => {
+        res.send('error, ticket id not found')
+    })
+    .then( (result) => {
+        var currentIndex = result[0].max_ticket_id + 1;
+        var event_id, price;
+        if (req.body.event_id != null && req.body.price != null) {
+            event_id = req.body.event_id;
+            price = req.body.price;
+        }
+        else {
+            var query = JSON.parse(Object.keys(req.query)[0]);
+            if (req.query.event_id != null && req.query.price != null) {
+                event_id = query.event_id;
+                price = query.price;
+            }
+            else {
+                res.send('missing parts');
+                return;
+            }
+        }
+        
+        var sql = "INSERT INTO ticket (ticket_id, event_id, section_name, seat, hold, sold, price) VALUES ";
+        var format = (index, section_name, seat) => {
+            return `('${index}', '${event_id}', '${section_name}', '${seat}', '0', '0', '${price}'),\n`
+        }
+        // 4 rows x 10 seats
+        var short_rectangles = ["bottom-center-center-lower", "bottom-center-center-lower", "bottom-center-left-lower", "bottom-center-left-lower", "bottom-center-right-lower","bottom-center-right-upper", "top-center-center-lower", "top-center-center-lower", "top-center-left-lower", "top-center-left-upper", "top-center-right-lower", "top-center-right-upper"];
+        // 4 rows x 12 seats
+        var long_rectangles = ["center-far-left-lower", "center-far-left-upper", "center-far-right-lower", "center-far-right-upper"];
+        // row 1: 2 seats, row 2: 4 seats, row 3: 6 seats, row 4: 8 seats, row 5: 10 seats
+        var small_triangle = ["bottom-far-left-lower", "bottom-far-right-lower", "top-far-left-lower", "top-far-right-lower"];
+        // row 1: 7 seats, row 2: 8 seats, row 3: 9 seats, row 4: 10 seats
+        var large_triangle = ["bottom-far-left-upper", "bottom-far-right-upper", "top-far-left-upper", "top-far-right-upper"];
+
+        short_rectangles.forEach(section_name => {
+            for (var row = 1; row <= 4; row++) {
+                for (var seat = 1; seat <= 10; seat++) {
+                    sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                }
+            }
+        });
+
+        long_rectangles.forEach(section_name => {
+            for (var row = 1; row <= 4; row++) {
+                for (var seat = 1; seat <= 12; seat++) {
+                    sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                }
+            }
+        });
+
+        small_triangle.forEach(section_name => {
+            for (var row = 1; row <= 5; row++) {
+                for (var seat = 1; seat <= row*2; seat++) {
+                    sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                }
+            }
+        });
+
+        large_triangle.forEach(section_name => {
+            for (var row = 1; row <= 5; row++) {
+                for (var seat = 1; seat <= 6+row; seat++) {
+                    sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                }
+            }
+        });
+        sql = sql.substring(0,sql.length-2)+';'
+
+        query(sql, [])
+        .catch( (err) => {
+            console.log(err.message);
+            res.send('failed');
+            return;
+        })
+        .then( (result) => {
+            res.send('success!')
+            return;
+        });
+    });
+})
+
 app.post('/api/admin/upload', authenticate, (req, res) => {
     fs.writeFile(`venues/${req.body.name}.html`, req.body.html, (err) => {
         if (err) return console.log(err);
     });
 });
 //#endregion
+
+// #region testing
+app.get('/tmp/event-tickets', (req, res) => {
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/event-tickets', {
+                status: loggedIn
+            });
+        });
+});
 
 // #region listen on port
 app.listen(port, () => {

@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+
+<head>
+	<%- include('../partials/head') %>
+</head>
+
+<body>
+	<header>
+		<%- include('../partials/header') %>
+	</header>
+
+	<div class="row event-row">
+		<div class="col-lg-3">
+			<div id="leftPanel" class="event-left-panel">
+				<div class="panel-center">
+					<div id="legend" class="legend-div">
+						<h4>Seat Legend</h4>
+						<svg id="legend-svg" width="60%" height="auto">
+							<text x="85" y="20">Available</text>
+							<circle cx="70" cy="15" r="8" class="available"></circle>
+							<text x="85" y="55">In-Cart</text>
+							<circle cx="70" cy="50" r="8" class="in-cart"></circle>
+							<text x="85" y="90">Sold</text>
+							<circle cx="70" cy="85" r="8" class="sold"></circle>
+						</svg>
+					</div>
+
+					<div>
+						<svg id="seating-section">
+						</svg>
+					</div>
+				</div>
+				<hr>
+				<div>
+					<button type="button" class="btn btn-inverse" style="margin-top:15px; margin-bottom:50px"
+						onClick="addToCart()">Add To Cart</button>
+					<!--<button type="button" class="btn  btn-inverse">Cancel</button>-->
+				</div>
+			</div>
+
+
+		</div>
+		<div class="col-lg-6">
+			<svg width="100%" height="auto" class="background-svg">
+				<svg id="basketball" viewBox=" 0 0 500 400">
+					<g>
+						<title>top-far-left-lower</title>
+						<polygon points="60,90 90,65 90,90" id="top-far-left-lower" class="seats" />
+					</g>
+					<g>
+						<title>top-far-left-upper</title>
+						<polygon points="20,90 50,90 90,55 90,30" id="top-far-left-upper" class="seats" />
+					</g>
+					<g>
+						<title>top-center-left-upper</title>
+						<rect x="100" y="30" width="90" height="25" id="top-center-left-upper" class="seats" />
+					</g>
+					<g>
+						<title>top-center-left-lower</title>
+						<rect x="100" y="65" width="90" height="25" id="top-center-left-lower" class="seats" />
+					</g>
+					<g>
+						<title>top-center-center-lower</title>
+						<rect x="200" y="30" width="100" height="25" id="top-center-center-lower" class="seats" />
+					</g>
+					<g>
+						<title>top-center-center-lower</title>
+						<rect x="200" y="65" width="100" height="25" id="top-center-center-lower" class="seats" />
+					</g>
+					<g>
+						<title>top-center-right-upper</title>
+						<rect x="310" y="30" width="90" height="25" id="top-center-right-upper" class="seats" />
+					</g>
+					<g>
+						<title>top-center-right-lower</title>
+						<rect x="310" y="65" width="90" height="25" id="top-center-right-lower" class="seats" />
+					</g>
+					<g>
+						<title>top-far-right-lower</title>
+						<polygon points="410,65 410,90 440,90" id="top-far-right-lower" class="seats" />
+					</g>
+					<g>
+						<title>top-far-right-upper</title>
+						<polygon points="450,90 480,90 410,30 410,55" id="top-far-right-upper" class="seats" />
+					</g>
+					<g>
+						<title>center-far-left-upper</title>
+						<rect x="17" y="100" width="32" height="150" id="center-far-left-upper" class="seats" />
+					</g>
+					<g>
+						<title>center-far-left-lower</title>
+						<rect x="60" y="100" width="30" height="150" id="center-far-left-lower" class="seats" />
+					</g>
+					<rect x="100" y="100" width="300" height="150" id="court" class="floor-bottom"></rect>
+					<text x="230" y="180" class="stage-label">Court</text>
+					<g>
+						<title>center-far-right-lower</title>
+						<rect x="410" y="100" width="30" height="150" id="center-far-right-lower" class="seats" />
+					</g>
+					<g>
+						<title>center-far-right-upper</title>
+						<rect x="450" y="100" width="32" height="150" id="center-far-right-upper" class="seats" />
+					</g>
+					<g>
+						<title>bottom-far-left-lower</title>
+						<polygon points="60,260 90,285 90,260" id="bottom-far-left-lower" class="seats" />
+					</g>
+					<g>
+						<title>bottom-far-left-upper</title>
+						<polygon points="20,260 50,260 90,295 90,320 " id="bottom-far-left-upper" class="seats" />
+					</g>
+					<g>
+						<title>bottom-center-left-lower</title>
+						<rect x="100" y="260" width="90" height="25" id="bottom-center-left-lower" class="seats" />
+					</g>
+					<g>
+						<title>bottom-center-left-upper</title>
+						<rect x="100" y="295" width="90" height="25" id="bottom-center-left-upper" class="seats" />
+					</g>
+					<g>
+						<title>bottom-center-center-lower</title>
+						<rect x="200" y="260" width="100" height="25" id="bottom-center-center-lower" class="seats" />
+					</g>
+					<g>
+						<title>bottom-center-center-upper</title>
+						<rect x="200" y="295" width="100" height="25" id="bottom-center-center-upper" class="seats" />
+					</g>
+					<g>
+						<title>bottom-center-right-lower</title>
+						<rect x="310" y="260" width="90" height="25" id="bottom-center-right-lower" class="seats" />
+					</g>
+					<g>
+						<title>bottom-center-right-upper</title>
+						<rect x="310" y="295" width="90" height="25" id="bottom-center-right-upper" class="seats" />
+					</g>
+					<g>
+						<title>bottom-far-right-lower</title>
+						<polygon points="410,260 440,260 410,285" id="bottom-far-right-lower" class="seats" />
+					</g>
+					<g>
+						<title>bottom-far-right-upper</title>
+						<polygon points="450,260 480,260 410,320 410,295" id="bottom-far-right-upper" class="seats" />
+					</g>
+				</svg>
+
+
+
+				<!--<rect x="50" y="-50" width="100" height="100" style="fill: black; transform: rotate(45deg)" />-->
+
+			</svg>
+		</div>
+		<div class="col-lg-3">
+			<div id="rightPanel" class="event-right-panel">
+				<div class="panel-center" id="cart">
+					<h4>Cart</h4>
+					<div id="rightPanelCart"></div>
+				</div>
+				<hr>
+				<div>
+					<button type="button" class="btn btn-inverse"
+						style="margin-top:15px; margin-bottom:50px">Checkout</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="/js/event-map.js"></script>
+
+	<footer class="text-center">
+		<%- include('../partials/footer') %>
+	</footer>
+	<%- include('../partials/scripts') %>
+</body>
+
+</body>
+
+</html>
