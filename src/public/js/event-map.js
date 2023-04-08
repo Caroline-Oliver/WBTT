@@ -11,7 +11,40 @@
 //const sectionSold = [];
 //Make associative array?
 
- //Ideally these should be pulled from DB, but we can hard code if easier
+
+/*/
+
+const decrement = 2;
+const seats = [];
+var rows = 5;
+var cols = 12;
+var index = 1;
+const shape = []
+
+for (var i=0; i < rows; i++){
+    
+    var temp1 = [];
+    var temp2 = [];
+    for (var j = 0; j < cols-i*decrement; j++){
+        temp1.push(index); //this is the seat number
+        index++;
+        temp2.push("row "+(i+1)+" col "+(j+1));
+    }
+    seats.push(temp1);
+    shape.push(temp2);
+}
+
+print(seats);
+print(shape);
+
+var input = shape[4][3]
+var test = input.split(" ");
+var x = Number(test[1])-1
+print(input+" is ticket number "+(Number(x*cols-decrement*(x*x-x)/2)+Number(test[3])))
+*/
+
+
+//Ideally these should be pulled from DB, but we can hard code if easier
 var top_center_left_upper = [4,10]
 var vertical_sections = [4,12]
 const cartArray = []
@@ -30,10 +63,6 @@ var yOffset  = 12.5;
 var soldIndex = 0;
 
 function generate(id){
-	var floorSeats = document.getElementById('floor-seat-div');
-	floorSeats.innerHTML = "";
-	var addButton = document.getElementById('add-button');
-	addButton.setAttribute('onClick','addToCart()');
 	var seatingString = "";
 	seatingPolygon.setAttribute('viewBox','-22 -50 350 275')
 	seatingPolygon.innerHTML = '<rect width="300" height="100" class="section-svg"/>'
@@ -221,3 +250,5 @@ function addToCart(){
 		//also need to be able to remove from cart
 	}
 }
+
+//add function to grab needed data
