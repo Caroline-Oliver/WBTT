@@ -40,11 +40,11 @@ function getSoldTickets(event_id, venue_section_name) {
 			type: 'get',
 			contentType: 'application/jsonp',
 			processData: false,
-			complete: function (data, textStatus, jQxhr) {
-				console.log(JSON.stringify(data));
-				console.log(JSON.stringify(textStatus));
-				console.log(JSON.stringify(jQxhr));
+			success: function (data) {
 				resolve(data);
+			},
+			error: function (error) {
+				reject(error);
 			}
 		});
 	});

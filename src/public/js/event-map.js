@@ -51,7 +51,7 @@ const cartArray = []
 
 getSoldTickets(1, 'floor')
 	.catch((err) => {
-		// do stuff with err
+		console.log(err.message);
 	})
 	.then((result) => {
 		// do stuff with result
