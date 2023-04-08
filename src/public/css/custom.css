@@ -200,3 +200,8 @@ hr {
 .panel-center {
 	min-height: 490px;
 }
+
+.search-results {
+	text-align: center;
+	margin-top: 25px;
+}
