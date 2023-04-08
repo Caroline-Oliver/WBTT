@@ -63,6 +63,7 @@ var yOffset = 12.5;
 var soldIndex = 0;
 
 function generate(id) {
+	console.log(id);
 	getSoldTickets(1, id)
 		.catch((err) => {
 			console.log(err.message);
