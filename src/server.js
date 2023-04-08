@@ -183,6 +183,7 @@ function searchEvents(search_terms) {
                                 special_terms += `cost > '${term}' AND\n`
                                 break;
                         }
+                        // handle bad regex?
                     }
                 } else {
                     if (where_search == '' && count_search == '') {
@@ -509,7 +510,8 @@ app.get('/search', (req, res) => {
                 .finally(() => {
                     res.render('pages/search', {
                         status: loggedIn,
-                        events: event_list
+                        events: event_list,
+                        search: req.query.s
                     });
                 });
         });
