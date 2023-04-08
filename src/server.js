@@ -38,7 +38,7 @@ function checkTimestamps(search_terms) {
     const datetime = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`
 
     var sql = "UPDATE ticket\nSET hold = 0, hold_time = null, user_id = null\n";
-    sql += "WHERE (" + search_terms + ") AND hold_time < \'" + datetime + "\';";
+    sql += "WHERE (" + search_terms + ") AND hold=1 AND hold_time < \'" + datetime + "\';";
 
     return new Promise((resolve, reject) => {
         pool.query(sql, function (err, result) {
@@ -856,14 +856,14 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     let holdQuery = query(holdSQL, []);
 
     Promise.all([cartQuery, holdQuery])
-    .catch( (err) => {
-        console.log('errored in /api/my/addToCart');
-        console.log(err.message);
-        res.send('failed :(');
-    })
-    .then( (results) => {
-        res.send('success!');
-    });
+        .catch((err) => {
+            console.log('errored in /api/my/addToCart');
+            console.log(err.message);
+            res.send('failed :(');
+        })
+        .then((results) => {
+            res.send('success!');
+        });
 });
 // #endregion
 
@@ -892,14 +892,22 @@ app.get('/api/search', (req, res) => {
 });
 
 app.get('/api/getTickets/:event_id/:section_name', authenticate, (req, res) => {
-    query('SELECT * FROM ticket WHERE event_id = ? AND section_name = ? AND (hold = 1 OR sold = 1)', [req.params.event_id, req.params.section_name])
+    checkTimestamps(`event_id = ${req.params.event_id}`)
         .catch((err) => {
+            console.log('errored in /api/getTickets/:event_id/:section_name');
             console.log(err.message);
-            res.send('error');
         })
         .then((result) => {
-            res.send(JSON.stringify(result));
+            query('SELECT * FROM ticket WHERE event_id = ? AND section_name = ? AND (hold = 1 OR sold = 1)', [req.params.event_id, req.params.section_name])
+                .catch((err) => {
+                    console.log(err.message);
+                    res.send('error');
+                })
+                .then((result) => {
+                    res.send(JSON.stringify(result));
+                })
         })
+
 });
 
 // #endregion
