@@ -299,6 +299,7 @@
                 <th>Description</th>
                 <th>Venue</th>
                 <th>Date</th>
+                <th>Time</th>
               </tr>
             </thead>
             <tbody>
@@ -308,6 +309,7 @@
                 <td><%= event.event_description %></td>
                 <td><%= event.venue %></td>
                 <td><%= (event.date + '').split(' ').slice(0, 4).join(' ') %></td>
+                <td><%= event.time %></td>
               </tr>
               <% }); %>
             </tbody>
