@@ -953,14 +953,18 @@ app.get('/admin/createUser', authenticate, (req, res) => {
 
 app.post('/api/admin/createTickets', (req, res) => {
     let event_id = -1;
-    var query = JSON.parse(Object.keys(req.query)[0]);
+
     if (req.body.event_id != null)
         event_id = req.body.event_id;
-    else if (query.event_id != null)
-        event_id = query.event_id;
     else {
-        // probably should error out
+        var query = JSON.parse(Object.keys(req.query)[0]);
+        if (query.event_id != null)
+            event_id = query.event_id;
+        else {
+            // probably should error out
+        }
     }
+
 
     let sql = ''
 
@@ -983,7 +987,7 @@ app.post('/api/admin/createTickets', (req, res) => {
             promise.all([max_ticket_query, more_query])
                 .then((results) => {
                     let current_ticket_id = results[0][0].max_ticket_id + 1;
-                    results[0].forEach( (section) => {
+                    results[0].forEach((section) => {
                         for (let i = 0; i < section.section_capacity; i++) {
                             sql += format(current_ticket_id++, section.section_name, i, section_weight * base_price);
                             cnt++;
@@ -991,15 +995,15 @@ app.post('/api/admin/createTickets', (req, res) => {
                     });
 
                     query(sql, [])
-                    .catch( (err) => {
-                        console.log(err);
-                    })
-                    .then( () => {
-                        res.send(`success! created ${cnt} tickets.`);
-                    })
-                    .finally( () => {
+                        .catch((err) => {
+                            console.log(err);
+                        })
+                        .then(() => {
+                            res.send(`success! created ${cnt} tickets.`);
+                        })
+                        .finally(() => {
 
-                    });
+                        });
                 });
         });
 
