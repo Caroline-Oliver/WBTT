@@ -966,7 +966,7 @@ app.post('/api/admin/createTickets', (req, res) => {
     }
 
 
-    let sql = ''
+    let sql = 'INSERT INTO ticket (ticket_id, event_id, section_name, seat, hold, sold, price) VALUES '
 
     var format = (index, section_name, seat, price) => {
         return `('${index}', '${event_id}', '${section_name}', '${seat}', '0', '0', '${price}'),\n`
