@@ -49,15 +49,6 @@ var top_center_left_upper = [4, 10]
 var vertical_sections = [4, 12]
 const cartArray = []
 
-getSoldTickets(1, 'floor')
-	.catch((err) => {
-		console.log(err.message);
-	})
-	.then((result) => {
-		// do stuff with result
-		console.log(JSON.stringify(result));
-	});
-
 //This MUST be pulled from DB
 var top_center_left_upper_sold = [1, 2, 9, 10, 16, 17, 19, 35]
 var seatingPolygon = document.getElementById('seating-section');
@@ -74,10 +65,12 @@ var soldIndex = 0;
 function generate(id) {
 	getSoldTickets(1, 'floor')
 		.catch((err) => {
+			console.log('err: ');
 			console.log(err.message);
 		})
 		.then((result) => {
 			// do stuff with result
+			console.log('result: ');
 			console.log(JSON.stringify(result));
 		});
 	var seatingString = "";
