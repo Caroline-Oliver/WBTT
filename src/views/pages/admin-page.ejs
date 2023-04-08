@@ -307,7 +307,7 @@
                 <td><a href="/admin/editEvent/<%= event.event_id %>"><%= event.event_name %></a></td>
                 <td><%= event.event_description %></td>
                 <td><%= event.venue %></td>
-                <td><%= event.date %></td>
+                <td><%= event.date.split(' ').slice(0, 4).join(' ') %></td>
               </tr>
               <% }); %>
             </tbody>
