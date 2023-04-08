@@ -991,7 +991,7 @@ app.post('/api/admin/createTickets', (req, res) => {
                     console.log(JSON.stringify(results));
                     results[1].forEach((section) => {
                         for (let i = 0; i < section.section_capacity; i++) {
-                            sql += format(current_ticket_id++, section.section_name, i, section_weight * base_price);
+                            sql += format(current_ticket_id++, section.section_name, i, section.section_weight * base_price);
                             cnt++;
                         }
                     });
