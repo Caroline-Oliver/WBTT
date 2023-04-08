@@ -140,6 +140,12 @@ hr {
 	background-color:#f5f5f566;
 }
 
+@media(max-width: 991px){
+	.background-svg {
+	min-height: 600px;
+}
+}
+
 .section-svg {
 	fill:#243B6D;
 }
