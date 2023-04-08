@@ -18,6 +18,8 @@
     <% if (events == null) events = []; %>
     <% if (events == []) { %>
       <h3 style="text-align:center">No results found</h3>
+    <% } else { %>
+      <h3><%= events %></h3>
     <% } %>
     <% events.forEach(function(event) { %>
       
