@@ -63,6 +63,21 @@ var xOffset = 12.5;
 var yOffset = 12.5;
 var soldIndex = 0;
 
+//Corrections for window sizing
+
+function arenaResize(resizeArena) {
+  if (resizeArena.matches) { // If media query matches
+    document.getElementById('arena-inner-svg').setAttribute('viewBox', '0 0 500 400');
+  } else {
+	  //document.get
+   document.getElementById('arena-inner-svg').setAttribute('viewBox', '-25 125 550 100');
+  }
+}
+
+var resizeArena = window.matchMedia("(min-width: 992px)")
+arenaResize(resizeArena) // Call listener function at run time
+resizeArena.addListener(arenaResize) // Attach listener function on state changes
+
 function generate(id) {
 	currentSectionSold = []
 	getSoldTickets(1, id)
@@ -74,7 +89,7 @@ function generate(id) {
 				currentSectionSold.push(Number(ticket.seat));
 				//console.log(ticket.seat);
 			})
-			console.log(currentSectionSold+" this is what is in the array");
+			//console.log(currentSectionSold+" this is what is in the array");
 			var addButton = document.getElementById('add-button');
 			addButton.setAttribute('onClick','addToCart()');
 			var floorSeats = document.getElementById('floor-seat-div');
@@ -201,7 +216,7 @@ function generate(id) {
 				else {
 					seatingString = '<g>'
 				}
-				seatingPolygon.setAttribute('viewBox', '-45 -20 350 200')
+				seatingPolygon.setAttribute('viewBox', '-45 -50 350 200')
 				seatingString += '<rect width="250" height="100" class="section-svg"/>'
 				for (var i = top_center_left_upper[0]; i > 0; i--) {
 					//console.log(i);
