@@ -984,7 +984,7 @@ app.post('/api/admin/createTickets', (req, res) => {
 
             let max_ticket_query = query("SELECT MAX(ticket_id) as max_ticket_id FROM ticket", []);
             let more_query = query('select section_name, section_capacity, section_weight from venue_sections where venue_name = ? and venue_configuration = ?', [venue, config]);
-            promise.all([max_ticket_query, more_query])
+            Promise.all([max_ticket_query, more_query])
                 .then((results) => {
                     let current_ticket_id = results[0][0].max_ticket_id + 1;
                     results[0].forEach((section) => {
