@@ -196,7 +196,7 @@ function generate(id) {
 				seatingPolygon.setAttribute('viewBox', '-45 -20 350 200')
 				seatingString += '<rect width="250" height="100" class="section-svg"/>'
 				for (var i = top_center_left_upper[0]; i > 0; i--) {
-					console.log(i);
+					//console.log(i);
 					for (var j = 0; j < top_center_left_upper[1]; j++) {
 						if (top_center_left_upper_sold.includes(soldIndex)) {
 							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8.5" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
@@ -216,7 +216,7 @@ function generate(id) {
 			}
 			var sectionTickets = document.getElementsByClassName('tickets');
 			for (var i = 0; i < sectionTickets.length; i++) {
-				console.log(sectionTickets[i].getAttribute('id'));
+				//console.log(sectionTickets[i].getAttribute('id'));
 				sectionTickets[i].addEventListener('click', function () { updateTicket(event.target) }, false);
 			}
 		});
@@ -224,7 +224,7 @@ function generate(id) {
 
 function updateTicket(target) {
 	var itemClasses = target.classList;
-	console.log(itemClasses);
+	//console.log(itemClasses);
 	if (itemClasses.contains('tickets')) {
 		target.setAttribute('class', 'in-cart');
 	}
@@ -244,7 +244,7 @@ function addToCart() {
 		var cartString = "<p>";
 		var count = cartSeats.length;
 		for (var index = 0; index < count; index++) {
-			console.log("index = " + index);
+			//console.log("index = " + index);
 			var seatId = cartSeats[0].getAttribute('id');
 			//change to 'in-cart sold'?
 			cartSeats[0].setAttribute('class', 'sold hold');
