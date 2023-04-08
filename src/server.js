@@ -209,12 +209,13 @@ function searchEvents(search_terms) {
                 special_terms = '';
             }
 
-            let sql = 'SELECT *' + count_search + '\n' +
-                'FROM event WHERE\n' +
-                where_search + '\n' +
-                special_terms + '\n';
-            
-            if (special_only){
+            let sql = 'SELECT *' + count_search + '\n';
+            if (where_search != '' || special_terms != ''){
+                sql += 'FROM event WHERE\n' +
+                    where_search + '\n' +
+                    special_terms + '\n';
+            }
+            if (count_search == '') {
                 sql += 'ORDER BY date DESC;';
             } else {
                 sql += 'ORDER BY count_words DESC, date DESC;';
