@@ -936,6 +936,21 @@ app.get('/admin/editUser/:user_id', authenticate, (req, res) => {
         });
 });
 
+app.get('/create/user', authenticate, (req, res) => {
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/create-user', {
+                status: loggedIn
+            })
+        });
+});
+
 // res.body.
 app.post('/api/admin/createTickets', (req, res) => {
     query("SELECT MAX(ticket_id) as max_ticket_id FROM ticket", [])
@@ -1045,20 +1060,20 @@ app.get('/tmp/event-tickets', (req, res) => {
 });
 // #endregion
 
-app.use( (req, res) => {
+app.use((req, res) => {
     res.status(404);
 
     res.format({
-    html: function () {
-      res.render('pages/404', { url: req.url })
-    },
-    json: function () {
-      res.json({ error: 'Not found' })
-    },
-    default: function () {
-      res.type('txt').send('Not found')
-    }
-  })
+        html: function () {
+            res.render('pages/404', { url: req.url })
+        },
+        json: function () {
+            res.json({ error: 'Not found' })
+        },
+        default: function () {
+            res.type('txt').send('Not found')
+        }
+    })
 });
 
 // #region listen on port
