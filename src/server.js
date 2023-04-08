@@ -677,22 +677,6 @@ app.get('/my/checkout', authenticate, (req, res) => {
         });
 });
 
-app.get('/logout', (req, res) => {
-    var loggedIn = '';
-    accountStatus(req.cookies.token)
-        .catch((err) => {
-            loggedIn = 'na';
-        })
-        .then((status) => {
-            loggedIn = status;
-        })
-        .finally(() => {
-            res.render('pages/logout', {
-                status: loggedIn
-            });
-        });
-});
-
 // TODO: pending page
 app.get('/my/tickets', authenticate, (req, res) => {
     checkTimestamps("user_id = " + req.cookies.token)
@@ -889,6 +873,52 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
                     users: users_l
                 });
             });
+        });
+});
+
+app.get('/admin/editEvent/:event_id', authenticate, (req, res) => {
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            getEvent(req.query.event_id)
+            .catch( (err) => {
+                // oh well
+            })
+            .then( (result) => {
+                res.render('pages/edit-event', {
+                    status: loggedIn,
+                    event: result[0]
+                });
+            })
+        });
+});
+
+app.get('/admin/editUser/:user_id', authenticate, (req, res) => {
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            query('SELECT * FROM user WHERE user_id=?', req.query.user_id)
+            .catch( (err) => {
+                // oh well
+            })
+            .then( (result) => {
+                res.render('pages/edit-user', {
+                    status: loggedIn,
+                    user: result[0]
+                });
+            })
         });
 });
 
