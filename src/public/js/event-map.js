@@ -70,7 +70,7 @@ function generate(id) {
 		})
 		.then((result) => {
 			result.forEach( (ticket) => {
-				currentSectionSold.push(ticket);
+				currentSectionSold.push(ticket.seat);
 				console.log(ticket.seat);
 			})
 			console.log(currentSectionSold);
