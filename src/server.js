@@ -996,6 +996,8 @@ app.post('/api/admin/createTickets', (req, res) => {
                         }
                     });
 
+                    sql = sql.substring(0, sql.length - 2) + ';'
+
                     query(sql, [])
                         .catch((err) => {
                             console.log(err);
