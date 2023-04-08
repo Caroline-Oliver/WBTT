@@ -72,7 +72,7 @@ function generate(id) {
 			result.forEach( (ticket) => {
 				top_center_left_upper.push(ticket.seat);
 			})
-
+			console.log(top_center_left_upper_sold);
 			var seatingString = "";
 			seatingPolygon.setAttribute('viewBox', '-22 -50 350 275')
 			seatingPolygon.innerHTML = '<rect width="300" height="100" class="section-svg"/>'
