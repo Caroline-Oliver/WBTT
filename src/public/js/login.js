@@ -31,3 +31,16 @@ function setMessage(message) {
 	var printThing = document.getElementById('results');
 	printThing.innerHTML = '<P>' + message + '</P>'//response;
 }
+
+function getSoldTickets(event_id, venue_section_name) {
+	$.ajax({
+		url: `/api/getTickets/${event_id}/${venue_section_name}`,
+		dataType: 'json',
+		type: 'get',
+		contentType: 'application/jsonp',
+		processData: false,
+		complete: function(data, textStatus, jQxhr) {
+			// do stuff here
+		}
+	});
+}
