@@ -63,7 +63,7 @@ var yOffset = 12.5;
 var soldIndex = 0;
 
 function generate(id) {
-	getSoldTickets(1, 'floor')
+	console.log(getSoldTickets(1, 'floor'))/*
 		.catch((err) => {
 			console.log('err: ');
 			console.log(err.message);
@@ -72,7 +72,7 @@ function generate(id) {
 			// do stuff with result
 			console.log('result: ');
 			console.log(JSON.stringify(result));
-		});
+		});*/
 	var seatingString = "";
 	seatingPolygon.setAttribute('viewBox', '-22 -50 350 275')
 	seatingPolygon.innerHTML = '<rect width="300" height="100" class="section-svg"/>'

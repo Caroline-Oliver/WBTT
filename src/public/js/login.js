@@ -33,18 +33,19 @@ function setMessage(message) {
 }
 
 function getSoldTickets(event_id, venue_section_name) {
-	return new Promise((resolve, reject) => {
+	var result;
+	// return new Promise( (resolve, reject) => {
 		$.ajax({
 			url: `/api/getTickets/${event_id}/${venue_section_name}`,
 			dataType: 'json',
 			type: 'get',
 			processData: false,
 			success: function (data) {
-				resolve(data);
+				result = data;
 			},
 			error: function (error) {
-				reject(error);
+				//reject(error);
 			}
 		});
-	});
+	//});
 }
