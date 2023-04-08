@@ -36,10 +36,10 @@ function getSoldTickets(event_id, venue_section_name) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			url: `/api/getTickets/${event_id}/${venue_section_name}`,
-			dataType: 'json',
+			//dataType: 'json',
 			type: 'get',
 			contentType: 'application/jsonp',
-			processData: false,
+			//processData: false,
 			success: function (data) {
 				resolve(data);
 			},
