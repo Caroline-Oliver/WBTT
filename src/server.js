@@ -833,8 +833,8 @@ app.get('/api/search', (req, res) => {
 });
 
 app.get('/api/getTickets/:event_id/:section_name', authenticate, (req, res) => {
-    console.log(`${req.query.event_id} ${req.query.section_name}`)
-    query('SELECT * FROM ticket WHERE event_id = ? AND section_name = \'?\' AND (hold = 1 OR sold = 1)', [req.query.event_id, req.query.section_name])
+    console.log(`${req.params.event_id} ${req.params.section_name}`)
+    query('SELECT * FROM ticket WHERE event_id = ? AND section_name = \'?\' AND (hold = 1 OR sold = 1)', [req.params.event_id, req.params.section_name])
         .catch((err) => {
             console.log(err.message);
             res.send('error');
