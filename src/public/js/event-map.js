@@ -50,7 +50,8 @@ var vertical_sections = [4, 12]
 const cartArray = []
 
 //This MUST be pulled from DB
-var top_center_left_upper_sold = [1, 2, 9, 10, 16, 17, 19, 35]
+//var currentSectionSold = [1, 2, 9, 10, 16, 17, 19, 35]
+var currentSectionSold = []
 var seatingPolygon = document.getElementById('seating-section');
 var sections = document.getElementsByClassName('seats');
 for (var i = 0; i < sections.length; i++) {
@@ -63,15 +64,20 @@ var yOffset = 12.5;
 var soldIndex = 0;
 
 function generate(id) {
-	getSoldTickets(1, 'floor')
+	getSoldTickets(1, id)
 		.catch((err) => {
 			console.log(err.message);
 		})
 		.then((result) => {
 			result.forEach( (ticket) => {
+				currentSectionSold.push(ticket);
 				console.log(ticket.seat);
 			})
-			
+			var addButton = document.getElementById('add-button');
+			addButton.setAttribute('onClick','addToCart()');
+			var floorSeats = document.getElementById('floor-seat-div');
+			floorSeats.innerHTML = '';
+		
 			var seatingString = "";
 			seatingPolygon.setAttribute('viewBox', '-22 -50 350 275')
 			seatingPolygon.innerHTML = '<rect width="300" height="100" class="section-svg"/>'
@@ -89,7 +95,7 @@ function generate(id) {
 				}
 				for (var i = vertical_sections[0]; i > 0; i--) {
 					for (var j = 0; j < vertical_sections[1]; j++) {
-						if (top_center_left_upper_sold.includes(soldIndex)) {
+						if (currentSectionSold.includes(soldIndex)) {
 							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 						}
 						else {
@@ -129,7 +135,7 @@ function generate(id) {
 					yOffset = 70;
 					for (i = 5; i > 0; i--) {
 						for (j = 0; j < (i * 2); j++) {
-							if (top_center_left_upper_sold.includes(soldIndex)) {
+							if (currentSectionSold.includes(soldIndex)) {
 								seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 							}
 							else {
@@ -167,7 +173,7 @@ function generate(id) {
 					yOffset = 70;
 					for (i = 4; i > 0; i--) {
 						for (j = 0; j < 6 + i; j++) {
-							if (top_center_left_upper_sold.includes(soldIndex)) {
+							if (currentSectionSold.includes(soldIndex)) {
 								seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 							}
 							else {
@@ -198,7 +204,7 @@ function generate(id) {
 				for (var i = top_center_left_upper[0]; i > 0; i--) {
 					console.log(i);
 					for (var j = 0; j < top_center_left_upper[1]; j++) {
-						if (top_center_left_upper_sold.includes(soldIndex)) {
+						if (currentSectionSold.includes(soldIndex)) {
 							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8.5" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 						}
 						else {
