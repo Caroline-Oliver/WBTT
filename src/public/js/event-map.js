@@ -63,7 +63,7 @@ var yOffset = 12.5;
 var soldIndex = 0;
 
 function generate(id) {
-	console.log(getSoldTickets(1, 'floor'))/*
+	getSoldTickets(1, 'floor')
 		.catch((err) => {
 			console.log('err: ');
 			console.log(err.message);
@@ -72,7 +72,7 @@ function generate(id) {
 			// do stuff with result
 			console.log('result: ');
 			console.log(JSON.stringify(result));
-		});*/
+		});
 	var seatingString = "";
 	seatingPolygon.setAttribute('viewBox', '-22 -50 350 275')
 	seatingPolygon.innerHTML = '<rect width="300" height="100" class="section-svg"/>'
@@ -265,20 +265,19 @@ function addToCart() {
 
 function getSoldTickets(event_id, venue_section_name) {
 	var result;
-	// return new Promise( (resolve, reject) => {
+	return new Promise( (resolve, reject) => {
 		$.ajax({
 			url: `/api/getTickets/${event_id}/${venue_section_name}`,
 			dataType: 'json',
 			type: 'get',
 			processData: false,
 			success: function (data) {
-				result = data;
-				console.log(data);
+				resolve(data);
 			},
 			error: function (error) {
-				//reject(error);
+				reject(error);
 			}
 		});
-	//});
+	});
 	return result;
 }
