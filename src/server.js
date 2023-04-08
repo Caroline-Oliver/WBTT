@@ -20,7 +20,7 @@ function authenticate(req, res, next) {
                     next();
                 }
                 else {
-                    res.redirect(403, "/");
+                    next();
                 }
 
             }
