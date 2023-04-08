@@ -137,15 +137,16 @@ hr {
 }
 
 .background-svg {
+	min-height: 600px;
 	background-color:#f5f5f566;
 }
-
+/*
 @media(max-width: 991px){
 	.background-svg {
 	min-height: 600px;
 	}
 }
-
+*/
 @media(max-width: 800px){
 	.background-svg {
 	min-height: 500px;
