@@ -402,8 +402,6 @@ const pool = mysql.createPool({
 // #endregion
 
 // #region basic pages
-
-// good ejs
 app.get('/', (req, res) => {
     var events = [
         {
@@ -443,7 +441,6 @@ app.get('/', (req, res) => {
         });
 });
 
-// good ejs
 app.get('/about', (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
@@ -460,7 +457,6 @@ app.get('/about', (req, res) => {
         });
 });
 
-// good ejs
 app.get('/contact', (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
@@ -478,8 +474,7 @@ app.get('/contact', (req, res) => {
 });
 // #endregion
 
-// #region event information
-// TODO: pending page
+// #region event pages
 app.get('/search', (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
@@ -509,6 +504,7 @@ app.get('/search', (req, res) => {
                 });
         });
 })
+
 app.get('/event/:event_id', (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
@@ -532,7 +528,6 @@ app.get('/event/:event_id', (req, res) => {
         });
 });
 
-// TODO: pending pages
 app.get('/events/:category', (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
@@ -565,7 +560,6 @@ app.get('/events/:category', (req, res) => {
 // #endregion
 
 // #region user account pages
-// TODO: pending page
 app.get('/my/account', authenticate, (req, res) => {
     var sql = "SELECT * FROM user WHERE user_id = ?;"
     sqlParams = [req.cookies.token];
@@ -805,6 +799,71 @@ app.get('/api/my/login', (req, res) => {
         }
     });
 
+});
+
+app.post('/api/my/addToCart', authenticate, (req, res) => {
+    const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
+
+    let holdTime = (minutes) => {
+        const dt = new Date(date.getTime() + minutes * 60000);
+
+        // 'YYYY-MM-DD HH:MM:SS' format
+        return `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`
+
+    }
+
+    // e.g., [1,2,3]
+    var tickets;
+    // e.g., 1
+    var user_id;
+    if (req.body.tickets != null && req.body.user_id != null) {
+        tickets = req.body.tickets;
+        user_id = req.body.user_id;
+    }
+    else {
+        var query = JSON.parse(Object.keys(req.query)[0]);
+
+        if (query.tickets != null && query.user_id != null) {
+            tickets = query.tickets;
+            user_id = query.user_id;
+        }
+
+        else {
+            res.status(403).send(`Missing body parts`);
+            return;
+        }
+    }
+    // e.g., INSERT INTO `wbtt`.`cart` (`user_id`, `ticket_id`, `age`) VALUES ('1', '2', '2023-04-10');
+    var cartSQL = 'INSERT INTO cart (user_id, ticket_id, age) VALUES ';
+    // e.g., UPDATE `wbtt`.`ticket` SET `user_id` = '2', `hold` = '1', `hold_time` = '2023-04-08 14:00:00' WHERE (`ticket_id` = '4');
+    var holdSQL = `UPDATE ticket SET user_id = ${user_id}, hold = 1, hold_time = '${holdTime(10)}' WHERE (`;
+
+    // decide on amount of time user gets for these tickets being 'on hold'
+    tickets.forEach((ticket) => {
+        cartSQL += `(${user_id}, ${ticket}, ${holdTime(10)}), `
+        holdSQL += `ticket_id = ${ticket} OR `
+    })
+
+    if (cartSQL == '' || holdSQL == '') {
+        res.status(403).send('error in sql generation');
+        return;
+    }
+
+    cartSQL = cartSQL.substring(0, cartSQL.length - 2) + ';'
+    holdSQL = holdSQL.substring(0, holdSQL.length - 4) + ');'
+
+    let cartQuery = query(cartSQL, []);
+    let holdQuery = query(holdSQL, []);
+
+    Promise.all([cartQuery, holdQuery])
+    .catch( (err) => {
+        console.log('errored in /api/my/addToCart');
+        console.log(err.message);
+        res.send('failed :(');
+    })
+    .then( (results) => {
+        res.send('success!');
+    });
 });
 // #endregion
 
