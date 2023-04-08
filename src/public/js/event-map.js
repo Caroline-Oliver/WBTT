@@ -50,7 +50,8 @@ var vertical_sections = [4, 12]
 const cartArray = []
 
 //This MUST be pulled from DB
-var top_center_left_upper_sold = [1, 2, 9, 10, 16, 17, 19, 35]
+//var currentSectionSold = [1, 2, 9, 10, 16, 17, 19, 35]
+var currentSectionSold = []
 var seatingPolygon = document.getElementById('seating-section');
 var sections = document.getElementsByClassName('seats');
 for (var i = 0; i < sections.length; i++) {
@@ -62,16 +63,38 @@ var xOffset = 12.5;
 var yOffset = 12.5;
 var soldIndex = 0;
 
+//Corrections for window sizing
+
+function arenaResize(resizeArena) {
+  if (resizeArena.matches) { // If media query matches
+    document.getElementById('arena-inner-svg').setAttribute('viewBox', '0 0 500 400');
+  } else {
+	  //document.get
+   document.getElementById('arena-inner-svg').setAttribute('viewBox', '-25 125 550 100');
+  }
+}
+
+var resizeArena = window.matchMedia("(min-width: 992px)")
+arenaResize(resizeArena) // Call listener function at run time
+resizeArena.addListener(arenaResize) // Attach listener function on state changes
+
 function generate(id) {
-	getSoldTickets(1, 'floor')
+	currentSectionSold = []
+	getSoldTickets(1, id)
 		.catch((err) => {
 			console.log(err.message);
 		})
 		.then((result) => {
 			result.forEach( (ticket) => {
-				console.log(ticket.seat);
+				currentSectionSold.push(Number(ticket.seat));
+				//console.log(ticket.seat);
 			})
-			
+			//console.log(currentSectionSold+" this is what is in the array");
+			var addButton = document.getElementById('add-button');
+			addButton.setAttribute('onClick','addToCart()');
+			var floorSeats = document.getElementById('floor-seat-div');
+			floorSeats.innerHTML = '';
+		
 			var seatingString = "";
 			seatingPolygon.setAttribute('viewBox', '-22 -50 350 275')
 			seatingPolygon.innerHTML = '<rect width="300" height="100" class="section-svg"/>'
@@ -89,7 +112,7 @@ function generate(id) {
 				}
 				for (var i = vertical_sections[0]; i > 0; i--) {
 					for (var j = 0; j < vertical_sections[1]; j++) {
-						if (top_center_left_upper_sold.includes(soldIndex)) {
+						if (currentSectionSold.includes(soldIndex)) {
 							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 						}
 						else {
@@ -129,7 +152,7 @@ function generate(id) {
 					yOffset = 70;
 					for (i = 5; i > 0; i--) {
 						for (j = 0; j < (i * 2); j++) {
-							if (top_center_left_upper_sold.includes(soldIndex)) {
+							if (currentSectionSold.includes(soldIndex)) {
 								seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 							}
 							else {
@@ -167,7 +190,7 @@ function generate(id) {
 					yOffset = 70;
 					for (i = 4; i > 0; i--) {
 						for (j = 0; j < 6 + i; j++) {
-							if (top_center_left_upper_sold.includes(soldIndex)) {
+							if (currentSectionSold.includes(soldIndex)) {
 								seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 							}
 							else {
@@ -193,12 +216,12 @@ function generate(id) {
 				else {
 					seatingString = '<g>'
 				}
-				seatingPolygon.setAttribute('viewBox', '-45 -20 350 200')
+				seatingPolygon.setAttribute('viewBox', '-45 -50 350 200')
 				seatingString += '<rect width="250" height="100" class="section-svg"/>'
 				for (var i = top_center_left_upper[0]; i > 0; i--) {
-					console.log(i);
+					//console.log(i);
 					for (var j = 0; j < top_center_left_upper[1]; j++) {
-						if (top_center_left_upper_sold.includes(soldIndex)) {
+						if (currentSectionSold.includes(soldIndex)) {
 							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8.5" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 						}
 						else {
@@ -216,7 +239,7 @@ function generate(id) {
 			}
 			var sectionTickets = document.getElementsByClassName('tickets');
 			for (var i = 0; i < sectionTickets.length; i++) {
-				console.log(sectionTickets[i].getAttribute('id'));
+				//console.log(sectionTickets[i].getAttribute('id'));
 				sectionTickets[i].addEventListener('click', function () { updateTicket(event.target) }, false);
 			}
 		});
@@ -224,7 +247,7 @@ function generate(id) {
 
 function updateTicket(target) {
 	var itemClasses = target.classList;
-	console.log(itemClasses);
+	//console.log(itemClasses);
 	if (itemClasses.contains('tickets')) {
 		target.setAttribute('class', 'in-cart');
 	}
@@ -244,14 +267,14 @@ function addToCart() {
 		var cartString = "<p>";
 		var count = cartSeats.length;
 		for (var index = 0; index < count; index++) {
-			console.log("index = " + index);
+			//console.log("index = " + index);
 			var seatId = cartSeats[0].getAttribute('id');
 			//change to 'in-cart sold'?
 			cartSeats[0].setAttribute('class', 'sold hold');
 			if (!cartArray.includes(seatId)) {
 
 				cartArray.push(i, seatId)
-				console.log("ticket for " + seatId + " has been added to cart");
+				//console.log("ticket for " + seatId + " has been added to cart");
 				cartString += seatId + '<br>';
 			}
 		}
