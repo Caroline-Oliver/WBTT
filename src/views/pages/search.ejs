@@ -16,6 +16,9 @@
 
     <% let idx = 0; %>
     <% if (events == null) events = []; %>
+    <% if (events == []) { %>
+      <h3 style="text-align:center">No results found</h3>
+    <% } %>
     <% events.forEach(function(event) { %>
       
       <div class="row" style="margin-top: 25px">
