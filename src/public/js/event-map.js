@@ -64,7 +64,7 @@ var soldIndex = 0;
 
 function generate(id) {
 	console.log(id);
-	getSoldTickets(1, id)
+	getSoldTickets(1, 'floor')
 		.catch((err) => {
 			console.log(err.message);
 		})
