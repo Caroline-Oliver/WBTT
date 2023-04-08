@@ -70,6 +70,7 @@ function generate(id) {
 		.then((result) => {
 			top_center_left_upper_sold = [];
 			result.forEach( (ticket) => {
+				console.log(JSON.stringify(ticket));
 				top_center_left_upper.push(ticket.seat);
 			})
 			console.log(top_center_left_upper_sold);
