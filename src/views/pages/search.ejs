@@ -16,11 +16,11 @@
 
     <% let idx = 0; %>
     <% if (events == null) events = []; %>
-    <% if (events === []) { %>
+    <% if (JSON.stringify(events) === "[]") { %>
       <h3 style="text-align:center">No results found</h3>
     <% } else { %>
       <h3><%= JSON.stringify(events) %></h3>
-    
+    <% } %>
 
     <% events.forEach(function(event) { %>
       
@@ -38,6 +38,6 @@
         </div>
       </div>
       <% }); %>
-      <% } %>
+
     <%- include('../partials/scripts') %>
 </body>
