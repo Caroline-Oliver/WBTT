@@ -951,8 +951,63 @@ app.get('/admin/createUser', authenticate, (req, res) => {
         });
 });
 
-// res.body.
 app.post('/api/admin/createTickets', (req, res) => {
+    let event_id = -1;
+    var query = JSON.parse(Object.keys(req.query)[0]);
+    if (req.body.event_id != null)
+        event_id = req.body.event_id;
+    else if (query.event_id != null)
+        event_id = query.event_id;
+    else {
+        // probably should error out
+    }
+
+    let sql = ''
+
+    var format = (index, section_name, seat, price) => {
+        return `('${index}', '${event_id}', '${section_name}', '${seat}', '0', '0', '${price}'),\n`
+    }
+
+    query('SELECT venue, configuration, base_price FROM event WHERE event_id = ?', event_id)
+        .catch((err) => {
+            console.log(err);
+        })
+        .then((result) => {
+            let cnt = 0;
+            let venue = result[0].venue;
+            let config = result[0].configuration;
+            let base_price = result[0].base_price;
+
+            let max_ticket_query = query("SELECT MAX(ticket_id) as max_ticket_id FROM ticket", []);
+            let more_query = query('select section_name, section_capacity, section_weight from venue_sections where venue_name = ? and venue_configuration = ?', [venue, config]);
+            promise.all([max_ticket_query, more_query])
+                .then((results) => {
+                    let current_ticket_id = results[0][0].max_ticket_id + 1;
+                    results[0].forEach( (section) => {
+                        for (let i = 0; i < section.section_capacity; i++) {
+                            sql += format(current_ticket_id++, section.section_name, i, section_weight * base_price);
+                            cnt++;
+                        }
+                    });
+
+                    query(sql, [])
+                    .catch( (err) => {
+                        console.log(err);
+                    })
+                    .then( () => {
+                        res.send(`success! created ${cnt} tickets.`);
+                    })
+                    .finally( () => {
+
+                    });
+                });
+        });
+
+
+});
+
+// res.body.
+/*app.post('/api/admin/createTickets', (req, res) => {
     query("SELECT MAX(ticket_id) as max_ticket_id FROM ticket", [])
         .catch((err) => {
             res.send('error, ticket id not found')
@@ -1033,7 +1088,7 @@ app.post('/api/admin/createTickets', (req, res) => {
                     return;
                 });
         });
-})
+})*/
 
 app.post('/api/admin/upload', authenticate, (req, res) => {
     fs.writeFile(`venues/${req.body.name}.html`, req.body.html, (err) => {
