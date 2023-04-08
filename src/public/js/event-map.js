@@ -273,6 +273,7 @@ function getSoldTickets(event_id, venue_section_name) {
 			processData: false,
 			success: function (data) {
 				result = data;
+				console.log(data);
 			},
 			error: function (error) {
 				//reject(error);
