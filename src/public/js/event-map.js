@@ -72,7 +72,7 @@ function generate(id) {
 		.then((result) => {
 			result.forEach( (ticket) => {
 				currentSectionSold.push(Number(ticket.seat));
-				console.log(ticket.seat);
+				//console.log(ticket.seat);
 			})
 			console.log(currentSectionSold+" this is what is in the array");
 			var addButton = document.getElementById('add-button');
@@ -98,7 +98,6 @@ function generate(id) {
 				for (var i = vertical_sections[0]; i > 0; i--) {
 					for (var j = 0; j < vertical_sections[1]; j++) {
 						if (currentSectionSold.includes(soldIndex)) {
-							console.log(soldIndex+" is the index of the seat")
 							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 						}
 						else {
