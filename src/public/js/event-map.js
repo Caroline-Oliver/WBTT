@@ -279,4 +279,5 @@ function getSoldTickets(event_id, venue_section_name) {
 			}
 		});
 	//});
+	return result;
 }
