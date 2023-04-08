@@ -936,7 +936,7 @@ app.get('/admin/editUser/:user_id', authenticate, (req, res) => {
         });
 });
 
-app.get('/create/user', authenticate, (req, res) => {
+app.get('/admin/createUser', authenticate, (req, res) => {
     accountStatus(req.cookies.token)
         .catch((err) => {
             loggedIn = 'na';
