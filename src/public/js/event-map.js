@@ -264,16 +264,19 @@ function addToCart() {
 //add function to grab needed data
 
 function getSoldTickets(event_id, venue_section_name) {
-	return new Promise((reject, resolve) => {
+	var result;
+	// return new Promise( (resolve, reject) => {
 		$.ajax({
 			url: `/api/getTickets/${event_id}/${venue_section_name}`,
 			dataType: 'json',
 			type: 'get',
-			contentType: 'application/jsonp',
 			processData: false,
-			complete: function (data, textStatus, jQxhr) {
-				resolve(data);
+			success: function (data) {
+				result = data;
+			},
+			error: function (error) {
+				//reject(error);
 			}
 		});
-	});
+	//});
 }

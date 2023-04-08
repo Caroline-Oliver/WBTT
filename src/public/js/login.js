@@ -31,21 +31,3 @@ function setMessage(message) {
 	var printThing = document.getElementById('results');
 	printThing.innerHTML = '<P>' + message + '</P>'//response;
 }
-
-function getSoldTickets(event_id, venue_section_name) {
-	var result;
-	// return new Promise( (resolve, reject) => {
-		$.ajax({
-			url: `/api/getTickets/${event_id}/${venue_section_name}`,
-			dataType: 'json',
-			type: 'get',
-			processData: false,
-			success: function (data) {
-				result = data;
-			},
-			error: function (error) {
-				//reject(error);
-			}
-		});
-	//});
-}
