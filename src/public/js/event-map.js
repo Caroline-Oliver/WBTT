@@ -73,9 +73,6 @@ var soldIndex = 0;
 
 function generate(id) {
 	getSoldTickets(1, 'floor')
-		.catch((err) => {
-			// do stuff with err
-		})
 		.then((result) => {
 			// do stuff with result
 			console.log(JSON.stringify(result));
