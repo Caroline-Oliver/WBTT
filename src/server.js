@@ -137,7 +137,7 @@ function searchEvents(search_terms) {
                 if (element.includes(':')) {
                     let type = element.substring(0, element.indexOf(':')).toLowerCase();
                     let term = element.substring(element.indexOf(':') + 1);
-                    
+
                     if (type != '' && term != '') {
                         switch (type) {
                             case 'category':
@@ -204,7 +204,7 @@ function searchEvents(search_terms) {
             special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
 
             let sql = 'SELECT *' + count_search + '\n' + 'FROM event ';
-            if (where_search != '' || special_terms != ''){
+            if (where_search != '' || special_terms != '') {
                 sql += 'WHERE\n' +
                     where_search + '\n' +
                     special_terms + '\n';
@@ -283,41 +283,41 @@ function adminDashboard(filters) {
 
         events = [];
         query('SELECT * FROM event', [])
-        .catch( (err) => {
-            reject(err);
-        })
-        .then( (result) => {
-            events = result;
-        })
-        .finally( () => {
-            var cur_event_ids = [];
-            events.forEach( event => {
-                if (event.date >= date)
-                    cur_event_ids.push(event.event_id)
+            .catch((err) => {
+                reject(err);
             })
-            cur_event_ids = cur_event_ids.toString();
-            var c_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
-                                    "FROM ticket AS t" + '\n' +
-                                    "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
-                                    "JOIN event AS e ON e.event_id = t.event_id" + '\n' +
-                                    "WHERE sold=1 AND e.date >= ?" + '\n' +
-                                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;",
-                                    date);
-            var h_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
-                                    "FROM ticket AS t" + '\n' +
-                                    "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
-                                    "JOIN event AS e ON e.event_id = t.event_id" + '\n' +
-                                    "WHERE sold=1 AND e.date < ?" + '\n' +
-                                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;",
-                                    date);
-            var u_promise = query("SELECT * FROM user", []);
-            Promise.all([c_o_promise, h_o_promise, u_promise])
-            .then( (values) => {
-                resolve([events, values[0], values[1], values[2]]);
+            .then((result) => {
+                events = result;
+            })
+            .finally(() => {
+                var cur_event_ids = [];
+                events.forEach(event => {
+                    if (event.date >= date)
+                        cur_event_ids.push(event.event_id)
+                })
+                cur_event_ids = cur_event_ids.toString();
+                var c_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
+                    "FROM ticket AS t" + '\n' +
+                    "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
+                    "JOIN event AS e ON e.event_id = t.event_id" + '\n' +
+                    "WHERE sold=1 AND e.date >= ?" + '\n' +
+                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;",
+                    date);
+                var h_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
+                    "FROM ticket AS t" + '\n' +
+                    "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
+                    "JOIN event AS e ON e.event_id = t.event_id" + '\n' +
+                    "WHERE sold=1 AND e.date < ?" + '\n' +
+                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;",
+                    date);
+                var u_promise = query("SELECT * FROM user", []);
+                Promise.all([c_o_promise, h_o_promise, u_promise])
+                    .then((values) => {
+                        resolve([events, values[0], values[1], values[2]]);
+                    });
             });
-        });
-    
-        
+
+
     });
 }
 
@@ -781,13 +781,13 @@ app.get('/api/my/login', (req, res) => {
         if (query.username != null && query.password != null) {
             user = query;
         }
-        
+
         else {
             res.status(403).send(`Missing body parts`);
             return;
         }
     }
-    
+
 
     // checks to see if username/password pair exist
     var sql = "SELECT * FROM password WHERE user_name = ? AND password = ?"
@@ -851,33 +851,32 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
             var historical_orders_l = [];
             var users_l = [];
             adminDashboard()
-            .catch( (err) => {
-                console.log(err);
-            })
-            .then( (values) => {
-                if (values[0] != null)
-                    events_l = values[0];
-                if (values[1] != null)
-                    current_orders_l = values[1];
-                if (values[2] != null)
-                    historical_orders_l = values[2];
-                if (values[3] != null)
-                    users_l = values[3];
-            })
-            .finally( () => {
-                res.render('pages/admin-page', {
-                    status: loggedIn,
-                    events: events_l,
-                    current_orders: current_orders_l,
-                    historical_orders: historical_orders_l,
-                    users: users_l
+                .catch((err) => {
+                    console.log(err);
+                })
+                .then((values) => {
+                    if (values[0] != null)
+                        events_l = values[0];
+                    if (values[1] != null)
+                        current_orders_l = values[1];
+                    if (values[2] != null)
+                        historical_orders_l = values[2];
+                    if (values[3] != null)
+                        users_l = values[3];
+                })
+                .finally(() => {
+                    res.render('pages/admin-page', {
+                        status: loggedIn,
+                        events: events_l,
+                        current_orders: current_orders_l,
+                        historical_orders: historical_orders_l,
+                        users: users_l
+                    });
                 });
-            });
         });
 });
 
 app.get('/admin/editEvent/:event_id', authenticate, (req, res) => {
-    var loggedIn = '';
     accountStatus(req.cookies.token)
         .catch((err) => {
             loggedIn = 'na';
@@ -887,14 +886,29 @@ app.get('/admin/editEvent/:event_id', authenticate, (req, res) => {
         })
         .finally(() => {
             getEvent(req.query.event_id)
-            .catch( (err) => {
-                // oh well
-            })
-            .then( (result) => {
-                res.render('pages/edit-event', {
-                    status: loggedIn,
-                    event: result[0]
-                });
+                .catch((err) => {
+                    // oh well
+                })
+                .then((result) => {
+                    res.render('pages/edit-event', {
+                        status: loggedIn,
+                        event: result[0]
+                    });
+                })
+        });
+});
+
+app.get('/admin/createEvent', authenticate, (req, res) => {
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/create-event', {
+                status: loggedIn
             })
         });
 });
@@ -910,100 +924,100 @@ app.get('/admin/editUser/:user_id', authenticate, (req, res) => {
         })
         .finally(() => {
             query('SELECT * FROM user WHERE user_id=?', req.query.user_id)
-            .catch( (err) => {
-                // oh well
-            })
-            .then( (result) => {
-                res.render('pages/edit-user', {
-                    status: loggedIn,
-                    user: result[0]
-                });
-            })
+                .catch((err) => {
+                    // oh well
+                })
+                .then((result) => {
+                    res.render('pages/edit-user', {
+                        status: loggedIn,
+                        user: result[0]
+                    });
+                })
         });
 });
 
 // res.body.
 app.post('/api/admin/createTickets', (req, res) => {
     query("SELECT MAX(ticket_id) as max_ticket_id FROM ticket", [])
-    .catch( (err) => {
-        res.send('error, ticket id not found')
-    })
-    .then( (result) => {
-        var currentIndex = result[0].max_ticket_id + 1;
-        var event_id, price;
-        if (req.body.event_id != null && req.body.price != null) {
-            event_id = req.body.event_id;
-            price = req.body.price;
-        }
-        else {
-            var query = JSON.parse(Object.keys(req.query)[0]);
-            if (req.query.event_id != null && req.query.price != null) {
-                event_id = query.event_id;
-                price = query.price;
+        .catch((err) => {
+            res.send('error, ticket id not found')
+        })
+        .then((result) => {
+            var currentIndex = result[0].max_ticket_id + 1;
+            var event_id, price;
+            if (req.body.event_id != null && req.body.price != null) {
+                event_id = req.body.event_id;
+                price = req.body.price;
             }
             else {
-                res.send('missing parts');
-                return;
-            }
-        }
-        
-        var sql = "INSERT INTO ticket (ticket_id, event_id, section_name, seat, hold, sold, price) VALUES ";
-        var format = (index, section_name, seat) => {
-            return `('${index}', '${event_id}', '${section_name}', '${seat}', '0', '0', '${price}'),\n`
-        }
-        // 4 rows x 10 seats
-        var short_rectangles = ["bottom-center-center-lower", "bottom-center-center-lower", "bottom-center-left-lower", "bottom-center-left-lower", "bottom-center-right-lower","bottom-center-right-upper", "top-center-center-lower", "top-center-center-lower", "top-center-left-lower", "top-center-left-upper", "top-center-right-lower", "top-center-right-upper"];
-        // 4 rows x 12 seats
-        var long_rectangles = ["center-far-left-lower", "center-far-left-upper", "center-far-right-lower", "center-far-right-upper"];
-        // row 1: 2 seats, row 2: 4 seats, row 3: 6 seats, row 4: 8 seats, row 5: 10 seats
-        var small_triangle = ["bottom-far-left-lower", "bottom-far-right-lower", "top-far-left-lower", "top-far-right-lower"];
-        // row 1: 7 seats, row 2: 8 seats, row 3: 9 seats, row 4: 10 seats
-        var large_triangle = ["bottom-far-left-upper", "bottom-far-right-upper", "top-far-left-upper", "top-far-right-upper"];
-
-        short_rectangles.forEach(section_name => {
-            for (var row = 1; row <= 4; row++) {
-                for (var seat = 1; seat <= 10; seat++) {
-                    sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                var query = JSON.parse(Object.keys(req.query)[0]);
+                if (req.query.event_id != null && req.query.price != null) {
+                    event_id = query.event_id;
+                    price = query.price;
+                }
+                else {
+                    res.send('missing parts');
+                    return;
                 }
             }
-        });
 
-        long_rectangles.forEach(section_name => {
-            for (var row = 1; row <= 4; row++) {
-                for (var seat = 1; seat <= 12; seat++) {
-                    sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
-                }
+            var sql = "INSERT INTO ticket (ticket_id, event_id, section_name, seat, hold, sold, price) VALUES ";
+            var format = (index, section_name, seat) => {
+                return `('${index}', '${event_id}', '${section_name}', '${seat}', '0', '0', '${price}'),\n`
             }
-        });
+            // 4 rows x 10 seats
+            var short_rectangles = ["bottom-center-center-lower", "bottom-center-center-lower", "bottom-center-left-lower", "bottom-center-left-lower", "bottom-center-right-lower", "bottom-center-right-upper", "top-center-center-lower", "top-center-center-lower", "top-center-left-lower", "top-center-left-upper", "top-center-right-lower", "top-center-right-upper"];
+            // 4 rows x 12 seats
+            var long_rectangles = ["center-far-left-lower", "center-far-left-upper", "center-far-right-lower", "center-far-right-upper"];
+            // row 1: 2 seats, row 2: 4 seats, row 3: 6 seats, row 4: 8 seats, row 5: 10 seats
+            var small_triangle = ["bottom-far-left-lower", "bottom-far-right-lower", "top-far-left-lower", "top-far-right-lower"];
+            // row 1: 7 seats, row 2: 8 seats, row 3: 9 seats, row 4: 10 seats
+            var large_triangle = ["bottom-far-left-upper", "bottom-far-right-upper", "top-far-left-upper", "top-far-right-upper"];
 
-        small_triangle.forEach(section_name => {
-            for (var row = 1; row <= 5; row++) {
-                for (var seat = 1; seat <= row*2; seat++) {
-                    sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+            short_rectangles.forEach(section_name => {
+                for (var row = 1; row <= 4; row++) {
+                    for (var seat = 1; seat <= 10; seat++) {
+                        sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                    }
                 }
-            }
-        });
+            });
 
-        large_triangle.forEach(section_name => {
-            for (var row = 1; row <= 5; row++) {
-                for (var seat = 1; seat <= 6+row; seat++) {
-                    sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+            long_rectangles.forEach(section_name => {
+                for (var row = 1; row <= 4; row++) {
+                    for (var seat = 1; seat <= 12; seat++) {
+                        sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                    }
                 }
-            }
-        });
-        sql = sql.substring(0,sql.length-2)+';'
+            });
 
-        query(sql, [])
-        .catch( (err) => {
-            console.log(err.message);
-            res.send('failed');
-            return;
-        })
-        .then( (result) => {
-            res.send('success!')
-            return;
+            small_triangle.forEach(section_name => {
+                for (var row = 1; row <= 5; row++) {
+                    for (var seat = 1; seat <= row * 2; seat++) {
+                        sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                    }
+                }
+            });
+
+            large_triangle.forEach(section_name => {
+                for (var row = 1; row <= 5; row++) {
+                    for (var seat = 1; seat <= 6 + row; seat++) {
+                        sql += format(currentIndex++, section_name, `row-${row}-seat-${seat}`);
+                    }
+                }
+            });
+            sql = sql.substring(0, sql.length - 2) + ';'
+
+            query(sql, [])
+                .catch((err) => {
+                    console.log(err.message);
+                    res.send('failed');
+                    return;
+                })
+                .then((result) => {
+                    res.send('success!')
+                    return;
+                });
         });
-    });
 })
 
 app.post('/api/admin/upload', authenticate, (req, res) => {
