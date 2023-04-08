@@ -68,12 +68,14 @@ function generate(id) {
 			console.log(err.message);
 		})
 		.then((result) => {
-			top_center_left_upper_sold = [];
+			var top_center_left_upper_sold = [];
 			result.forEach( (ticket) => {
 				console.log(ticket.seat);
-				top_center_left_upper.push(ticket.seat);
+				top_center_left_upper_sold.push(ticket.seat);
 			})
+			
 			console.log(top_center_left_upper_sold);
+			
 			var seatingString = "";
 			seatingPolygon.setAttribute('viewBox', '-22 -50 350 275')
 			seatingPolygon.innerHTML = '<rect width="300" height="100" class="section-svg"/>'
