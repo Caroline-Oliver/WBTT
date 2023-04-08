@@ -11,7 +11,7 @@ function login() {
 			"password": `${document.getElementById('password').value}`
 		}),
 		processData: false,
-		complete: function(data, textStatus, jQxhr) {
+		complete: function (data, textStatus, jQxhr) {
 			location.reload();
 		}
 	});
@@ -33,14 +33,16 @@ function setMessage(message) {
 }
 
 function getSoldTickets(event_id, venue_section_name) {
-	$.ajax({
-		url: `/api/getTickets/${event_id}/${venue_section_name}`,
-		dataType: 'json',
-		type: 'get',
-		contentType: 'application/jsonp',
-		processData: false,
-		complete: function(data, textStatus, jQxhr) {
-			// do stuff here
-		}
+	return new Promise((reject, resolve) => {
+		$.ajax({
+			url: `/api/getTickets/${event_id}/${venue_section_name}`,
+			dataType: 'json',
+			type: 'get',
+			contentType: 'application/jsonp',
+			processData: false,
+			complete: function (data, textStatus, jQxhr) {
+				resolve(data);
+			}
+		});
 	});
 }
