@@ -957,9 +957,9 @@ app.post('/api/admin/createTickets', (req, res) => {
     if (req.body.event_id != null)
         event_id = req.body.event_id;
     else {
-        var query = JSON.parse(Object.keys(req.query)[0]);
-        if (query.event_id != null)
-            event_id = query.event_id;
+        var query_search = JSON.parse(Object.keys(req.query)[0]);
+        if (query_search.event_id != null)
+            event_id = query_search.event_id;
         else {
             // probably should error out
         }
