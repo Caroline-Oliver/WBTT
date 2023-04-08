@@ -200,8 +200,8 @@ function searchEvents(search_terms) {
                     special_terms = "AND " + special_terms;
                 }
             }
-
-            special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
+            if (special_terms != '')
+                special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
 
             let sql = 'SELECT *' + count_search + '\n' + 'FROM event ';
             if (where_search != '' || special_terms != '') {
