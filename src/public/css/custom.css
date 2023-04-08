@@ -143,7 +143,19 @@ hr {
 @media(max-width: 991px){
 	.background-svg {
 	min-height: 600px;
+	}
 }
+
+@media(max-width: 767px){
+	.background-svg {
+	min-height: 500px;
+	}
+}
+
+@media(max-width: 575px){
+	.background-svg {
+	min-height: 400px;
+	}
 }
 
 .section-svg {
