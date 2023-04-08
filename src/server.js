@@ -892,7 +892,7 @@ app.get('/admin/editEvent/:event_id', authenticate, (req, res) => {
                 .then((result) => {
                     res.render('pages/edit-event', {
                         status: loggedIn,
-                        event: result[0]
+                        event: result
                     });
                 })
         });
@@ -1044,6 +1044,22 @@ app.get('/tmp/event-tickets', (req, res) => {
         });
 });
 // #endregion
+
+app.use( (req, res) => {
+    res.status(404);
+
+    res.format({
+    html: function () {
+      res.render('404', { url: req.url })
+    },
+    json: function () {
+      res.json({ error: 'Not found' })
+    },
+    default: function () {
+      res.type('txt').send('Not found')
+    }
+  })
+});
 
 // #region listen on port
 app.listen(port, () => {
