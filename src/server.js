@@ -671,22 +671,6 @@ app.get('/my/checkout', authenticate, (req, res) => {
         });
 });
 
-app.get('/login', (req, res) => {
-    var loggedIn = '';
-    accountStatus(req.cookies.token)
-        .catch((err) => {
-            loggedIn = 'na';
-        })
-        .then((status) => {
-            loggedIn = status;
-        })
-        .finally(() => {
-            res.render('pages/login', {
-                status: loggedIn
-            });
-        });
-});
-
 app.get('/logout', (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
