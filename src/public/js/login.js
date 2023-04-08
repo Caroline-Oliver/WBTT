@@ -33,7 +33,7 @@ function setMessage(message) {
 }
 
 function getSoldTickets(event_id, venue_section_name) {
-	return new Promise((reject, resolve) => {
+	return new Promise((resolve, reject) => {
 		$.ajax({
 			url: `/api/getTickets/${event_id}/${venue_section_name}`,
 			dataType: 'json',
