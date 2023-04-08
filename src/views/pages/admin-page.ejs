@@ -299,12 +299,12 @@
               </tr>
             </thead>
             <tbody>
-              <% events.forEach(function(order) { %>
+              <% events.forEach(function(event) { %>
               <tr>
-                <td><%= order.event_name %></td>
-                <td><%= order.event_description %></td>
-                <td><%= order.venue %></td>
-                <td><%= order.date %></td>
+                <td><a href="/admin/editEvent/<%= event.event_id %>"><%= event.event_name %></a></td>
+                <td><%= event.event_description %></td>
+                <td><%= event.venue %></td>
+                <td><%= event.date %></td>
               </tr>
               <% }); %>
             </tbody>
