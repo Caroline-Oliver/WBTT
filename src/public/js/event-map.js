@@ -49,6 +49,15 @@ var top_center_left_upper = [4,10]
 var vertical_sections = [4,12]
 const cartArray = []
 
+getSoldTickets(1,'floor')
+.catch( (err) => {
+    // do stuff with err
+})
+.then( (result) => {
+    // do stuff with result
+	console.log(JSON.stringify(result));
+});
+
 //This MUST be pulled from DB
 var top_center_left_upper_sold = [1,2,9,10,16,17,19,35]
 var seatingPolygon = document.getElementById('seating-section');
@@ -63,10 +72,6 @@ var yOffset  = 12.5;
 var soldIndex = 0;
 
 function generate(id){
-	var floorSeats = document.getElementById('floor-seat-div');
-	floorSeats.innerHTML='';
-	var addButton = document.getElementById('add-button');
-	addButton.setAttribute('onClick','addToCart()');
 	var seatingString = "";
 	seatingPolygon.setAttribute('viewBox','-22 -50 350 275')
 	seatingPolygon.innerHTML = '<rect width="300" height="100" class="section-svg"/>'
@@ -230,7 +235,7 @@ function updateTicket(target){
 //cart needs more work
 function addToCart(){
 	const cartSeats = document.getElementsByClassName('in-cart');
-	
+
 	if (cartSeats.length != 0){
 		var tempCart = document.getElementById('rightPanelCart');
 		//Do we want this as a table?
@@ -256,3 +261,18 @@ function addToCart(){
 }
 
 //add function to grab needed data
+
+function getSoldTickets(event_id, venue_section_name) {
+    return new Promise((reject, resolve) => {
+        $.ajax({
+            url: `/api/getTickets/${event_id}/${venue_section_name}`,
+            dataType: 'json',
+            type: 'get',
+            contentType: 'application/jsonp',
+            processData: false,
+            complete: function (data, textStatus, jQxhr) {
+                resolve(data);
+            }
+        });
+    });
+}

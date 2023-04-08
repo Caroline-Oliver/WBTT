@@ -152,7 +152,16 @@ hr {
 	fill: #FDE5BE;
 }
 
+.available-legend {
+	fill: #FCA311;
+}
+
 .sold {
+	fill: #969a9e;
+	cursor: not-allowed;
+}
+
+.sold-legend {
 	fill: #969a9e;
 	cursor: not-allowed;
 }
@@ -161,6 +170,9 @@ hr {
 	fill:#25a447;
 }
 
+.in-cart-legend {
+	fill:#25a447;
+}
 .floor-bottom {
 	fill: #14213D;
 }
@@ -204,8 +216,4 @@ hr {
 .search-results {
 	text-align: center;
 	margin-top: 25px;
-}
-
-.header-divider {
-	margin: 0px;
 }
