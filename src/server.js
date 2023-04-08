@@ -209,9 +209,9 @@ function searchEvents(search_terms) {
                 special_terms = '';
             }
 
-            let sql = 'SELECT *' + count_search + '\n';
+            let sql = 'SELECT *' + count_search + '\n' + 'FROM event ';
             if (where_search != '' || special_terms != ''){
-                sql += 'FROM event WHERE\n' +
+                sql += 'WHERE\n' +
                     where_search + '\n' +
                     special_terms + '\n';
             }
