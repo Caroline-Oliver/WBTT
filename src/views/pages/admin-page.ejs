@@ -320,8 +320,8 @@
           <table class="table table-striped table-sm">
             <thead>
               <tr>
-                <th>User ID</th>
                 <th>Username</th>
+                <th>User ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
@@ -331,8 +331,8 @@
             <tbody>
               <% users.forEach(function(user) { %>
                 <tr>
+                  <td><a href="/admin/editUser/<%= user.user_id%>"></a><%= user.user_name %></a></td>
                   <td><%= user.user_id %></td>
-                  <td><%= user.user_name %></td>
                   <td><%= user.first_name %></td>
                   <td><%= user.last_name %></td>
                   <td><%= user.email %></td>

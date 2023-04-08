@@ -133,8 +133,6 @@ function searchEvents(search_terms) {
             let where_search = '';
             let count_search = '';
             let special_terms = '';
-            let special_only = true;
-            let normal_only = true;
             search_terms.forEach(element => {
                 if (element.includes(':')) {
                     let type = element.substring(0, element.indexOf(':')).toLowerCase();
@@ -144,42 +142,42 @@ function searchEvents(search_terms) {
                         switch (type) {
                             case 'category':
                             case 'cat':
-                                if (special_terms == '') special_terms = '( '; normal_only = false;
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `category='${term}' AND\n`;
                                 break;
                             case 'befored':
                             case 'beforedate':
-                                if (special_terms == '') special_terms = '( '; normal_only = false;
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `date < '${term}' AND\n`;
                                 break;
                             case 'afterd':
                             case 'afterdate':
-                                if (special_terms == '') special_terms = '( '; normal_only = false;
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `date > '${term}' AND\n`;
                                 break;
                             case 'ond':
                             case 'ondate':
-                                if (special_terms == '') special_terms = '( '; normal_only = false;
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `date = '${term}' AND\n`;
                                 break;
                             case 'dotw':
                             case 'dayoftheweek':
-                                if (special_terms == '') special_terms = '( '; normal_only = false;
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `day = '${term}' AND\n`;
                                 break;
                             case 'venue':
                             case 'ven':
-                                if (special_terms == '') special_terms = '( '; normal_only = false;
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `venue = '${term}' AND\n`
                                 break;
                             case 'costbelow':
                             case 'costb':
-                                if (special_terms == '') special_terms = '( '; normal_only = false;
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `cost < '${term}' AND\n`
                                 break;
                             case 'costabove':
                             case 'costa':
-                                if (special_terms == '') special_terms = '( '; normal_only = false;
+                                if (special_terms == '') special_terms = '( ';
                                 special_terms += `cost > '${term}' AND\n`
                                 break;
                         }
@@ -192,7 +190,6 @@ function searchEvents(search_terms) {
                     }
                     where_search += `event_name LIKE '\%${element}\%' OR\n`;
                     count_search += `(event_name LIKE '\%${element}\%') + `
-                    special_only = false;
                 }
             });
             // removes final OR\n
@@ -205,10 +202,6 @@ function searchEvents(search_terms) {
             }
 
             special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
-
-            if (normal_only) {
-                special_terms = '';
-            }
 
             let sql = 'SELECT *' + count_search + '\n' + 'FROM event ';
             if (where_search != '' || special_terms != ''){
