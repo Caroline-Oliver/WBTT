@@ -41,16 +41,35 @@
 	color:#FCA311;
 }
 
+.sport h1 {
+	background-color: #55555599;
+}
+
 .concert{
 	background-image: url("/images/concert-category.jpg");
+	color:#FCA311;
+}
+
+.concert h1 {
+	background-color: #55555599;
 }
 
 .theater{
 	background-image: url("/images/theater-category.jpg");
+	color:#FCA311;
+}
+
+.theater h1 {
+	background-color: #55555599;
 }
 
 .other{
 	background-image: url("/images/other-category.jpg");
+	color:#FCA311;
+}
+
+.other h1 {
+	background-color: #55555599;
 }
 
 hr {
