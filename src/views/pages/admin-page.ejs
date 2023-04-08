@@ -336,7 +336,11 @@
                   <td><%= user.first_name %></td>
                   <td><%= user.last_name %></td>
                   <td><%= user.email %></td>
-                  <td><%= user.type %></td>
+                  <% if (user.type == '0') { %>
+                    <td><%= "Admin" %></td>
+                  <% } else { %>
+                    <td><%= "User" %></td>
+                  <% } %>
                 </tr>
                 <% }); %>
             </tbody>
