@@ -1050,7 +1050,7 @@ app.use( (req, res) => {
 
     res.format({
     html: function () {
-      res.render('404', { url: req.url })
+      res.render('pages/404', { url: req.url })
     },
     json: function () {
       res.json({ error: 'Not found' })
