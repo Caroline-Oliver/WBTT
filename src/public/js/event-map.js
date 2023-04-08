@@ -64,6 +64,7 @@ var yOffset = 12.5;
 var soldIndex = 0;
 
 function generate(id) {
+	currentSectionSold = []
 	getSoldTickets(1, id)
 		.catch((err) => {
 			console.log(err.message);
@@ -73,7 +74,7 @@ function generate(id) {
 				currentSectionSold.push(ticket.seat);
 				console.log(ticket.seat);
 			})
-			console.log(currentSectionSold);
+			console.log(currentSectionSold+" this is what is in the array");
 			var addButton = document.getElementById('add-button');
 			addButton.setAttribute('onClick','addToCart()');
 			var floorSeats = document.getElementById('floor-seat-div');
