@@ -17,7 +17,7 @@
     <% let idx = 0; %>
     <% if (events == null) events = []; %>
     <% if (JSON.stringify(events) === "[]") { %>
-      <h3 style="text-align:center">No results found</h3>
+      <h3 class="search-results">No results found</h3>
     <% } %>
 
     <% events.forEach(function(event) { %>
