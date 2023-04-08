@@ -331,7 +331,7 @@
             <tbody>
               <% users.forEach(function(user) { %>
                 <tr>
-                  <td><a href="/admin/editUser/<%= user.user_id%>"></a><%= user.user_name %></a></td>
+                  <td><a href="/admin/editUser/<%= user.user_id%>"><%= user.user_name %></a></td>
                   <td><%= user.user_id %></td>
                   <td><%= user.first_name %></td>
                   <td><%= user.last_name %></td>
