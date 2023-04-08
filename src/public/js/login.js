@@ -42,6 +42,8 @@ function getSoldTickets(event_id, venue_section_name) {
 			processData: false,
 			complete: function (data, textStatus, jQxhr) {
 				console.log(JSON.stringify(data));
+				console.log(JSON.stringify(textStatus));
+				console.log(JSON.stringify(jQxhr));
 				resolve(data);
 			}
 		});
