@@ -299,6 +299,7 @@
                 <th>Description</th>
                 <th>Venue</th>
                 <th>Date</th>
+                <th>Day of the Week</th>
                 <th>Time</th>
               </tr>
             </thead>
@@ -308,7 +309,8 @@
                 <td><a href="/admin/editEvent/<%= event.event_id %>"><%= event.event_name %></a></td>
                 <td><%= event.event_description %></td>
                 <td><%= event.venue %></td>
-                <td><%= (event.date + '').split(' ').slice(0, 4).join(' ') %></td>
+                <td><%= (event.date + '').split(' ').slice(1, 4).join(' ') %></td>
+                <td><%= event.day %></td>
                 <td><%= event.time %></td>
               </tr>
               <% }); %>
