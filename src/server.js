@@ -172,6 +172,16 @@ function searchEvents(search_terms) {
                                 if (special_terms == '') special_terms = '( '; normal_only = false;
                                 special_terms += `venue = '${term}' AND\n`
                                 break;
+                            case 'costbelow':
+                            case 'costb':
+                                if (special_terms == '') special_terms = '( '; normal_only = false;
+                                special_terms += `cost < '${term}' AND\n`
+                                break;
+                            case 'costabove':
+                            case 'costa':
+                                if (special_terms == '') special_terms = '( '; normal_only = false;
+                                special_terms += `cost > '${term}' AND\n`
+                                break;
                         }
                     }
                 } else {
@@ -993,6 +1003,7 @@ app.get('/tmp/event-tickets', (req, res) => {
             });
         });
 });
+// #endregion
 
 // #region listen on port
 app.listen(port, () => {
