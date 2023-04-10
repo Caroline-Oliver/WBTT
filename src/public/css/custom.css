@@ -273,3 +273,7 @@ hr {
 	text-align: center;
 	margin-top: 25px;
 }
+
+.warning-label {
+	color:red;
+}
