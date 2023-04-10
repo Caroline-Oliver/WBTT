@@ -271,13 +271,19 @@ function getCart(token) {
     WHERE c.user_id = ?`
 
     return new Promise((resolve, reject) => {
-        query(sql, [token])
-        .catch( (err) => {
-            reject(err);
-        })
-        .then( (results) => {
-            resolve(results);
-        })
+        checkTimestamps(`user_id = ${token}`)
+            .catch( (err) => {
+                reject(err);
+            })
+            .then( (results) => {
+                query(sql, [token])
+                .catch( (err) => {
+                    reject(err);
+                })
+                .then( (results) => {
+                    resolve(results);
+                })
+            })
     });
 }
 
