@@ -887,8 +887,8 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
         let cartQuery = query(cartSQL, tickets);
         let holdQuery = query(holdSQL, tickets);
-        console.log(`cartQuery: \'${cartQuery}`);
-        console.log(`holdQuery: \'${holdQuery}`);
+        console.log(`cartQuery: '${cartSQL}'`);
+        console.log(`holdQuery: '${holdSQL}'`);
     
         Promise.all([cartQuery, holdQuery])
             .catch((err) => {
