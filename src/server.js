@@ -524,7 +524,8 @@ app.get('/event/:event_id', (req, res) => {
                 .then((this_event) => {
                     if (loggedIn == 'na')
                         res.render(`pages/event`, {
-                            status: loggedIn
+                            status: loggedIn,
+                            event: this_event
                         });
                     else
                         res.render(`pages/${this_event.configuration}-configuration`, {
