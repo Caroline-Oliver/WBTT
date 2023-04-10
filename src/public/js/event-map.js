@@ -113,10 +113,10 @@ function generate(id) {
 				for (var i = vertical_sections[0]; i > 0; i--) {
 					for (var j = 0; j < vertical_sections[1]; j++) {
 						if (currentSectionSold.includes(soldIndex)) {
-							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
+							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="'+id+'_row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 						}
 						else {
-							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="row-' + (i) + '-seat-' + (j + 1) + '" class="tickets available"></circle>';
+							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="'+id+'_row-' + (i) + '-seat-' + (j + 1) + '" class="tickets available"></circle>';
 						}
 						xOffset += 20;
 						soldIndex++;
@@ -153,10 +153,10 @@ function generate(id) {
 					for (i = 5; i > 0; i--) {
 						for (j = 0; j < (i * 2); j++) {
 							if (currentSectionSold.includes(soldIndex)) {
-								seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
+								seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="'+id+'_row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 							}
 							else {
-								seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="row-' + (i) + '-seat-' + (j + 1) + '" class="tickets available"></circle>';
+								seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="7" id="'+id+'_row-' + (i) + '-seat-' + (j + 1) + '" class="tickets available"></circle>';
 							} xOffset += 20;
 							soldIndex++;
 						}
@@ -191,10 +191,10 @@ function generate(id) {
 					for (i = 4; i > 0; i--) {
 						for (j = 0; j < 6 + i; j++) {
 							if (currentSectionSold.includes(soldIndex)) {
-								seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
+								seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8" id="'+id+'_row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 							}
 							else {
-								seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8" id="row-' + (i) + '-seat-' + (j + 1) + '" class="tickets available"></circle>';
+								seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8" id="'+id+'_row-' + (i) + '-seat-' + (j + 1) + '" class="tickets available"></circle>';
 							} xOffset += 20;
 							soldIndex++;
 						}
@@ -222,10 +222,10 @@ function generate(id) {
 					//console.log(i);
 					for (var j = 0; j < top_center_left_upper[1]; j++) {
 						if (currentSectionSold.includes(soldIndex)) {
-							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8.5" id="row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
+							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8.5" id="'+id+'_row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 						}
 						else {
-							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8.5" id="row-' + (i) + '-seat-' + (j + 1) + '" class="tickets available"></circle>';
+							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8.5" id="'+id+'_row-' + (i) + '-seat-' + (j + 1) + '" class="tickets available"></circle>';
 						} xOffset += 25;
 						soldIndex++;
 					}
@@ -282,9 +282,11 @@ function updateCartList(){
 		}
 		const holdSeats = document.getElementsByClassName('hold');
 		count = holdSeats.length;
-		for (var index = 0; index < count; index++) {
+		var seatIdArr = [];
+	    for (var index = 0; index < count; index++) {
 			seatId = holdSeats[index].getAttribute('id');
-			cartString += seatId + '<br>';
+			seatIdArr = seatId.split("_")
+			cartString += seatId[0]+' '+seatId[1] + '<br>';
 		}
 	tempCart.innerHTML = cartString + '</p>';
 }
