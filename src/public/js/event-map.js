@@ -269,7 +269,7 @@ function addToCart() {
 		const sections = [];
 		const seats = [];
 		for (var i=0; i<holdSeats.length; i++){
-			temp = holdSeats.split("_");
+			temp = holdSeats[i].split("_");
 			sections.push(temp[0]);
 			seats.push(temp[1]);
 		}
