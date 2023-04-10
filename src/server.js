@@ -813,21 +813,21 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     }
 
     // e.g., ['section-name_ticket-number', ...] (referencing the ticket table)
-    var tickets;
+    var tickets_str;
     // e.g., 1 (referencing the event table)
     var event_id;
     // e.g., 1 (referencing the user table)
     var user_id = req.cookies.token;
 
     if (req.body.tickets != null && req.body.event_id != null) {
-        tickets = req.body.tickets;
+        tickets_str = req.body.tickets;
         event_id = req.body.event_id;
     }
     else {
         var query = JSON.parse(Object.keys(req.query)[0]);
 
         if (query.tickets != null && query.event_id != null) {
-            tickets = query.tickets;
+            tickets_str = query.tickets;
             event_id = query.event_id;
         }
 
@@ -843,10 +843,14 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
     var getTicketIds = `SELECT ticket_id FROM tickets WHERE (`;
 
-    // decide on amount of time user gets for these tickets being 'on hold'
-    console.log(`tickets: ${tickets[0]}`);
-    console.log(`event id: ${event_id}`);
-    console.log(`user id ${user_id}`);
+    // convert tickets from string to array
+    var idx = 0;
+    var tickets = [];
+    tickets_str.split("'").forEach( (token) => {
+        if (idx % 2 != 0) {
+            tickets.push(token);
+        }
+    })
 
     tickets.forEach((ticket) => {
         let tokens = ticket.split('_');
