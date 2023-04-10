@@ -324,7 +324,7 @@ function addToCart() {
 				tickets.push(temp[0]+'_'+seatIndex);
 			}
 			else{
-				seats.push(temp[0]+'_'+Number(-1));
+				tickets.push(temp[0]+'_'+Number(-1));
 			}
 			
 		}
