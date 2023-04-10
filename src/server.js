@@ -265,6 +265,22 @@ function accountStatus(token) {
     });
 }
 
+function getCart(token) {
+    let sql = `SELECT * FROM wbtt.cart as c
+    JOIN wbtt.ticket as t ON t.ticket_id = c.ticket_id
+    WHERE c.user_id = ${req.cookies.token}`
+
+    return new Promise((resolve, reject) => {
+        query(sql, [])
+        .catch( (err) => {
+            reject(err);
+        })
+        .then( (results) => {
+            resolve(results);
+        })
+    });
+}
+
 function query(sql, params) {
     return new Promise((resolve, reject) => {
         pool.query(sql, params, (err, result) => {
@@ -922,7 +938,14 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 });
 
 app.get('/api/my/getCart', authenticate, (req, res) => {
-    let sql = `SELECT * FROM cart WHERE `
+    getCart(req.cookies.token)
+        .catch( (err) => {
+            console.log('error in getCart api');
+            console.log(err.message);
+        })
+        .then( (results) => {
+            res.send(results);
+        })
 })
 // #endregion
 
