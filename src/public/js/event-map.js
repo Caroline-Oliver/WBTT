@@ -80,7 +80,8 @@ resizeArena.addListener(arenaResize) // Attach listener function on state change
 
 function generate(id) {
 	currentSectionSold = []
-	getSoldTickets(1, id)
+	let event_id = window.location.href.split('/')[2]
+	getSoldTickets(event_id, id)
 		.catch((err) => {
 			console.log(err.message);
 		})
