@@ -253,7 +253,7 @@ function updateTicket(target) {
 	else {
 		target.setAttribute('class', 'tickets available');
 		//call function to change hold status of ticket?
-		updateCartList();
+		//updateCartList();
 	}
 }
 
