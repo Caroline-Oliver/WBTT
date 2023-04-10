@@ -330,7 +330,7 @@ function addToCart() {
 			}
 
 		}
-		currentURL = window.location.href;
+		var currentURL = window.location.href;
 		const urlArray = currentURL.split('/');
 		//console.log(urlArray[urlArray.length-1]);
 		console.log(tickets)
