@@ -282,7 +282,7 @@ function updateCartList(){
 		}
 		const holdSeats = document.getElementsByClassName('hold');
 		count = holdSeats.length;
-		const seatIdArr;
+		const seatIdArr =[];
 	    for (var index = 0; index < count; index++) {
 			seatId = holdSeats[index].getAttribute('id');
 			seatIdArr = seatId.split("_")
