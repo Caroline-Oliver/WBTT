@@ -858,12 +858,9 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     // convert tickets from string to array
     var idx = 0;
     var tickets = [];
-    console.log(tickets_str.split(","));
     tickets_str.split(",").forEach((token) => {
         tickets.push(token);
     })
-
-    console.log(tickets);
 
     tickets.forEach((ticket) => {
         let tokens = ticket.split('_');
@@ -883,6 +880,10 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     cartSQL = cartSQL.substring(0, cartSQL.length - 2) + ';'
     holdSQL = holdSQL.substring(0, holdSQL.length - 4) + ');'
     getTicketIds = getTicketIds.substring(0, getTicketIds.length - 4) + ');'
+
+    console.log(cartSQL);
+    console.log(holdSQL);
+    console.log(getTicketIds);
 
     query(getTicketIds, [])
         .catch((err) => {
