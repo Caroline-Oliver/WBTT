@@ -266,11 +266,9 @@ function addToCart() {
 		updateCartList()
 		startTimer();
 		const holdSeats = document.getElementsByClassName('hold');
-		const sections = [];
-		const seats = [];
+		const tickets = [];
 		for (var i=0; i<holdSeats.length; i++){
 			var temp = holdSeats[i].getAttribute('id').split("_");
-			sections.push(temp[0]);
 			var seatIndex;
 			var cols;
 			var decrement;
@@ -323,19 +321,18 @@ function addToCart() {
 			seatIndex = (Number(row*cols-decrement*(row*row-row)/2)+Number(input[3])-1)
 			//console.log(input+" is ticket number "+seatIndex);
 			if (calc){	  
-				seats.push(seatIndex);
+				tickets.push(temp[0]+'_'+seatIndex);
 			}
 			else{
-				seats.push(Number(-1));
+				seats.push(temp[0]+'_'+Number(-1));
 			}
 			
 		}
 		currentURL = window.location.href;
 		const urlArray = currentURL.split('/');
 		//console.log(urlArray[urlArray.length-1]);
-		console.log(sections)
-		console.log(seats)
-		sendToCart(sections, seats, urlArray[urlArray.lastIndexOf]);
+		console.log(tickets)
+		//sendToCart(tickets, urlArray[urlArray.lastIndexOf]);
 	}
 }
 
@@ -362,7 +359,24 @@ function updateCartList(){
 	tempCart.innerHTML = cartString + '</p>';
 }
 
-function sendToCart(sections, seats, eventIndex){
+function sendToCart(tickets, eventIndex){
+	
+	const settings = {
+		"async": true,
+		"crossDomain": true,
+		"url": "http://18.219.2.17:3000/api/my/addToCart",
+		"method": "POST",
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"processData": false,
+		"data": `{\n    \"tickets\" : \"${tickets}\",\n    \"eventIndex\" : \"${eventIndex}\"\n}\n`
+	};
+
+	$.ajax(settings).done(function (response) {
+		console.log(response);
+
+	});
 	
 }
 
