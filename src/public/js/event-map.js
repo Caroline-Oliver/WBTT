@@ -335,13 +335,13 @@ function addToCart() {
 		//console.log(urlArray[urlArray.length-1]);
 		console.log(tickets)
 		sendToCart(tickets, urlArray[urlArray.lastIndexOf])
-		.catch( (err) => {
-			console.log('error sending to cart');
-			console.log(err.message);
-		})
-		.then( (result) => {
-			console.log('sent to cart');
-		})
+			.catch((err) => {
+				console.log('error sending to cart');
+				console.log(err.message);
+			})
+			.then((result) => {
+				console.log('sent to cart');
+			})
 	}
 }
 
@@ -370,22 +370,21 @@ function updateCartList() {
 
 function sendToCart(tickets, eventIndex) {
 	return new Promise((resolve, reject) => {
-		$.ajax({
-			url: `http://18.219.2.17:3000/api/my/addToCart`,
-			dataType: 'json',
-			type: 'post',
-			processData: false,
-			contentType: 'application/jsonp',
-			data: JSON.stringify({
-				"tickets" : `${tickets}`,
-				"event_id" : eventIndex
-			}),
-			success: function (data) {
-				resolve(data);
+		var settings = {
+			"url": "http://18.189.94.24:3000/api/my/addToCart",
+			"method": "POST",
+			"timeout": 0,
+			"headers": {
+				"Content-Type": "application/json"
 			},
-			error: function (error) {
-				reject(error);
-			}
+			"data": JSON.stringify({
+				"tickets": `${tickets}`,
+				"event_id": `${eventIndex}`
+			}),
+		};
+
+		$.ajax(settings).done(function (response) {
+			resolve(response);
 		});
 	});
 }
