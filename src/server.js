@@ -880,7 +880,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     })
     .then( (results) => {
         if (results.length == 0) {
-            console.log('no tickets added');
+            res.send('no tickets added');
             return;
         }
         var tickets = [];
