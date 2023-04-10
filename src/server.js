@@ -37,8 +37,11 @@ function checkTimestamps(search_terms) {
     // YYYY-MM-DD HH:MM:SS format
     const datetime = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`
 
-    var sql = "UPDATE ticket\nSET hold = 0, hold_time = null, user_id = null\n";
-    sql += "WHERE (" + search_terms + ") AND hold=1 AND hold_time < \'" + datetime + "\';";
+    var sql = "UPDATE ticket\nSET hold = 0, hold_time = null, user_id = null" + '\n' +
+              `WHERE (${search_terms}) AND hold=1 AND hold_time < '${datetime}';` + '\n' +
+              `DELETE cart FROM cart
+              JOIN ticket as t ON cart.ticket_id = t.ticket_id
+              WHERE cart.user_id = 4 AND t.hold = 0;`;
 
     return new Promise((resolve, reject) => {
         pool.query(sql, function (err, result) {
@@ -843,6 +846,8 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
     var getTicketIds = `SELECT ticket_id FROM ticket WHERE (`;
 
+    var updateHoldsSQL = `UPDATE ticket SET hold_time = '${holdTime(10)}' WHERE user_id = ${user_id} AND hold = 1;`
+
     // convert tickets from string to array
     var idx = 0;
     var tickets = [];
@@ -891,8 +896,9 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
         let cartQuery = query(cartSQL, tickets);
         let holdQuery = query(holdSQL, tickets);
+        let curHoldQuery = query(updateHoldsSQL, []);
     
-        Promise.all([cartQuery, holdQuery])
+        Promise.all([cartQuery, holdQuery, curHoldQuery])
             .catch((err) => {
                 console.log('errored in /api/my/addToCart');
                 console.log(err.message);
@@ -905,6 +911,10 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
     
 });
+
+app.get('/api/my/getCart', authenticate, (req, res) => {
+    let sql = `SELECT * FROM cart WHERE `
+})
 // #endregion
 
 // #region search api

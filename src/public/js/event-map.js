@@ -332,7 +332,7 @@ function addToCart() {
 		const urlArray = currentURL.split('/');
 		//console.log(urlArray[urlArray.length-1]);
 		console.log(tickets)
-		//sendToCart(tickets, urlArray[urlArray.lastIndexOf]);
+		sendToCart(tickets, urlArray[urlArray.lastIndexOf]);
 	}
 }
 
