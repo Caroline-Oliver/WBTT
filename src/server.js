@@ -879,6 +879,10 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
         res.send('failed :(');
     })
     .then( (results) => {
+        if (results.length == 0) {
+            console.log('no tickets added');
+            return;
+        }
         var tickets = [];
         
         results.forEach( (ticket) => {
