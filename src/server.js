@@ -529,7 +529,8 @@ app.get('/event/:event_id', (req, res) => {
                         });
                     else
                         res.render(`pages/${this_event.configuration}-configuration`, {
-                            status: loggedIn
+                            status: loggedIn,
+                            event: this_event
                         });
                     
                 });

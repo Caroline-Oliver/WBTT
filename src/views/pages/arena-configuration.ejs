@@ -10,6 +10,12 @@
 		<%- include('../partials/header') %>
 	</header>
 
+	<div class="jumbotron-fluid jumbo-header">
+		<h1>
+			<%= event.event_name %>
+		</h1>
+	</div>
+
 	<div class="row event-row">
 		<div class="col-lg-3">
 			<div id="leftPanel" class="event-left-panel">
@@ -33,7 +39,8 @@
 				</div>
 				<hr>
 				<div>
-					<button id="add-button" type="button" class="btn btn-inverse" style="margin-top:15px; margin-bottom:50px" onClick="addToCart()">Add To Cart</button>
+					<button id="add-button" type="button" class="btn btn-inverse"
+						style="margin-top:15px; margin-bottom:50px" onClick="addToCart()">Add To Cart</button>
 					<!--<button type="button" class="btn  btn-inverse">Cancel</button>-->
 				</div>
 			</div>
@@ -150,22 +157,23 @@
 			</svg>
 		</div>
 		<div class="col-lg-3">
-		<div id="rightPanel" class="event-right-panel">
-			<div class="panel-center" id="cart">
-				<h4>Cart</h4>
-				<div id="timer-div" align="center" style="text-align: center;" hidden="true">
-					<label id="time-warning"></label>
-					<label id="time-text">Time Remaining to Purchase:</label>
-					<label id="time" style="margin-left: 10px"></label>
-		  </div>
-				<div id="rightPanelCart"></div>
-			</div>	
-			<hr>
-			<div>
-				<button type="button" class="btn btn-inverse" style="margin-top:15px; margin-bottom:50px">Checkout</button>	
+			<div id="rightPanel" class="event-right-panel">
+				<div class="panel-center" id="cart">
+					<h4>Cart</h4>
+					<div id="timer-div" align="center" style="text-align: center;" hidden="true">
+						<label id="time-warning"></label>
+						<label id="time-text">Time Remaining to Purchase:</label>
+						<label id="time" style="margin-left: 10px"></label>
+					</div>
+					<div id="rightPanelCart"></div>
+				</div>
+				<hr>
+				<div>
+					<button type="button" class="btn btn-inverse"
+						style="margin-top:15px; margin-bottom:50px">Checkout</button>
+				</div>
 			</div>
 		</div>
-	</div>
 	</div>
 
 	<script src="/js/event-map.js"></script>
