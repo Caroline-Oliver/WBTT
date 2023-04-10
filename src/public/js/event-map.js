@@ -265,7 +265,16 @@ function addToCart() {
 		//update cart list will call backend AddToCart
 		updateCartList()
 		startTimer();
-		
+		const holdSeats = document.getElementsByClassName('hold');
+		const sections = [];
+		const seats = [];
+		for (var i=0; i<holdSeats.length; i++){
+			temp = holdSeats.split("_");
+			sections.push(temp[0]);
+			seats.push(temp[1]);
+		}
+		console.log(window.location.href)
+		sendToCart(sections, seats);
 	}
 }
 
@@ -292,7 +301,7 @@ function updateCartList(){
 	tempCart.innerHTML = cartString + '</p>';
 }
 
-function sendToCart(ticketId, eventId, userId, time){
+function sendToCart(sections, seats){
 	
 }
 
