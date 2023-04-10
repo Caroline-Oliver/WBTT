@@ -316,12 +316,12 @@ function addToCart() {
 					break;
 			}
 			
-			console.log("cols is "+cols);
-			console.log("decrement is "+decrement);
-			console.log("input is "+input);
-			console.log("row is "+row);
+			//console.log("cols is "+cols);
+			//console.log("decrement is "+decrement);
+			//console.log("input is "+input);
+			//console.log("row is "+row);
 			seatIndex = (Number(row*cols-decrement*(row*row-row)/2)+Number(input[3])-1)
-			console.log(input+" is ticket number "+seatIndex);
+			//console.log(input+" is ticket number "+seatIndex);
 			if (calc){	  
 				seats.push(seatIndex);
 			}
@@ -332,7 +332,7 @@ function addToCart() {
 		}
 		currentURL = window.location.href;
 		const urlArray = currentURL.split('/');
-		console.log(urlArray[urlArray.length-1]);
+		//console.log(urlArray[urlArray.length-1]);
 		console.log(sections)
 		console.log(seats)
 		sendToCart(sections, seats, urlArray[urlArray.lastIndexOf]);
@@ -357,7 +357,7 @@ function updateCartList(){
 			const seatIdArr = seatId.split("_")
 			//console.log(seatId)
 			//console.log(seatIdArr)
-			//cartString += seatIdArr[0]+' '+seatIdArr[1] + '<br>';
+			cartString += seatIdArr[0]+' '+seatIdArr[1] + '<br>';
 		}
 	tempCart.innerHTML = cartString + '</p>';
 }
