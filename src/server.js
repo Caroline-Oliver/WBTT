@@ -812,20 +812,19 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
     }
 
-    // e.g., [1,2,3]
+    // e.g., ['section-name_ticket-number', ...] (referencing the ticket table)
     var tickets;
-    // e.g., 1
-    var user_id;
-    if (req.body.tickets != null && req.body.user_id != null) {
+    // e.g., 1 (referencing the user table)
+    var user_id = req.cookies.token;
+
+    if (req.body.tickets != null) {
         tickets = req.body.tickets;
-        user_id = req.body.user_id;
     }
     else {
         var query = JSON.parse(Object.keys(req.query)[0]);
 
-        if (query.tickets != null && query.user_id != null) {
+        if (query.tickets != null) {
             tickets = query.tickets;
-            user_id = query.user_id;
         }
 
         else {
@@ -838,10 +837,17 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     // e.g., UPDATE `wbtt`.`ticket` SET `user_id` = '2', `hold` = '1', `hold_time` = '2023-04-08 14:00:00' WHERE (`ticket_id` = '4');
     var holdSQL = `UPDATE ticket SET user_id = ${user_id}, hold = 1, hold_time = '${holdTime(10)}' WHERE (`;
 
+    var getTicketIds = `SELECT ticket_id FROM tickets WHERE (`;
+
     // decide on amount of time user gets for these tickets being 'on hold'
     tickets.forEach((ticket) => {
-        cartSQL += `(${user_id}, ${ticket}, ${holdTime(10)}), `
-        holdSQL += `ticket_id = ${ticket} OR `
+        let tokens = ticket.split('_');
+        let section_name = tokens[0];
+        let seat_number = tokens[1];
+
+        cartSQL += `(${user_id}, ?, ${holdTime(10)}), `
+        holdSQL += `ticket_id = ? OR `
+        getTicketIds += `(section_name = ${section_name} AND seat = ${seat_number}) OR `
     })
 
     if (cartSQL == '' || holdSQL == '') {
@@ -851,19 +857,35 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
     cartSQL = cartSQL.substring(0, cartSQL.length - 2) + ';'
     holdSQL = holdSQL.substring(0, holdSQL.length - 4) + ');'
+    getTicketIds = getTicketIds.substring(0, getTicketIds.length - 4) + ');'
 
-    let cartQuery = query(cartSQL, []);
-    let holdQuery = query(holdSQL, []);
-
-    Promise.all([cartQuery, holdQuery])
-        .catch((err) => {
-            console.log('errored in /api/my/addToCart');
-            console.log(err.message);
-            res.send('failed :(');
-        })
-        .then((results) => {
-            res.send('success!');
+    query(getTicketIds, [])
+    .catch( (err) => {
+        console.log('errored in /api/my/addToCart');
+        console.log(err.message);
+        res.send('failed :(');
+    })
+    .then( (results) => {
+        var tickets = [];
+        results.forEach( (ticket) => {
+            tickets.push(ticket.ticket_id)
         });
+
+        let cartQuery = query(cartSQL, tickets);
+        let holdQuery = query(holdSQL, tickets);
+    
+        Promise.all([cartQuery, holdQuery])
+            .catch((err) => {
+                console.log('errored in /api/my/addToCart');
+                console.log(err.message);
+                res.send('failed :(');
+            })
+            .then((results) => {
+                res.send('success!');
+            });
+    })
+
+    
 });
 // #endregion
 
