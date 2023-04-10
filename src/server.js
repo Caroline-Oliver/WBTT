@@ -860,7 +860,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
         cartSQL += `(${user_id}, ?, ${holdTime(10)}), `
         holdSQL += `ticket_id = ? OR `
-        getTicketIds += `(section_name = ${section_name} AND seat = ${seat_number} AND event_id = ${event_id}) OR `
+        getTicketIds += `(section_name = '${section_name}' AND seat = ${seat_number} AND event_id = ${event_id}) OR `
     })
     console.log(`getTicketIds: '${getTicketIds}'`);
     if (cartSQL == '' || holdSQL == '') {
