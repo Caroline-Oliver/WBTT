@@ -841,7 +841,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     // e.g., UPDATE `wbtt`.`ticket` SET `user_id` = '2', `hold` = '1', `hold_time` = '2023-04-08 14:00:00' WHERE (`ticket_id` = '4');
     var holdSQL = `UPDATE ticket SET user_id = ${user_id}, hold = 1, hold_time = '${holdTime(10)}' WHERE (`;
 
-    var getTicketIds = `SELECT ticket_id FROM tickets WHERE (`;
+    var getTicketIds = `SELECT ticket_id FROM ticket WHERE (`;
 
     // convert tickets from string to array
     var idx = 0;
