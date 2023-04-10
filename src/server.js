@@ -811,6 +811,7 @@ app.get('/api/my/login', (req, res) => {
 });
 
 app.post('/api/my/addToCart', authenticate, (req, res) => {
+    console.log(JSON.stringify(req.body));
     const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
 
     let holdTime = (minutes) => {
