@@ -532,7 +532,7 @@ app.get('/event/:event_id', (req, res) => {
                             status: loggedIn,
                             event: this_event
                         });
-                    
+
                 });
         });
 });
@@ -862,23 +862,19 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
         tickets.push(token);
     })
 
+    if (tickets.length == 0) {
+        res.status(403).send('no tickets provided');
+        return;
+    }
+
     tickets.forEach((ticket) => {
         let tokens = ticket.split('_');
         let section_name = tokens[0];
         let seat_number = tokens[1];
 
-        cartSQL += `(${user_id}, ?, '${holdTime(10)}'), `
-        holdSQL += `ticket_id = ? OR `
         getTicketIds += `(section_name = '${section_name}' AND seat = ${seat_number} AND event_id = ${event_id} AND sold = 0 AND hold = 0) OR `
     })
 
-    if (cartSQL == '' || holdSQL == '') {
-        res.status(403).send('error in sql generation');
-        return;
-    }
-
-    cartSQL = cartSQL.substring(0, cartSQL.length - 2) + ';'
-    holdSQL = holdSQL.substring(0, holdSQL.length - 4) + ');'
     getTicketIds = getTicketIds.substring(0, getTicketIds.length - 4) + ');'
 
     console.log(cartSQL);
@@ -887,12 +883,11 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
     query(getTicketIds, [])
         .catch((err) => {
-            console.log('errored in /api/my/addToCart');
+            console.log('errored in /api/my/addToCart getTicketIds');
             console.log(err.message);
             res.send('failed :(');
         })
         .then((results) => {
-            console.log(JSON.stringify(results));
             if (results.length == 0) {
                 res.send('no tickets added');
                 return;
@@ -901,7 +896,17 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
             results.forEach((ticket) => {
                 tickets.push(ticket.ticket_id)
+                cartSQL += `(${user_id}, ?, '${holdTime(10)}'), `
+                holdSQL += `ticket_id = ? OR `
             });
+
+            cartSQL = cartSQL.substring(0, cartSQL.length - 2) + ';'
+            holdSQL = holdSQL.substring(0, holdSQL.length - 4) + ');'
+
+            if (cartSQL == '' || holdSQL == '') {
+                res.status(403).send('error in sql generation');
+                return;
+            }
 
             let cartQuery = query(cartSQL, tickets);
             let holdQuery = query(holdSQL, tickets);
