@@ -858,7 +858,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     // convert tickets from string to array
     var idx = 0;
     var tickets = [];
-    console.log(typeof tickets_str);
+    console.log(tickets_str.split(","));
     tickets_str.split(",").forEach((token) => {
         if (idx % 2 != 0) {
             tickets.push(token);
