@@ -287,7 +287,7 @@ function updateCartList(){
 			const seatIdArr = seatId.split("_")
 			console.log(seatId)
 			console.log(seatIdArr)
-			cartString += seatId[0]+' '+seatId[1] + '<br>';
+			cartString += seatIdArr[0]+' '+seatIdArr[1] + '<br>';
 		}
 	tempCart.innerHTML = cartString + '</p>';
 }
