@@ -811,7 +811,6 @@ app.get('/api/my/login', (req, res) => {
 });
 
 app.post('/api/my/addToCart', authenticate, (req, res) => {
-    console.log(JSON.stringify(req.body));
     const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
 
     let holdTime = (minutes) => {
@@ -876,10 +875,6 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     })
 
     getTicketIds = getTicketIds.substring(0, getTicketIds.length - 4) + ');'
-
-    console.log(cartSQL);
-    console.log(holdSQL);
-    console.log(getTicketIds);
 
     query(getTicketIds, [])
         .catch((err) => {
