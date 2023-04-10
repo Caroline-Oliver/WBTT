@@ -275,6 +275,7 @@ function addToCart() {
 			var cols;
 			var decrement;
 			var calc = true;
+			var rows;
 			switch(temp[0]){
 				case("bottom-far-left-lower"):
 				case("bottom-far-right-lower"):
@@ -282,6 +283,7 @@ function addToCart() {
 				case("top-far-right-lower"):
 					cols = 10;
 					decrement = 2;
+					rows = (Number(input[1])-4)*Number(-1)
 					break;
 				case("bottom-far-left-upper"):
 				case("bottom-far-right-upper"):
@@ -289,6 +291,7 @@ function addToCart() {
 				case("top-far-right-upper"):
 					cols = 10;
 					decrement = 1;
+					rows = (Number(input[1])-5)*Number(-1)
 					break;
 				case("center-far-left-lower"):
 				case("center-far-left-upper"):
@@ -296,13 +299,18 @@ function addToCart() {
 				case("center-far-right-upper"):
 					cols = 12;
 					decrement = 0;
+					rows = (Number(input[1])-4)*Number(-1)
 					break;
 				case("floor"):
+					cols = 1;
+					decrement = 0;
+					rows = 1;
 					calc = false;
 					break;
 				default:
 					cols = 10;
 					decrement = 0;
+					rows = (Number(input[1])-4)*Number(-1)
 					break;
 			}
 			
@@ -310,9 +318,9 @@ function addToCart() {
 			console.log("decrement is "+decrement);
 			var input = temp[1].split("-");
 			console.log("input is "+input);
-			var x = (Number(input[1])-4)*Number(-1)
-			console.log("x is "+x);
-			seatIndex = (Number(x*cols-decrement*(x*x-x)/2)+Number(input[3])-1)
+			
+			console.log("rows is "+rows);
+			seatIndex = (Number(rows*cols-decrement*(rows*rows-rows)/2)+Number(input[3])-1)
 			console.log(input+" is ticket number "+seatIndex);
 			if (calc){	  
 				seats.push(seatIndex);
