@@ -851,7 +851,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
             tickets.push(token);
         }
     })
-
+    console.log(`tickets: ${tickets}`);
     tickets.forEach((ticket) => {
         let tokens = ticket.split('_');
         let section_name = tokens[0];
@@ -861,7 +861,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
         holdSQL += `ticket_id = ? OR `
         getTicketIds += `(section_name = ${section_name} AND seat = ${seat_number} AND event_id = ${event_id}) OR `
     })
-
+    console.log(`getTicketIds: '${getTicketIds}'`);
     if (cartSQL == '' || holdSQL == '') {
         res.status(403).send('error in sql generation');
         return;
@@ -870,7 +870,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     cartSQL = cartSQL.substring(0, cartSQL.length - 2) + ';'
     holdSQL = holdSQL.substring(0, holdSQL.length - 4) + ');'
     getTicketIds = getTicketIds.substring(0, getTicketIds.length - 4) + ');'
-    console.log(getTicketIds);
+    console.log(`getTicketIds: '${getTicketIds}'`);
     query(getTicketIds, [])
     .catch( (err) => {
         console.log('errored in /api/my/addToCart');
