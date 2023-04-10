@@ -858,7 +858,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     var idx = 0;
     var tickets = [];
     console.log(tickets_str);
-    console.log(tickets_str.replace('"', "'"));
+    console.log(tickets_str.replace('"', "'")).replace(',',"'");
     console.log(tickets_str.replace('"', "'").split("'"));
     tickets_str.replace('"', "'").split("'").forEach((token) => {
         if (idx % 2 != 0) {
