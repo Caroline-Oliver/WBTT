@@ -52,7 +52,7 @@ function checkTimestamps(search_terms) {
             })
             .then((result) => {
                 resolve(result);
-        })
+            })
     })
 }
 
@@ -522,10 +522,15 @@ app.get('/event/:event_id', (req, res) => {
                     res.redirect('/');
                 })
                 .then((this_event) => {
-                    res.render('pages/event', {
-                        status: loggedIn,
-                        event: this_event
-                    });
+                    if (loggedIn == 'na')
+                        res.render(`pages/event`, {
+                            status: loggedIn
+                        });
+                    else
+                        res.render(`pages/${this_event.configuration}-configuration`, {
+                            status: loggedIn
+                        });
+                    
                 });
         });
 });

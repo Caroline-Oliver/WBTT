@@ -2,26 +2,34 @@
 <html lang="en">
 
 <head>
-    <%- include('../partials/head') %>
+  <%- include('../partials/head') %>
 </head>
 
 <body>
-    <header>
-        <%- include('../partials/header') %>
-    </header>
+  <header>
+    <%- include('../partials/header') %>
+  </header>
 
-    <div class="jumbotron-fluid jumbo-header">
-        <h1><%= event.event_name %></h1>
+  <div class="jumbotron-fluid jumbo-header">
+    <h1>
+      <%= event.event_name %>
+    </h1>
+  </div>
+
+  <div class="row" style="margin-top: 25px">
+    <div class="col-lg-9 col-12" style="margin-top: 10px">
+      <h3 style="text-align: left">
+        <%= event.event_description %>
+      </h3>
     </div>
+    <div class="col-lg-3 col-12" style="margin-top: 10px">
+      <img class="img-fluid" alt="<%= event.event_name %>" src="<%= event.image_url %>" style="max-height: 500px">
+    </div>
+  </div>
 
-      <div class="row" style="margin-top: 25px">
-        <div class="col-lg-9 col-12" style="margin-top: 10px">
-          <h3 style="text-align: left"><%= event.event_description %></h3>
-        </div>
-        <div class="col-lg-3 col-12" style="margin-top: 10px">
-          <img class="img-fluid" alt="<%= event.event_name %>" src="<%= event.image_url %>" style="max-height: 500px">
-        </div>
-      </div>
+  <a class="btn btn-nav my-2 my-sm-0" role="button" href="" id="login" data-toggle="modal" data-target="#loginModal">
+    Login
+  </a>
 
-    <%- include('../partials/scripts') %>
+  <%- include('../partials/scripts') %>
 </body>
