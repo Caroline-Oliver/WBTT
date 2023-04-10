@@ -850,6 +850,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
         if (idx % 2 != 0) {
             tickets.push(token);
         }
+        idx++;
     })
     console.log(`tickets: ${tickets}`);
     tickets.forEach((ticket) => {
