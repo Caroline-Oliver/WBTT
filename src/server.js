@@ -824,11 +824,11 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
         event_id = req.body.event_id;
     }
     else {
-        var query = JSON.parse(Object.keys(req.query)[0]);
+        var json_query = JSON.parse(Object.keys(req.query)[0]);
 
-        if (query.tickets != null && query.event_id != null) {
-            tickets_str = query.tickets;
-            event_id = query.event_id;
+        if (json_query.tickets != null && json_query.event_id != null) {
+            tickets_str = json_query.tickets;
+            event_id = json_query.event_id;
         }
 
         else {
