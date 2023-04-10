@@ -306,10 +306,13 @@ function addToCart() {
 					break;
 			}
 			
+			console.log("cols is "+cols);
+			console.log("decrement is "+decrement);
 			var input = temp[1].split("-");
-			var x = (Number(temp[1])-4)*Number(-1)
-			console.log("x is "+x)
-			seatIndex = (Number(x*cols-decrement*(x*x-x)/2)+Number(temp[3]))
+			console.log("input is "+input);
+			var x = (Number(input[1])-4)*Number(-1)
+			console.log("x is "+x);
+			seatIndex = (Number(x*cols-decrement*(x*x-x)/2)+Number(input[3]))
 			console.log(input+" is ticket number "+seatIndex);
 			if (calc){	  
 				seats.push(seatIndex);
