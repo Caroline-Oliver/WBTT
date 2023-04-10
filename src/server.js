@@ -814,17 +814,21 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
     // e.g., ['section-name_ticket-number', ...] (referencing the ticket table)
     var tickets;
+    // e.g., 1 (referencing the event table)
+    var event_id;
     // e.g., 1 (referencing the user table)
     var user_id = req.cookies.token;
 
-    if (req.body.tickets != null) {
+    if (req.body.tickets != null && req.body.event_id != null) {
         tickets = req.body.tickets;
+        event_id = req.body.event_id;
     }
     else {
         var query = JSON.parse(Object.keys(req.query)[0]);
 
-        if (query.tickets != null) {
+        if (query.tickets != null && query.event_id != null) {
             tickets = query.tickets;
+            event_id = query.event_id;
         }
 
         else {
@@ -847,7 +851,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
         cartSQL += `(${user_id}, ?, ${holdTime(10)}), `
         holdSQL += `ticket_id = ? OR `
-        getTicketIds += `(section_name = ${section_name} AND seat = ${seat_number}) OR `
+        getTicketIds += `(section_name = ${section_name} AND seat = ${seat_number} AND event_id = ${event_id}) OR `
     })
 
     if (cartSQL == '' || holdSQL == '') {
