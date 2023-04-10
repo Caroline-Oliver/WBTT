@@ -860,7 +860,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     console.log(tickets_str+'');
     console.log(tickets_str.replace('"', "'"));
     console.log(tickets_str.replace('"', "'").split("'"));
-    tickets_str.replace('"', "'").split("'").replace(',',"'").forEach((token) => {
+    tickets_str.replace('"', "'").replace(',',"'").split("'").forEach((token) => {
         if (idx % 2 != 0) {
             tickets.push(token);
         }
