@@ -379,7 +379,7 @@ function sendToCart(tickets, eventIndex) {
 			},
 			"data": JSON.stringify({
 				"tickets": `${tickets}`,
-				"event_id": `${eventIndex}`
+				"event_id": `${window.location.href.split('/')[4]}`
 			}),
 		};
 
