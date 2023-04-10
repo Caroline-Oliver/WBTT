@@ -273,8 +273,11 @@ function addToCart() {
 			sections.push(temp[0]);
 			seats.push(temp[1]);
 		}
-		console.log(window.location.href)
-		sendToCart(sections, seats);
+		console.log(window.location.href);
+		currentURL = window.location.href;
+		urlArray = currentURL.split('/');
+		console.log(urlArray[urlArray.lastIndexOf]);
+		sendToCart(sections, seats, urlArray[urlArray.lastIndexOf]);
 	}
 }
 
