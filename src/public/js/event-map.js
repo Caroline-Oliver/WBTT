@@ -282,10 +282,9 @@ function updateCartList(){
 		}
 		const holdSeats = document.getElementsByClassName('hold');
 		count = holdSeats.length;
-		const seatIdArr =[];
-	    for (var index = 0; index < count; index++) {
+		for (var index = 0; index < count; index++) {
 			seatId = holdSeats[index].getAttribute('id');
-			seatIdArr = seatId.split("_")
+			const seatIdArr = seatId.split("_")
 			console.log(seatId)
 			console.log(seatIdArr)
 			cartString += seatId[0]+' '+seatId[1] + '<br>';
