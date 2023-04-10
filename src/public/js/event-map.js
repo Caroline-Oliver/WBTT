@@ -247,41 +247,50 @@ function generate(id) {
 
 function updateTicket(target) {
 	var itemClasses = target.classList;
-	//console.log(itemClasses);
 	if (itemClasses.contains('tickets')) {
 		target.setAttribute('class', 'in-cart');
 	}
 	else {
 		target.setAttribute('class', 'tickets available');
+		//call function to change hold status of ticket?
+		updateCartList();
 	}
 }
 
 //cart needs more work
 function addToCart() {
+	
 	const cartSeats = document.getElementsByClassName('in-cart');
-
 	if (cartSeats.length != 0) {
-		var tempCart = document.getElementById('rightPanelCart');
+		//update cart list will call backend AddToCart
+		updateCartList()
+		startTimer();
+		
+	}
+}
+
+function updateCartList(){
+	const cartSeats = document.getElementsByClassName('in-cart');
+	
+	var tempCart = document.getElementById('rightPanelCart');
 		//Do we want this as a table?
 		//Shouldn't rely on array, should be pulling from cart
 		var cartString = "<p>";
 		var count = cartSeats.length;
 		for (var index = 0; index < count; index++) {
-			//console.log("index = " + index);
-			var seatId = cartSeats[0].getAttribute('id');
-			//change to 'in-cart sold'?
-			cartSeats[0].setAttribute('class', 'sold hold');
-			if (!cartArray.includes(seatId)) {
-
-				cartArray.push(i, seatId)
-				//console.log("ticket for " + seatId + " has been added to cart");
-				cartString += seatId + '<br>';
-			}
+			cartSeats[0].setAttribute('class', 'sold hold');			
 		}
-		//probably better to create string using cartArray
-		tempCart.innerHTML = cartString + '</p>';
-		//also need to be able to remove from cart
-	}
+		const holdSeats = document.getElementsByClassName('hold');
+		count = holdSeats.length;
+		for (var index = 0; index < count; index++) {
+			seatId = holdSeats[index].getAttribute('id');
+			cartString += seatId + '<br>';
+		}
+	tempCart.innerHTML = cartString + '</p>';
+}
+
+function sendToCart(ticketId, eventId, userId, time){
+	
 }
 
 //add function to grab needed data
@@ -303,4 +312,74 @@ function getSoldTickets(event_id, venue_section_name) {
 		});
 	});
 	return result;
+}
+
+function startTimer(){
+	window.clearInterval(time); 
+	s=0;
+	m=5;
+	var outerDiv = document.getElementById('timer-div');
+	var timeLabel = document.getElementById('time-text');
+	var timeNumberLabel = document.getElementById('time');
+	var timeWarningLabel = document.getElementById('time-warning');
+	timeWarningLabel.setAttribute('class','');
+	timeLabel.setAttribute('class','');
+	timeNumberLabel.setAttribute('class','');
+	
+	outerDiv.removeAttribute('hidden');
+	timeNumberLabel.innerHTML = '05:00';
+	time=window.setInterval('dispTime()',1000);
+	
+}
+
+var s=0;
+var m=5;
+var time;
+
+
+function dispTime(){
+	var timeLabel = document.getElementById('time-text');
+	var timeNumberLabel = document.getElementById('time');
+	var timeWarningLabel = document.getElementById('time-warning');
+	
+	s--;
+	if(s<0){ 
+		s=59;
+		m--;
+	}
+	else{
+		if(m<=0){
+			m=0;
+		} // end if  m ==60
+	}// end if else s < 59
+	if(s==0 && m==0){
+		window.clearInterval(time);
+		timeWarningLabel.setAttribute('class','');
+		timeLabel.setAttribute('class','');
+		timeNumberLabel.setAttribute('class','');
+		timeNumberLabel.innerHTML = '';
+		timeWarningLabel.innerHTML = '';
+		timeLabel.innerHTML = 'Your tickets have been removed from your cart';
+		return;
+	}
+	else if((s==0 && m==1)){
+		timeWarningLabel.setAttribute('class','warning-label');
+		timeLabel.setAttribute('class','warning-label');
+		timeNumberLabel.setAttribute('class','warning-label');
+		timeWarningLabel.innerHTML = 'Warning: your tickets will soon be removed from your cart. Press add to cart button for more time';
+	}
+// end of calculation for next display
+// Format the output by adding 0 if it is single digit //
+	if(s<10){var s1='0' + s;}
+	else{var s1=s;}
+	if(m<10){var m1='0' + m;}
+	else{var m1=m;}
+	// Display the output //
+	str=  m1 +':' + s1 ;
+	timeNumberLabel.innerHTML=str;
+	// Calculate the stop watch // 
+	
+	
+	
+
 }
