@@ -870,7 +870,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     cartSQL = cartSQL.substring(0, cartSQL.length - 2) + ';'
     holdSQL = holdSQL.substring(0, holdSQL.length - 4) + ');'
     getTicketIds = getTicketIds.substring(0, getTicketIds.length - 4) + ');'
-
+    console.log(getTicketIds);
     query(getTicketIds, [])
     .catch( (err) => {
         console.log('errored in /api/my/addToCart');
@@ -879,6 +879,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     })
     .then( (results) => {
         var tickets = [];
+        console.log(JSON.stringify(results));
         results.forEach( (ticket) => {
             tickets.push(ticket.ticket_id)
         });
