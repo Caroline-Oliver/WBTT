@@ -276,6 +276,8 @@ function addToCart() {
 			var decrement;
 			var calc = true;
 			var rows;
+			var input = temp[1].split("-");
+			
 			switch(temp[0]){
 				case("bottom-far-left-lower"):
 				case("bottom-far-right-lower"):
@@ -316,7 +318,6 @@ function addToCart() {
 			
 			console.log("cols is "+cols);
 			console.log("decrement is "+decrement);
-			var input = temp[1].split("-");
 			console.log("input is "+input);
 			
 			console.log("rows is "+rows);
