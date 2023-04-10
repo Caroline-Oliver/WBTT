@@ -271,7 +271,53 @@ function addToCart() {
 		for (var i=0; i<holdSeats.length; i++){
 			var temp = holdSeats[i].getAttribute('id').split("_");
 			sections.push(temp[0]);
-			seats.push(temp[1]);
+			var seatIndex;
+			var cols;
+			var decrement;
+			var calc = true;
+			switch(temp[0]){
+				case("bottom-far-left-lower"):
+				case("bottom-far-right-lower"):
+				case("top-far-left-lower"):
+				case("top-far-right-lower"):
+					cols = 10;
+					decrement = 2;
+					break;
+				case("bottom-far-left-upper"):
+				case("bottom-far-right-upper"):
+				case("top-far-left-upper"):
+				case("top-far-right-upper"):
+					cols = 10;
+					decrement = 1;
+					break;
+				case("center-far-left-lower"):
+				case("center-far-left-upper"):
+				case("center-far-right-lower"):
+				case("center-far-right-upper"):
+					cols = 12;
+					decrement = 0;
+					break;
+				case("floor"):
+					calc = false;
+					break;
+				default:
+					cols = 12;
+					decrement = 0;
+					break;
+			}
+			
+			var input = temp[1].split("-");
+			var x = (Number(temp[1])-4)*Number(-1)
+			console.log("x is "+x)
+			seatIndex = (Number(x*cols-decrement*(x*x-x)/2)+Number(temp[3]))
+			print(input+" is ticket number "+seatIndex);
+			if (calc){	  
+				seats.push(seatIndex);
+			}
+			else{
+				seats.push(Number(-1));
+			}
+			
 		}
 		console.log(window.location.href);
 		currentURL = window.location.href;
@@ -304,7 +350,7 @@ function updateCartList(){
 	tempCart.innerHTML = cartString + '</p>';
 }
 
-function sendToCart(sections, seats){
+function sendToCart(sections, seats, eventIndex){
 	
 }
 
