@@ -310,7 +310,7 @@ function addToCart() {
 			var x = (Number(temp[1])-4)*Number(-1)
 			console.log("x is "+x)
 			seatIndex = (Number(x*cols-decrement*(x*x-x)/2)+Number(temp[3]))
-			print(input+" is ticket number "+seatIndex);
+			console.log(input+" is ticket number "+seatIndex);
 			if (calc){	  
 				seats.push(seatIndex);
 			}
