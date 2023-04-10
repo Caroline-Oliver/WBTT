@@ -844,6 +844,10 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     var getTicketIds = `SELECT ticket_id FROM tickets WHERE (`;
 
     // decide on amount of time user gets for these tickets being 'on hold'
+    console.log(`tickets: ${tickets}`);
+    console.log(`event id: ${event_id}`);
+    console.log(`user id ${user_id}`);
+
     tickets.forEach((ticket) => {
         let tokens = ticket.split('_');
         let section_name = tokens[0];
