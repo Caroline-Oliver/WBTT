@@ -805,7 +805,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
 
     let holdTime = (minutes) => {
-        const dt = new Date(date.getTime() + minutes * 60000);
+        const dt = new Date((new Date()).getTime() + minutes * 60000);
 
         // 'YYYY-MM-DD HH:MM:SS' format
         return `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`
