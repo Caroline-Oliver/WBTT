@@ -268,10 +268,10 @@ function accountStatus(token) {
 function getCart(token) {
     let sql = `SELECT * FROM wbtt.cart as c
     JOIN wbtt.ticket as t ON t.ticket_id = c.ticket_id
-    WHERE c.user_id = ${req.cookies.token}`
+    WHERE c.user_id = ?`
 
     return new Promise((resolve, reject) => {
-        query(sql, [])
+        query(sql, [token])
         .catch( (err) => {
             reject(err);
         })
@@ -1147,8 +1147,6 @@ app.post('/api/admin/createTickets', (req, res) => {
             Promise.all([max_ticket_query, more_query])
                 .then((results) => {
                     let current_ticket_id = results[0][0].max_ticket_id + 1;
-                    console.log(current_ticket_id);
-                    console.log(JSON.stringify(results));
                     results[1].forEach((section) => {
                         for (let i = 0; i < section.section_capacity; i++) {
                             sql += format(current_ticket_id++, section.section_name, i, section.section_weight * base_price);
