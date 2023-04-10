@@ -275,8 +275,8 @@ function addToCart() {
 		}
 		console.log(window.location.href);
 		currentURL = window.location.href;
-		urlArray = currentURL.split('/');
-		console.log(urlArray[urlArray.lastIndexOf]);
+		const urlArray = currentURL.split('/');
+		console.log(urlArray[urlArray.length-1]);
 		sendToCart(sections, seats, urlArray[urlArray.lastIndexOf]);
 	}
 }
