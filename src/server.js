@@ -37,24 +37,23 @@ function checkTimestamps(search_terms) {
     // YYYY-MM-DD HH:MM:SS format
     const datetime = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`
 
-    var sql = "UPDATE ticket\nSET hold = 0, hold_time = null, user_id = null" + '\n' +
-              `WHERE (${search_terms}) AND hold=1 AND hold_time < '${datetime}';` + '\n' +
-              `DELETE cart FROM cart
-              JOIN ticket as t ON cart.ticket_id = t.ticket_id
-              WHERE cart.user_id = 4 AND t.hold = 0;`;
+    var updateSql = "UPDATE ticket\nSET hold = 0, hold_time = null, user_id = null" + '\n' +
+        `WHERE (${search_terms}) AND hold=1 AND hold_time < '${datetime}';` + '\n';
+    var deleteSql = `DELETE cart FROM cart
+        JOIN ticket as t ON cart.ticket_id = t.ticket_id
+        WHERE cart.user_id = 4 AND t.hold = 0;`
 
     return new Promise((resolve, reject) => {
-        pool.query(sql, function (err, result) {
-            if (err) {
+        Promise.all([query(updateSql, []), query(deleteSql, [])])
+            .catch((err) => {
                 console.log('errored in checkTimestamps');
                 console.log(err);
                 reject(err);
-            }
-            else {
-                resolve();
-            }
-        });
-    });
+            })
+            .then((result) => {
+                resolve(result);
+        })
+    })
 }
 
 function getTicketList(user_id) {
@@ -851,13 +850,13 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     // convert tickets from string to array
     var idx = 0;
     var tickets = [];
-    tickets_str.split("'").forEach( (token) => {
+    tickets_str.split("'").forEach((token) => {
         if (idx % 2 != 0) {
             tickets.push(token);
         }
         idx++;
     })
-    
+
     tickets.forEach((ticket) => {
         let tokens = ticket.split('_');
         let section_name = tokens[0];
@@ -867,7 +866,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
         holdSQL += `ticket_id = ? OR `
         getTicketIds += `(section_name = '${section_name}' AND seat = ${seat_number} AND event_id = ${event_id} AND sold = 0 AND hold = 0) OR `
     })
-    
+
     if (cartSQL == '' || holdSQL == '') {
         res.status(403).send('error in sql generation');
         return;
@@ -876,40 +875,40 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     cartSQL = cartSQL.substring(0, cartSQL.length - 2) + ';'
     holdSQL = holdSQL.substring(0, holdSQL.length - 4) + ');'
     getTicketIds = getTicketIds.substring(0, getTicketIds.length - 4) + ');'
-    
+
     query(getTicketIds, [])
-    .catch( (err) => {
-        console.log('errored in /api/my/addToCart');
-        console.log(err.message);
-        res.send('failed :(');
-    })
-    .then( (results) => {
-        if (results.length == 0) {
-            res.send('no tickets added');
-            return;
-        }
-        var tickets = [];
-        
-        results.forEach( (ticket) => {
-            tickets.push(ticket.ticket_id)
-        });
+        .catch((err) => {
+            console.log('errored in /api/my/addToCart');
+            console.log(err.message);
+            res.send('failed :(');
+        })
+        .then((results) => {
+            if (results.length == 0) {
+                res.send('no tickets added');
+                return;
+            }
+            var tickets = [];
 
-        let cartQuery = query(cartSQL, tickets);
-        let holdQuery = query(holdSQL, tickets);
-        let curHoldQuery = query(updateHoldsSQL, []);
-    
-        Promise.all([cartQuery, holdQuery, curHoldQuery])
-            .catch((err) => {
-                console.log('errored in /api/my/addToCart');
-                console.log(err.message);
-                res.send('failed :(');
-            })
-            .then((results) => {
-                res.send(`${tickets}`);
+            results.forEach((ticket) => {
+                tickets.push(ticket.ticket_id)
             });
-    })
 
-    
+            let cartQuery = query(cartSQL, tickets);
+            let holdQuery = query(holdSQL, tickets);
+            let curHoldQuery = query(updateHoldsSQL, []);
+
+            Promise.all([cartQuery, holdQuery, curHoldQuery])
+                .catch((err) => {
+                    console.log('errored in /api/my/addToCart');
+                    console.log(err.message);
+                    res.send('failed :(');
+                })
+                .then((results) => {
+                    res.send(`${tickets}`);
+                });
+        })
+
+
 });
 
 app.get('/api/my/getCart', authenticate, (req, res) => {
