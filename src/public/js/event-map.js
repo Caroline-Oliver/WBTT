@@ -330,10 +330,11 @@ function addToCart() {
 			}
 			
 		}
-		console.log(window.location.href);
 		currentURL = window.location.href;
 		const urlArray = currentURL.split('/');
 		console.log(urlArray[urlArray.length-1]);
+		console.log(sections)
+		console.log(seats)
 		sendToCart(sections, seats, urlArray[urlArray.lastIndexOf]);
 	}
 }
@@ -354,9 +355,9 @@ function updateCartList(){
 		for (var index = 0; index < count; index++) {
 			seatId = holdSeats[index].getAttribute('id');
 			const seatIdArr = seatId.split("_")
-			console.log(seatId)
-			console.log(seatIdArr)
-			cartString += seatIdArr[0]+' '+seatIdArr[1] + '<br>';
+			//console.log(seatId)
+			//console.log(seatIdArr)
+			//cartString += seatIdArr[0]+' '+seatIdArr[1] + '<br>';
 		}
 	tempCart.innerHTML = cartString + '</p>';
 }
