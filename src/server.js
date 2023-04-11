@@ -631,7 +631,7 @@ app.get('/my/account', authenticate, (req, res) => {
         }
     });
 });
-// TODO: pending page
+
 app.get('/my/cart', authenticate, (req, res) => {
     checkTimestamps("user_id = " + req.cookies.token)
         .catch((err) => {
