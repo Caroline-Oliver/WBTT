@@ -9,31 +9,19 @@ window.onload = function() {
 function checkTimer(){
 	//document.cookie = "minutes="+a;
 	//document.cookie = "seconds="+b;
-	let decodedCookie = decodeURIComponent(document.cookie);
-	console.log(decodedCookie);
-	let cookieBits = decodedCookie.split(';');
-	for (let i = 0; i<cookieBits.length; i++){
-		if (cookieBits[i].includes("minutes")){
-			m = cookieBits[i].split("=")[1];
-		}
-		else if(cookieBits[i].includes("seconds")){
-			s = cookieBits[i].split("=")[1];
-		}
-		else{
-			return;
-		}
-	}
+	m = window.localStorage.getItem("minutes");
+	s = window.localStorage.getItem("seconds");
 	console.log("m = "+m+" s = "+s);
 	if (m != -1 && s != -1){
 		startTimer(m,s)
 	}
 }
 
-function startTimer(cookieM,cookieS) {
+function startTimer(min,sec) {
 	//window.clearInterval(time);
 	
-	s = cookieS;
-	m = cookieM;
+	s = sec;
+	m = min;
 	var outerDiv = document.getElementById('timer-div');
 	var timeLabel = document.getElementById('time-text');
 	var timeNumberLabel = document.getElementById('time');
@@ -101,9 +89,10 @@ function dispTime() {
 	// Display the output //
 	var str = m1 + ':' + s1;
 	timeNumberLabel.innerHTML = str;
-	document.cookie = "minutes="+m;
-	document.cookie = "seconds="+s;
-	let decodedCookie = decodeURIComponent(document.cookie);
-	console.log(decodedCookie);
+	window.localStorage.setItem("minutes",m);
+	window.localStorage.setItem("seconds",s);
+	console.log(window.localStorage.getItem("minutes")+" minutes");
+	console.log(window.localStorage.getItem("seconds")+" seconds");
+	
 	// Calculate the stop watch // 
 }
