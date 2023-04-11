@@ -3,19 +3,27 @@ var m = 5;
 var s = 59;
 
 window.onload = function() {
-	document.cookie = "minutes="+m+";seconds="+s;
-   	checkTimer();
+	checkTimer();
 }
 
 function checkTimer(){
+	document.cookie = "minutes="+m;
+	document.cookie = "seconds="+s;
 	let decodedCookie = decodeURIComponent(document.cookie);
 	console.log(decodedCookie);
-  	let cookieBits = decodedCookie.split(';');
-	console.log(cookieBits);
-  	
-	//for (let i = 0; i<cookieBits.length; i++){
-	//	if 
-	//}
+	let cookieBits = decodedCookie.split(';');
+	for (let i = 0; i<cookieBits.length; i++){
+		if (cookieBits[i].includes("minutes")){
+			m = cookieBits[i].split("=")[1];
+		}
+		else if(cookieBits[i].includes("seconds")){
+			s = cookieBits[i].split("=")[1];
+		}
+		else{
+			return;
+		}
+		console.log("m = "+m+"s = "+s);
+	}
 	//if (m != -1 && s != -1){
 	//	startTimer(cookieM,cookieS)
 	//}
@@ -85,6 +93,7 @@ function dispTime() {
 	// Display the output //
 	str = m1 + ':' + s1;
 	timeNumberLabel.innerHTML = str;
-	document.cookie = "minutes="+m+";seconds="+s;
+	document.cookie = "minutes="+m;
+	document.cookie = "seconds="+s;
 	// Calculate the stop watch // 
 }
