@@ -272,17 +272,17 @@ function getCart(token) {
 
     return new Promise((resolve, reject) => {
         checkTimestamps(`user_id = ${token}`)
-            .catch( (err) => {
+            .catch((err) => {
                 reject(err);
             })
-            .then( (results) => {
+            .then((results) => {
                 query(sql, [token])
-                .catch( (err) => {
-                    reject(err);
-                })
-                .then( (results) => {
-                    resolve(results);
-                })
+                    .catch((err) => {
+                        reject(err);
+                    })
+                    .then((results) => {
+                        resolve(results);
+                    })
             })
     });
 }
@@ -633,45 +633,53 @@ app.get('/my/account', authenticate, (req, res) => {
 });
 
 app.get('/my/cart', authenticate, (req, res) => {
-    checkTimestamps("user_id = " + req.cookies.token)
+    checkTimestamps(`user_id = ${req.cookies.token}`)
         .catch((err) => {
 
         })
         .finally(() => {
             var tickets;
-            getTicketList()
+            let sql = `SELECT * FROM cart as c JOIN ticket as t ON t.ticket_id = c.ticket_id WHERE user_id = ${req.cookies.token}`;
+            query(sql, [])
                 .catch((err) => {
 
                 })
-                .then((ticket_list) => {
-                    tickets = ticket_list;
+                .then((results) => {
+                    res.render('pages/cart', {
+                        cart: info,
+                        status: loggedIn
+                    });
                 })
-                .finally(() => {
-                    var info;
-                    ticketListToInfoList(tickets)
-                        .catch((err) => {
+            // getTicketList()
+            //     .catch((err) => {
 
-                        })
-                        .then((info_list) => {
-                            info = info_list;
-                        })
-                        .finally(() => {
-                            var loggedIn = '';
-                            accountStatus(req.cookies.token)
-                                .catch((err) => {
-                                    loggedIn = 'na';
-                                })
-                                .then((status) => {
-                                    loggedIn = status;
-                                })
-                                .finally(() => {
-                                    res.render('pages/cart', {
-                                        cart: info,
-                                        status: loggedIn
-                                    });
-                                });
-                        });
-                });
+            //     })
+            //     .then((ticket_list) => {
+            //         tickets = ticket_list;
+            //     })
+            //     .finally(() => {
+            //         var info;
+            //         ticketListToInfoList(tickets)
+            //             .catch((err) => {
+
+            //             })
+            //             .then((info_list) => {
+            //                 info = info_list;
+            //             })
+            //             .finally(() => {
+            //                 var loggedIn = '';
+            //                 accountStatus(req.cookies.token)
+            //                     .catch((err) => {
+            //                         loggedIn = 'na';
+            //                     })
+            //                     .then((status) => {
+            //                         loggedIn = status;
+            //                     })
+            //                     .finally(() => {
+            //                         
+            //                     });
+            //             });
+            //     });
         });
 });
 
@@ -962,11 +970,11 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
 app.get('/api/my/getCart', authenticate, (req, res) => {
     getCart(req.cookies.token)
-        .catch( (err) => {
+        .catch((err) => {
             console.log('error in getCart api');
             console.log(err.message);
         })
-        .then( (results) => {
+        .then((results) => {
             res.send(results);
         })
 })
