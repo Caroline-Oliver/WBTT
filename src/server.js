@@ -320,13 +320,12 @@ function adminDashboard(filters) {
                         cur_event_ids.push(event.event_id)
                 })
                 cur_event_ids = cur_event_ids.toString();
-                var c_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
-                    "FROM ticket AS t" + '\n' +
-                    "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
-                    "JOIN event AS e ON e.event_id = t.event_id" + '\n' +
-                    "WHERE sold=1 AND e.date >= ?" + '\n' +
-                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;",
-                    date);
+                var c_o_promise = query(`SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity
+                    FROM ticket AS t
+                    JOIN user AS u ON u.user_id = t.user_id
+                    JOIN event AS e ON e.event_id = t.event_id
+                    WHERE sold=1 AND e.date >= ?
+                    GROUP BY u.user_name, e.event_name, e.venue, e.date;`, date);
                 var h_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
                     "FROM ticket AS t" + '\n' +
                     "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
@@ -643,18 +642,23 @@ app.get('/my/cart', authenticate, (req, res) => {
         .finally(() => {
             checkTimestamps(`user_id = ${req.cookies.token}`)
                 .catch((err) => {
-                    
+
                 })
                 .finally(() => {
-                    var tickets;
-                    let sql = `SELECT * FROM cart as c JOIN ticket as t ON t.ticket_id = c.ticket_id WHERE user_id = ${req.cookies.token}`;
+                    let sql = `SELECT e.event_name, e.event_description, e.image_url, t.price, ROUND(COUNT(*)/12) as quanitity
+                    FROM cart AS c
+                    JOIN ticket AS t ON c.user_id = t.user_id
+                    JOIN event AS e ON t.event_id = e.event_id
+                    WHERE c.user_id = ${req.cookies.token}
+                    GROUP BY e.event_name, e.event_description, e.image_url, t.price`;
                     query(sql, [])
                         .catch((err) => {
 
                         })
                         .then((results) => {
                             res.render('pages/cart', {
-                                status: loggedIn
+                                status: loggedIn,
+                                items: results
                             });
                         })
                     // getTicketList()
