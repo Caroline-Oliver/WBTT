@@ -87,3 +87,4 @@ function dispTime() {
 	timeNumberLabel.innerHTML = str;
 	document.cookie = "minutes="+m+";seconds="+s;
 	// Calculate the stop watch // 
+}
