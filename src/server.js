@@ -1129,7 +1129,7 @@ app.get('/admin/editUser/:user_id', authenticate, (req, res) => {
                 .then((result) => {
                     res.render('pages/edit-user', {
                         status: loggedIn,
-                        user: result[0]
+                        user: result
                     });
                 })
         });
