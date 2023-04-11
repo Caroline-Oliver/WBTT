@@ -88,8 +88,4 @@ function dispTime() {
 	timeNumberLabel.innerHTML = str;
 	window.localStorage.setItem("minutes",m);
 	window.localStorage.setItem("seconds",s);
-	console.log(window.localStorage.getItem("minutes")+" minutes");
-	console.log(window.localStorage.getItem("seconds")+" seconds");
-	
-	// Calculate the stop watch // 
 }
