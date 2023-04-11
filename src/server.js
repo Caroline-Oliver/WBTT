@@ -621,7 +621,7 @@ app.get('/my/account', authenticate, (req, res) => {
         if (result[0].type == 0) loggedIn = 'admin';
 
         if (result.length != 0) {
-            res.render('pages/account', {
+            res.render('pages/customer', {
                 username: result[0].user_name,
                 first_name: result[0].first_name,
                 last_name: result[0].last_name,

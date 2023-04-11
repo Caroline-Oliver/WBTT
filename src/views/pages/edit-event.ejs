@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+
+<head>
+  <%- include('../partials/head') %>
+</head>
+
+<body>
+  <header>
+    <%- include('../partials/header') %>
+  </header>
+  <div id="changeEventDiv">
+    <form>
+      <div class="form-group">
+        <label for="event-name">Event Name</label>
+        <input type="text" class="form-control" id="change_eventname" placeholder="Event Name">
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" id="change_description" placeholder="Description">
+      </div>
+      <div class="form-group">
+        <label for="image">Image URL</label>
+        <input type="text" class="form-control" id="change_image" placeholder="Image URL">
+      </div>
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input type="text" class="form-control" id="change_date" placeholder="Date (GMT Universal Format)">
+      </div>
+      <div class="form-group">
+        <label for="time">Time</label>
+        <input type="text" class="form-control" id="change_time" placeholder="Time (00:00:00 format)">
+      </div>
+      <div class="form-group">
+        <label for="day">Day</label>
+        <input type="text" class="form-control" id="day" placeholder="Day">
+      </div>
+      <div class="form-group">
+        <label for="discount-eligable">Discount Eligible</label>
+        <input type="text" class="form-control" id="discount-eligable" placeholder="Discount Eligable">
+      </div>
+      <button onclick="changeEvent()" id="change_event">Update</button>
+      <button type="reset" value="Reset">Reset</button>
+    </form>
+  </div>
+  <%- include('../partials/scripts') %>
+</body>
+
+</html>
