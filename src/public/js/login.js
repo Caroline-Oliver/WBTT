@@ -2,8 +2,8 @@
 
 function login() {
 	var sentinel = -1
-	document.cookie = "minutes="+sentinel;
-	document.cookie = "seconds="+sentinel;
+	window.localStorage.setItem('minutes', sentinel);
+	window.localStorage.setItem('seconds', sentinel);
 	
 	$.ajax({
 		url: '/api/my/login',
@@ -22,8 +22,9 @@ function login() {
 }
 
 function logout() {
-	document.cookie = "minutes="+sentinel;
-	document.cookie = "seconds="+sentinel;
+	var sentinel = -1
+	window.localStorage.setItem('minutes', sentinel);
+	window.localStorage.setItem('seconds', sentinel);
 	location.replace('/');
 	document.cookie = "token=1; expires = Thu, 01 Jan 1970 00:00:00 GMT; path=/";
 }
