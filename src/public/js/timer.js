@@ -3,17 +3,12 @@ var m;
 var s;
 
 window.onload = function() {
-	let decodedCookie = decodeURIComponent(document.cookie);
-	console.log(decodedCookie);
 	checkTimer();
 }
 
 function checkTimer(){
-	//document.cookie = "minutes="+a;
-	//document.cookie = "seconds="+b;
 	m = window.localStorage.getItem("minutes");
 	s = window.localStorage.getItem("seconds");
-	console.log("m = "+m+" s = "+s);
 	if (m != -1 && s != -1 && m != "" && s != "" && m != null && s != null){
 		startTimer(m,s)
 	}
