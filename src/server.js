@@ -1120,16 +1120,20 @@ app.get('/admin/editUser/:user_id', authenticate, (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            query('SELECT * FROM user WHERE user_id=?', req.query.user_id)
+            query('SELECT * FROM user WHERE user_id=? LIMIT 1', req.query.user_id)
                 .catch((err) => {
                     console.log('errored in edit user');
                     console.log(err.message);
                     res.status(403).send('error');
                 })
                 .then((result) => {
+                    var userInfo;
+                    result.forEach( (info) => {
+                        userInfo = info;
+                    })
                     res.render('pages/edit-user', {
                         status: loggedIn,
-                        user: result
+                        user: userInfo
                     });
                 })
         });
