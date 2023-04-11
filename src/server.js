@@ -266,9 +266,12 @@ function accountStatus(token) {
 }
 
 function getCart(token) {
-    let sql = `SELECT * FROM wbtt.cart as c
-    JOIN wbtt.ticket as t ON t.ticket_id = c.ticket_id
-    WHERE c.user_id = ?`
+    let sql = `SELECT e.event_name, e.event_description, e.image_url, t.price, COUNT(*) as quanitity
+    FROM wbtt.ticket AS t
+    JOIN wbtt.cart AS c ON c.ticket_id = t.ticket_id
+    JOIN event AS e ON t.event_id = e.event_id
+    WHERE c.user_id = ?
+    GROUP BY e.event_name, e.event_description, e.image_url, t.price`
 
     return new Promise((resolve, reject) => {
         checkTimestamps(`user_id = ${token}`)
