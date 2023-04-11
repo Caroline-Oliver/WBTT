@@ -45,9 +45,9 @@ print(input+" is ticket number "+(Number(x*cols-decrement*(x*x-x)/2)+Number(test
 
 
 //Ideally these should be pulled from DB, but we can hard code if easier
-var top_center_left_upper = [4, 10]
+var horizontal_sections = [4, 10]
 var vertical_sections = [4, 12]
-const cartArray = []
+const cartArray = []//Will use this to populate right panel cart view
 
 //This MUST be pulled from DB
 //var currentSectionSold = [1, 2, 9, 10, 16, 17, 19, 35]
@@ -220,9 +220,9 @@ function generate(id) {
 				}
 				seatingPolygon.setAttribute('viewBox', '-45 -50 350 200')
 				seatingString += '<rect width="250" height="100" class="section-svg"/>'
-				for (var i = top_center_left_upper[0]; i > 0; i--) {
+				for (var i = horizontal_sections[0]; i > 0; i--) {
 					//console.log(i);
-					for (var j = 0; j < top_center_left_upper[1]; j++) {
+					for (var j = 0; j < horizontal_sections[1]; j++) {
 						if (currentSectionSold.includes(soldIndex)) {
 							seatingString += '<circle cx="' + xOffset + '" cy="' + yOffset + '" r="8.5" id="' + id + '_row-' + (i) + '-seat-' + (j + 1) + '" class="sold"></circle>';
 						}
@@ -368,6 +368,7 @@ function updateCartList() {
 	tempCart.innerHTML = cartString + '</p>';
 }
 
+
 function sendToCart(tickets, eventIndex) {
 	return new Promise((resolve, reject) => {
 		var settings = {
@@ -409,7 +410,7 @@ function getSoldTickets(event_id, venue_section_name) {
 	});
 	return result;
 }
-
+/*
 function startTimer() {
 	window.clearInterval(time);
 	s = 0;
@@ -478,4 +479,4 @@ function dispTime() {
 
 
 
-}
+}*/
