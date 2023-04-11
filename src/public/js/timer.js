@@ -3,10 +3,6 @@ var m;
 var s;
 
 window.onload = function() {
-	var m=10;
-	var s=15;
-	document.cookie = "minutes="+m;
-	document.cookie = "seconds="+s;
 	checkTimer();
 }
 
