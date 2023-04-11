@@ -99,7 +99,7 @@ function dispTime() {
 	if (m < 10) { var m1 = '0' + m; }
 	else { var m1 = m; }
 	// Display the output //
-	str = m1 + ':' + s1;
+	var str = m1 + ':' + s1;
 	timeNumberLabel.innerHTML = str;
 	document.cookie = "minutes="+m;
 	document.cookie = "seconds="+s;
