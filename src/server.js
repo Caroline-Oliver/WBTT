@@ -1122,7 +1122,9 @@ app.get('/admin/editUser/:user_id', authenticate, (req, res) => {
         .finally(() => {
             query('SELECT * FROM user WHERE user_id=?', req.query.user_id)
                 .catch((err) => {
-                    // oh well
+                    console.log('errored in edit user');
+                    console.log(err.message);
+                    res.statusCode(403).send('error');
                 })
                 .then((result) => {
                     res.render('pages/edit-user', {
