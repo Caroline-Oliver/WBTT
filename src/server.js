@@ -1120,7 +1120,7 @@ app.get('/admin/editUser/:user_id', authenticate, (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            query('SELECT * FROM user WHERE user_id=? LIMIT 1', req.query.user_id)
+            query('SELECT * FROM user WHERE user_id=? LIMIT 1', req.params.user_id)
                 .catch((err) => {
                     console.log('errored in edit user');
                     console.log(err.message);
