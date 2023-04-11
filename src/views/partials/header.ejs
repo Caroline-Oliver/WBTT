@@ -58,6 +58,11 @@
                     <% } %>
 
         </ul>
+        <div id="timer-div" align="center" style="text-align: center;" hidden="true">
+                <label id="time-warning"></label>
+                <label id="time-text">Time Remaining to Purchase:</label>
+                <label id="time" style="margin-left: 10px"></label>
+        </div>
         <div class="form-inline my-2 my-lg-0">
             <button class="btn btn-inverse my-2 my-sm-0" style="margin-right:10px" onclick="location.href = `/search?s=${document.getElementById('eventSearch').value}`;">Search</button>
             <input class="form-control mr-sm-2" id='eventSearch' placeholder="Search" aria-label="eventSearch">
