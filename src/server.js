@@ -1124,7 +1124,7 @@ app.get('/admin/editUser/:user_id', authenticate, (req, res) => {
                 .catch((err) => {
                     console.log('errored in edit user');
                     console.log(err.message);
-                    res.statusCode(403).send('error');
+                    res.status(403).send('error');
                 })
                 .then((result) => {
                     res.render('pages/edit-user', {
