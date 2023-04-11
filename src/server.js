@@ -1130,7 +1130,7 @@ app.get('/admin/editUser/:user_id', authenticate, (req, res) => {
                     if (result.length == 1) {
                         res.render('pages/edit-user', {
                             status: loggedIn,
-                            user: userInfo[0]
+                            user: result[0]
                         });
                     }
                     else {
