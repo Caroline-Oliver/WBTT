@@ -496,6 +496,23 @@ app.get('/contact', (req, res) => {
             });
         });
 });
+
+app.get('/faq', (req, res) => {
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/faq', {
+                status: loggedIn
+            });
+        });
+})
+
 // #endregion
 
 // #region event pages
