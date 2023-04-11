@@ -11,9 +11,11 @@ function checkTimer(){
 	let decodedCookie = decodeURIComponent(document.cookie);
 	console.log(decodedCookie);
   	let cookieBits = decodedCookie.split(';');
-	for (let i = 0; i<cookieBits.length; i++){
-		if 
-	}
+	console.log(cookieBits);
+  	
+	//for (let i = 0; i<cookieBits.length; i++){
+	//	if 
+	//}
 	//if (m != -1 && s != -1){
 	//	startTimer(cookieM,cookieS)
 	//}
