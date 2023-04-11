@@ -645,7 +645,7 @@ app.get('/my/cart', authenticate, (req, res) => {
 
                 })
                 .finally(() => {
-                    let sql = `SELECT e.event_name, e.event_description, e.image_url, t.price, ROUND(COUNT(*)/12) as quanitity
+                    let sql = `SELECT e.event_name, e.event_description, e.image_url, t.price, ROUND(COUNT(*)/12) as quantity
                     FROM cart AS c
                     JOIN ticket AS t ON c.user_id = t.user_id
                     JOIN event AS e ON t.event_id = e.event_id
