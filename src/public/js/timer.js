@@ -101,9 +101,7 @@ function dispTime() {
 	// Display the output //
 	var str = m1 + ':' + s1;
 	timeNumberLabel.innerHTML = str;
-	document.cookie = "minutes=";
 	document.cookie = "minutes="+m;
-	document.cookie = "seconds=";
 	document.cookie = "seconds="+s;
 	let decodedCookie = decodeURIComponent(document.cookie);
 	console.log(decodedCookie);
