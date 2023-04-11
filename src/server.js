@@ -646,7 +646,6 @@ app.get('/my/cart', authenticate, (req, res) => {
                 })
                 .then((results) => {
                     res.render('pages/cart', {
-                        cart: info,
                         status: loggedIn
                     });
                 })
