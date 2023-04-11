@@ -3,13 +3,16 @@ var m;
 var s;
 
 window.onload = function() {
-	checkTimer(3,8);
-	checkTimer(-1,-1);
+	var m=10;
+	var s=15;
+	document.cookie = "minutes="+m;
+	document.cookie = "seconds="+s;
+	checkTimer();
 }
 
-function checkTimer(a,b){
-	document.cookie = "minutes="+a;
-	document.cookie = "seconds="+b;
+function checkTimer(){
+	//document.cookie = "minutes="+a;
+	//document.cookie = "seconds="+b;
 	let decodedCookie = decodeURIComponent(document.cookie);
 	console.log(decodedCookie);
 	let cookieBits = decodedCookie.split(';');
@@ -23,11 +26,11 @@ function checkTimer(a,b){
 		else{
 			return;
 		}
-	console.log("m = "+m+"s = "+s);
 	}
-	//if (m != -1 && s != -1){
-	//	startTimer(cookieM,cookieS)
-	//}
+	console.log("m = "+m+" s = "+s);
+	if (m != -1 && s != -1){
+		startTimer(m,s)
+	}
 }
 
 function startTimer(cookieM,cookieS) {
@@ -44,7 +47,15 @@ function startTimer(cookieM,cookieS) {
 	timeNumberLabel.setAttribute('class', '');
 
 	outerDiv.removeAttribute('hidden');
-	timeNumberLabel.innerHTML = '10:00';
+	if (s < 10) {
+		var s1 = '0' + s; }
+	else { 
+		var s1 = s; }
+	if (m < 10) { 
+		var m1 = '0' + m; }
+	else { 
+		var m1 = m; }
+	timeNumberLabel.innerHTML = m1+':'+s1;
 	time = window.setInterval('dispTime()', 1000);
 
 }
