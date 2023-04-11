@@ -14,7 +14,7 @@ function checkTimer(){
 	m = window.localStorage.getItem("minutes");
 	s = window.localStorage.getItem("seconds");
 	console.log("m = "+m+" s = "+s);
-	if (m != -1 && s != -1 || m != "" && s != "" || m != null && s != null){
+	if (m != -1 && s != -1 && m != "" && s != "" && m != null && s != null){
 		startTimer(m,s)
 	}
 }
