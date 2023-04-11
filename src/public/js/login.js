@@ -1,6 +1,9 @@
 // JavaScript Document
 
 function login() {
+	document.cookie = "minutes=-1";
+	document.cookie = "seconds=-1";
+	
 	$.ajax({
 		url: '/api/my/login',
 		dataType: 'json',
@@ -18,6 +21,8 @@ function login() {
 }
 
 function logout() {
+	document.cookie = "minutes=-1";
+	document.cookie = "seconds=-1";
 	location.replace('/');
 	document.cookie = "token=1; expires = Thu, 01 Jan 1970 00:00:00 GMT; path=/";
 }
