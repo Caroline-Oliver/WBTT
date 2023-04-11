@@ -1,14 +1,15 @@
 // JavaScript Document
-var m = 5;
-var s = 59;
+var m;
+var s;
 
 window.onload = function() {
-	checkTimer();
+	checkTimer(3,8);
+	checkTimer(-1,-1);
 }
 
-function checkTimer(){
-	document.cookie = "minutes="+m;
-	document.cookie = "seconds="+s;
+function checkTimer(a,b){
+	document.cookie = "minutes="+a;
+	document.cookie = "seconds="+b;
 	let decodedCookie = decodeURIComponent(document.cookie);
 	console.log(decodedCookie);
 	let cookieBits = decodedCookie.split(';');
@@ -22,7 +23,7 @@ function checkTimer(){
 		else{
 			return;
 		}
-		console.log("m = "+m+"s = "+s);
+	console.log("m = "+m+"s = "+s);
 	}
 	//if (m != -1 && s != -1){
 	//	startTimer(cookieM,cookieS)
