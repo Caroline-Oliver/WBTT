@@ -633,52 +633,52 @@ app.get('/my/account', authenticate, (req, res) => {
 });
 
 app.get('/my/cart', authenticate, (req, res) => {
-    checkTimestamps(`user_id = ${req.cookies.token}`)
+    accountStatus(req.cookies.token)
         .catch((err) => {
-
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
         })
         .finally(() => {
-            var tickets;
-            let sql = `SELECT * FROM cart as c JOIN ticket as t ON t.ticket_id = c.ticket_id WHERE user_id = ${req.cookies.token}`;
-            query(sql, [])
+            checkTimestamps(`user_id = ${req.cookies.token}`)
                 .catch((err) => {
-
+                    
                 })
-                .then((results) => {
-                    res.render('pages/cart', {
-                        status: loggedIn
-                    });
-                })
-            // getTicketList()
-            //     .catch((err) => {
+                .finally(() => {
+                    var tickets;
+                    let sql = `SELECT * FROM cart as c JOIN ticket as t ON t.ticket_id = c.ticket_id WHERE user_id = ${req.cookies.token}`;
+                    query(sql, [])
+                        .catch((err) => {
 
-            //     })
-            //     .then((ticket_list) => {
-            //         tickets = ticket_list;
-            //     })
-            //     .finally(() => {
-            //         var info;
-            //         ticketListToInfoList(tickets)
-            //             .catch((err) => {
+                        })
+                        .then((results) => {
+                            res.render('pages/cart', {
+                                status: loggedIn
+                            });
+                        })
+                    // getTicketList()
+                    //     .catch((err) => {
 
-            //             })
-            //             .then((info_list) => {
-            //                 info = info_list;
-            //             })
-            //             .finally(() => {
-            //                 var loggedIn = '';
-            //                 accountStatus(req.cookies.token)
-            //                     .catch((err) => {
-            //                         loggedIn = 'na';
-            //                     })
-            //                     .then((status) => {
-            //                         loggedIn = status;
-            //                     })
-            //                     .finally(() => {
-            //                         
-            //                     });
-            //             });
-            //     });
+                    //     })
+                    //     .then((ticket_list) => {
+                    //         tickets = ticket_list;
+                    //     })
+                    //     .finally(() => {
+                    //         var info;
+                    //         ticketListToInfoList(tickets)
+                    //             .catch((err) => {
+
+                    //             })
+                    //             .then((info_list) => {
+                    //                 info = info_list;
+                    //             })
+                    //             .finally(() => {
+                    //                 var loggedIn = '';
+
+                    //             });
+                    //     });
+                });
         });
 });
 
