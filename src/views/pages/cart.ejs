@@ -32,8 +32,7 @@
             </thead>
             <tbody>
               <% var totalCost = 0; %>
-              <% if (events==null) events=[]; %>
-                <% if (JSON.stringify(events)==="[]" ) events=[]; %>
+              <% if (items==null) items=[]; %>
                 <% items.forEach(function(item) { %>
                   <% totalCost += item.price * item.quantity; %>
                   <tr>
