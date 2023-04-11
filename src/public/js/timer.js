@@ -3,6 +3,8 @@ var m;
 var s;
 
 window.onload = function() {
+	let decodedCookie = decodeURIComponent(document.cookie);
+	console.log(decodedCookie);
 	checkTimer();
 }
 
