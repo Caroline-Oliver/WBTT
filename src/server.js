@@ -1127,14 +1127,15 @@ app.get('/admin/editUser/:user_id', authenticate, (req, res) => {
                     res.status(403).send('error');
                 })
                 .then((result) => {
-                    var userInfo;
-                    result.forEach( (info) => {
-                        userInfo = info;
-                    })
-                    res.render('pages/edit-user', {
-                        status: loggedIn,
-                        user: userInfo
-                    });
+                    if (result.length == 1) {
+                        res.render('pages/edit-user', {
+                            status: loggedIn,
+                            user: userInfo[0]
+                        });
+                    }
+                    else {
+                        res.redirect('/admin/createUser');
+                    }
                 })
         });
 });
