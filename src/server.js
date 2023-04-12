@@ -779,6 +779,7 @@ app.get('/my/tickets', authenticate, (req, res) => {
 
 // #region user account api
 app.post('/api/my/create', (req, res) => {
+    console.log('user attempting to register account');
     var username, password, email, first_name, last_name;
     // make sure request contains all elements of a user account
     if (req.body.username != null && req.body.password != null
