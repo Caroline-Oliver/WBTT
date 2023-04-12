@@ -17,7 +17,9 @@ function register() {
 		}),
 		processData: false,
 		success: function (data) {
-			location.reload();
+			//location.reload();
+            console.log(data);
+            console.log(JSON.stringify(data));
 		},
         error: function(data) {
             // consider doing more sophisticated error messages
