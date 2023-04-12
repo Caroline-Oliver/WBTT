@@ -14,36 +14,38 @@
 			<div class="form-row">
 				<div class="form-group col-md-4">
 					<label for="inputUsername">Username</label>
-					<input type="email" class="form-control" id="inputEmail4" placeholder="Username">
+					<input type="email" class="form-control" id="username" placeholder="Username">
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-4">
 					<label for="inputPassword">Password</label>
-					<input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+					<input type="password" class="form-control" id="password" placeholder="Password">
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-4">
 					<label for="inputEmailAddress">Email</label>
-					<input type="text" class="form-control" id="inputAddress" placeholder="Email">
+					<input type="text" class="form-control" id="email" placeholder="Email">
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-4">
 					<label for="inputFirst">First Name</label>
-					<input type="text" class="form-control" id="inputFirst" placeholder="First">
+					<input type="text" class="form-control" id="first_name" placeholder="First">
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-4">
 					<label for="inputLast">Last Name</label>
-					<input type="text" class="form-control" id="inputLast" placeholder="Last">
+					<input type="text" class="form-control" id="last_name" placeholder="Last">
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Register</button>
+			<button onclick="register()" class="btn btn-primary">Register</button>
+			<h5 style="color:red" id="error-box"></h5>
 		</form>
 	</div>
+	<script src="/js/register.js"></script>
 	<%- include('../partials/scripts') %>
 </body>
 
