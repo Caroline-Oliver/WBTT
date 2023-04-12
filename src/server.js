@@ -610,6 +610,26 @@ app.get('/events/:category', (req, res) => {
 // #endregion
 
 // #region user account pages
+app.get('/my/register', (req, res) => {
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((result) => {
+            loggedIn = result
+        })
+        .finally(() => {
+            if (loggedIn == 'na') {
+                res.render('pages/register', {
+                    status: loggedIn
+                })
+            }
+            else {
+                res.redirect('/');
+            }
+        })
+});
+
 app.get('/my/account', authenticate, (req, res) => {
     var sql = "SELECT * FROM user WHERE user_id = ?;"
     sqlParams = [req.cookies.token];
@@ -664,27 +684,6 @@ app.get('/my/cart', authenticate, (req, res) => {
                                 items: results
                             });
                         })
-                    // getTicketList()
-                    //     .catch((err) => {
-
-                    //     })
-                    //     .then((ticket_list) => {
-                    //         tickets = ticket_list;
-                    //     })
-                    //     .finally(() => {
-                    //         var info;
-                    //         ticketListToInfoList(tickets)
-                    //             .catch((err) => {
-
-                    //             })
-                    //             .then((info_list) => {
-                    //                 info = info_list;
-                    //             })
-                    //             .finally(() => {
-                    //                 var loggedIn = '';
-
-                    //             });
-                    //     });
                 });
         });
 });
