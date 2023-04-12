@@ -1,4 +1,5 @@
 function register() {
+    console.log('attempting to register');
 	var sentinel = -1
 	window.localStorage.setItem('minutes', sentinel);
 	window.localStorage.setItem('seconds', sentinel);
