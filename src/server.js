@@ -781,10 +781,10 @@ app.get('/my/tickets', authenticate, (req, res) => {
 
 // #region user account api
 app.get('/api/my/create', (req, res) => {
-    console.log('user attempting to register account');
-    console.log(req);
-    console.log(JSON.stringify(req.body));
-    console.log(JSON.stringify(req.query));
+    // console.log('user attempting to register account');
+    // console.log(req);
+    // console.log(JSON.stringify(req.body));
+    // console.log(JSON.stringify(req.query));
     var username, password, email, first_name, last_name;
     // make sure request contains all elements of a user account
     if (req.body.username != null && req.body.password != null
@@ -797,15 +797,15 @@ app.get('/api/my/create', (req, res) => {
         last_name = req.body.last_name;
     }
     else {
-        var query = JSON.parse(Object.keys(req.query)[0]);
-        if (query.username != null && query.password != null
-            && query.email != null && query.first_name != null
-            && query.last_name != null) {
-            username = query.username;
-            password = query.password;
-            email = query.email;
-            first_name = query.first_name;
-            last_name = query.last_name;
+        var req_query = JSON.parse(Object.keys(req.query)[0]);
+        if (req_query.username != null && req_query.password != null
+            && req_query.email != null && req_query.first_name != null
+            && req_query.last_name != null) {
+            username = req_query.username;
+            password = req_query.password;
+            email = req_query.email;
+            first_name = req_query.first_name;
+            last_name = req_query.last_name;
         }
         else {
             res.status(403).send("Missing body parts");
