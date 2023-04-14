@@ -797,8 +797,6 @@ app.post('/api/my/create', (req, res) => {
         last_name = req.body.last_name;
     }
     else {
-        console.log(query);
-        console.log(JSON.parse(query));
         var query = JSON.parse(Object.keys(req.query)[0]);
         if (query.username != null && query.password != null
             && query.email != null && query.first_name != null
