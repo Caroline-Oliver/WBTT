@@ -17,12 +17,12 @@ function register() {
             console.log('errored');
             console.log(err);
             console.log(err.message);
-            document.getElementById('last_name').innerHTML = 'Failed to create account';
+            document.getElementById('error_box').innerHTML = 'Failed to create account';
         })
         .then( (result) => {
             console.log(result);
             if (result != "Account successfully created!")
-                document.getElementById('last_name').innerHTML = result;
+                document.getElementById('error_box').innerHTML = result;
         })
 }
 
