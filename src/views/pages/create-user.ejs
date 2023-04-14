@@ -31,12 +31,13 @@
         <label for="last_name">Last</label>
         <input type="text" class="form-control" id="last_name" placeholder="Last Name">
       </div>
-      <button onclick="createUser()">Submit</button>
+      <button onclick="createUser()" type="button">Submit</button>
       <button type="reset" value="Reset">Reset</button>
     </form>
     <h5 style="color:red" id="error-box"></h5>
     <h5 style="color:green" id="success-box"></h5>
   </div>
+  <script src="/js/admin.js"></script>
   <%- include('../partials/scripts') %>
 </body>
 
