@@ -23,6 +23,8 @@ function register() {
             console.log(result);
             if (result != "Account successfully created!")
                 document.getElementById('error-box').innerHTML = result;
+            else
+                document.getElementById('success-box').innerHTML = result;
         })
 }
 
