@@ -20,9 +20,9 @@ function register() {
             document.getElementById('last_name').innerHTML = 'Failed to create account';
         })
         .then( (result) => {
-            console.log('success');
             console.log(result);
-            console.log(JSON.stringify(result));
+            if (result != "Account successfully created!")
+                document.getElementById('last_name').innerHTML = result;
         })
 }
 
