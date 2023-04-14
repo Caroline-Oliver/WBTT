@@ -1250,11 +1250,12 @@ app.get('/api/admin/editUser', (req, res) => {
     var user_id, username, password, email, first_name, last_name, type;
     // make sure request contains all elements of a user account
     if (req.body.user_id != null && req.body.username != null
-        && req.body.password != null && req.body.email != null
+        && req.body.email != null
         && req.body.first_name != null && req.body.last_name != null
         && req.body.type != null) {
         user_id = req.body.user_id;
         username = req.body.username;
+        if (req.body.password != null);
         password = req.body.password;
         email = req.body.email;
         first_name = req.body.first_name;
@@ -1264,12 +1265,13 @@ app.get('/api/admin/editUser', (req, res) => {
     else {
         var req_query = JSON.parse(Object.keys(req.query)[0]);
         if (req_query.user_id != null && req_query.username != null
-            && req_query.password != null && req_query.email != null
+            && req_query.email != null
             && req_query.first_name != null && req_query.last_name != null
             && req_query.type != null) {
             user_id = req_query.user_id;
             username = req_query.username;
-            password = req_query.password;
+            if (req_query.password != null)
+                password = req_query.password;
             email = req_query.email;
             first_name = req_query.first_name;
             last_name = req_query.last_name;
@@ -1280,25 +1282,32 @@ app.get('/api/admin/editUser', (req, res) => {
             return;
         }
     }
+
     let user_sql = 'UPDATE user SET username=?, email=?, first_name=?, last_name=?, type=? WHERE user_id=?;';
     let user_params = [username, email, first_name, last_name, type, user_id];
     let user_query = query(user_sql, user_params);
 
-    let pass_sql = 'UPDATE password SET username=?, password=? WHERE password_id=?';
-    let pass_params = [username, password, user_id];
-    let pass_query = query(pass_sql, pass_params);
+    if (password != null) {
+        let pass_sql = 'UPDATE password SET username=?, password=? WHERE password_id=?';
+        let pass_params = [username, password, user_id];
+        let pass_query = query(pass_sql, pass_params);
+    }
+
+    else {
+        let pass_sql = 'UPDATE password SET username=? WHERE password_id=?';
+        let pass_params = [username, user_id];
+        let pass_query = query(pass_sql, pass_params);
+    }
 
     Promise.all([user_query, pass_query])
-        .catch( (err) => {
+        .catch((err) => {
             console.log('error in update user admin function');
             console.log(err.message);
             res.send('error in db');
         })
-        .then( (result) => {
+        .then((result) => {
             res.send('Account edited successfully!')
         });
-
-
 });
 
 app.post('/api/admin/upload', authenticate, (req, res) => {
