@@ -823,6 +823,7 @@ app.get('/api/my/create', (req, res) => {
         .then((result) => {
             if (result.length != 0) {
                 res.status(400).send("Username already in user");
+                return;
             }
 
             // gets the max id
