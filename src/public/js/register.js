@@ -33,13 +33,13 @@ function callRegister() {
             dataType: 'json',
             type: 'post',
             contentType: 'application/jsonp',
-            data: JSON.stringify({
+            data: {
                 "username": `${document.getElementById('username').value}`,
                 "password": `${document.getElementById('password').value}`,
                 "email": `${document.getElementById('email').value}`,
                 "first_name": `${document.getElementById('first_name').value}`,
                 "last_name": `${document.getElementById('last_name').value}`
-            }),
+            },
             processData: true,
             success: function (data) {
                 resolve(data);
