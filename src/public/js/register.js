@@ -21,10 +21,14 @@ function register() {
         })
         .then( (result) => {
             console.log(result);
-            if (result != "Account successfully created!")
+            if (result != "Account successfully created!"){
                 document.getElementById('error-box').innerHTML = result;
-            else
+                document.getElementById('success-box').innerHTML = '';
+            }
+            else{
+                document.getElementById('error-box').innerHTML = '';
                 document.getElementById('success-box').innerHTML = result;
+            }
         })
 }
 
