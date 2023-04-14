@@ -4,6 +4,14 @@ function register() {
 	window.localStorage.setItem('minutes', sentinel);
 	window.localStorage.setItem('seconds', sentinel);
 	
+    console.log(JSON.stringify({
+        "username": `${document.getElementById('username').value}`,
+        "password": `${document.getElementById('password').value}`,
+        "email": `${document.getElementById('email').value}`,
+        "first_name": `${document.getElementById('first_name').value}`,
+        "last_name": `${document.getElementById('last_name').value}`
+    }));
+
 	callRegister()
         .catch( (err) => {
             console.log('errored');
@@ -15,7 +23,6 @@ function register() {
             console.log('success');
             console.log(result);
             console.log(JSON.stringify(result));
-            //location.reload();
         })
 }
 
