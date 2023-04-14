@@ -11,8 +11,8 @@ function login() {
 		type: 'get',
 		contentType: 'application/jsonp',
 		data: JSON.stringify({
-			"username": `${document.getElementById('username').value}`,
-			"password": `${document.getElementById('password').value}`
+			"username": `${document.getElementById('login_username').value}`,
+			"password": `${document.getElementById('login_password').value}`
 		}),
 		processData: false,
 		complete: function (data, textStatus, jQxhr) {
