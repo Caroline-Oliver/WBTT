@@ -9,7 +9,8 @@
   <header>
     <%- include('../partials/header') %>
   </header>
-  <div id="changeUserDiv">
+  <h2 style="text-align: center; margin:15px;">Edit User</h2>
+  <div class="container" id="changeUserDiv">
     <form>
       <div class="form-group">
         <label for="user_id">User ID</label>
@@ -45,6 +46,10 @@
 			<h5 style="color:green" id="success-box"></h5>
     </form>
   </div>
+  <hr style="margin-bottom: 15px; margin-top: 15px">
+  <footer class="text-center">
+    <%- include('../partials/footer') %>
+  </footer>
   <script src="/js/admin.js"></script>
   <%- include('../partials/scripts') %>
 </body>
