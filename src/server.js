@@ -780,7 +780,7 @@ app.get('/my/tickets', authenticate, (req, res) => {
 // #endregion
 
 // #region user account api
-app.post('/api/my/create', (req, res) => {
+app.get('/api/my/create', (req, res) => {
     console.log('user attempting to register account');
     console.log(req);
     console.log(JSON.stringify(req.body));

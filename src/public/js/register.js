@@ -31,7 +31,7 @@ function callRegister() {
         $.ajax({
             url: '/api/my/create',
             dataType: 'json',
-            type: 'post',
+            type: 'get',
             contentType: 'application/jsonp',
             data: JSON.stringify({
                 "username": `${document.getElementById('username').value}`,
