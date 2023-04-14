@@ -818,7 +818,7 @@ app.get('/api/my/create', (req, res) => {
         .catch((err) => {
             console.log('errored in /api/my/create in check query')
             console.log(err.message);
-            res.status(400).send("db error");
+            res.send("db error");
         })
         .then((result) => {
             if (result.length != 0) {
@@ -831,7 +831,7 @@ app.get('/api/my/create', (req, res) => {
                 .catch((err) => {
                     console.log('errored in /api/my/create in max_id query');
                     console.log(err.message);
-                    res.status(400).send('db error');
+                    res.send('db error');
                 })
                 .then((result) => {
                     var max_id = result[0].max_id + 1;
