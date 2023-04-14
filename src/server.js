@@ -812,41 +812,45 @@ app.get('/api/my/create', (req, res) => {
             return;
         }
     }
-    // make sure user account doesn't already exist
-    var sql = "SELECT * FROM user WHERE user_name = ?;"
-    sqlParams = [username];
-    pool.query(sql, sqlParams, function (err_1, result_1) {
-        if (err_1) throw err_1;
-        else if (result_1.length != 0) {
-            res.status(400).send("Username already in user");
-        }
-        else {
-            var max_id = null;
-            var sql = "SELECT MAX(user_id) AS max_id FROM user";
-            sqlParams = [];
-            pool.query(sql, sqlParams, function (err_2, result_2) {
-                if (err_2) throw err_2;
 
-                max_id = result_2[0].max_id + 1;
+    // checks to make sure username isn't already in use
+    query("SELECT * FROM user WHERE user_name = ?;", [username])
+        .catch((err) => {
+            console.log('errored in /api/my/create in check query')
+            console.log(err.message);
+            res.status(400).send("db error");
+        })
+        .then((result) => {
+            if (result.length != 0) {
+                res.status(400).send("Username already in user");
+            }
 
-                // inserts new user into user table
-                sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, ?, 1)";
-                sqlParams = [max_id, username, first_name, last_name, email];
-                pool.query(sql, sqlParams, function (err_3, result_3) {
-                    if (err_3) throw err_3;
+            // gets the max id
+            query("SELECT MAX(user_id) AS max_id FROM user", [])
+                .catch((err) => {
+                    console.log('errored in /api/my/create in max_id query');
+                    console.log(err.message);
+                    res.status(400).send('db error');
+                })
+                .then((result) => {
+                    var max_id = result[0].max_id + 1;
+                    let user_sql = "INSERT INTO user (user_id, user_name, first_name, last_name, email, type) values (?, ?, ?, ?, ?, 1)";
+                    let user_sqlParams = [max_id, username, first_name, last_name, email];
 
-                    sql = "INSERT INTO password (password_id, user_name, password) values (?, ?, ?)";
-                    sqlParams = [max_id, username, password];
-                    pool.query(sql, sqlParams, function (err_4, result_4) {
-                        if (err_4) throw err_4;
+                    let pass_sql = "INSERT INTO password (password_id, user_name, password) values (?, ?, ?)";
+                    let pass_sqlParams = [max_id, username, password];
 
-                        res.status(200).send("Account successfully created!");
-                    });
-                });
-            });
-        }
-    });
-
+                    // insert user info into tables
+                    Promise.all([query(user_sql, user_sqlParams), query(pass_sql, pass_sqlParams)])
+                        .catch((err) => {
+                            console.log('error in /api/my/create in insertion queries');
+                            console.log(err.message);
+                        })
+                        .then((result) => {
+                            res.status(200).send("Account successfully created!");
+                        })
+                })
+        })
 });
 
 // TODO change to async & promises to have more readable code
