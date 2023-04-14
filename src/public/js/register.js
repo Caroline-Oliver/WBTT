@@ -30,7 +30,7 @@ function callRegister() {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: '/api/my/create',
-            dataType: 'json',
+            dataType: 'text',
             type: 'get',
             contentType: 'application/jsonp',
             data: JSON.stringify({
