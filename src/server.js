@@ -665,7 +665,8 @@ app.get('/my/cart', authenticate, (req, res) => {
         .finally(() => {
             checkTimestamps(`user_id = ${req.cookies.token}`)
                 .catch((err) => {
-
+                    console.log('error in check timestamps in my/cart');
+                    console.log(err.message);
                 })
                 .finally(() => {
                     let sql = `SELECT e.event_name, e.event_description, e.image_url, t.price, ROUND(COUNT(*)/12) as quantity
@@ -676,7 +677,8 @@ app.get('/my/cart', authenticate, (req, res) => {
                     GROUP BY e.event_name, e.event_description, e.image_url, t.price`;
                     query(sql, [])
                         .catch((err) => {
-
+                            console.log('error in big sql query in my/cart');
+                            console.log(err.message);
                         })
                         .then((results) => {
                             res.render('pages/cart', {
