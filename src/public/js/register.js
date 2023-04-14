@@ -22,7 +22,7 @@ function register() {
         .then( (result) => {
             console.log(result);
             if (result != "Account successfully created!")
-                document.getElementById('error_box').innerHTML = result;
+                document.getElementById('error-box').innerHTML = result;
         })
 }
 
