@@ -1,5 +1,9 @@
 // JavaScript Document
 
+$(document).ready(function () {
+	$('#orders').DataTable({});
+});
+
 var tabOrders = document.getElementById('orders');
 var tabUsers = document.getElementById('users');
 //var tabTickets = document.getElementById('tickets');
@@ -12,11 +16,7 @@ tabUsers.addEventListener('click', function () { setView('users-body') }, false)
 tabDiscounts.addEventListener('click', function () { setView('discounts-body') }, false);
 tabEvents.addEventListener('click', function () { setView('events-body') }, false);
 
-// Basic example
-$(document).ready(function () {
-	$('#orders').DataTable({});
-	$('.dataTables_length').addClass('bs-select');
-  });
+
 
 function createUser() {
 	callRegister()
