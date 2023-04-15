@@ -327,7 +327,7 @@
                       <%= event.venue %>
                     </td>
                     <td>
-                      <%= (event.date + '' ).split(' ').slice(1, 4).join(' ') %></td>
+                      <%= event.date %></td>
                 <td><%= event.day %></td>
                 <td><%= event.time %></td>
               </tr>
@@ -342,8 +342,7 @@
           <h2>Users</h2>
         </div>
         <div id=event-edit>
-        <button type="button" class="btn btn-inverse" style="margin-right: 95px;" onclick="location.href='
-                        /admin/createUser'">Create User</button>
+        <button type="button" class="btn btn-inverse" style="margin-right: 95px;" onclick="location.href='/admin/createUser'">Create User</button>
           </div>
           <div class="table-responsive">
             <table class="table table-striped table-sm">
