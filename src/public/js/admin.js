@@ -12,6 +12,14 @@ tabUsers.addEventListener('click', function () { setView('users-body') }, false)
 tabDiscounts.addEventListener('click', function () { setView('discounts-body') }, false);
 tabEvents.addEventListener('click', function () { setView('events-body') }, false);
 
+// Basic example
+$(document).ready(function () {
+	$('#orders').DataTable({
+	 "ordering": true // false to disable sorting (or any other option)
+	});
+	$('.dataTables_length').addClass('bs-select');
+  });
+
 function createUser() {
 	callRegister()
 		.catch((err) => {
