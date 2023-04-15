@@ -9,7 +9,7 @@
   <header>
     <%- include('../partials/header') %>
   </header>
-  <h2 style="margin-top:15px; margin-bottom:15px;">Create Event</h2>
+  <h2 style="margin-top:15px; margin-bottom:15px;text-align:center">Create Event</h2>
   <div class="container" id="createEventDiv">
     <form>
       <div class="form-group">
@@ -21,7 +21,7 @@
         <input type="text" class="form-control" id="create_description" placeholder="Description">
       </div>
       <div class="form-group">
-        <label for="imageSelect">Choose an image:</label>
+        <label for="imageSelect">Choose An Existing Image:</label><br>
           <select name="existingImages" id="existing-images">
             <option value="/images/event-images/file-name1.jpg">Image 1</option>
             <option value="/images/event-images/file-name2.jpg">Image 2</option>
@@ -30,7 +30,7 @@
       </div>
       <h4 style="margin-left:25px">-or-</h4>
       <div class="form-group">
-        <label for="image">Upload An Image</label>
+        <label for="image">Upload An Image:</label>
         <input type="text" class="form-control" id="create_image" placeholder="Image URL">
       </div>
       <div class="form-group">
