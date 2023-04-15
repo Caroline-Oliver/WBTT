@@ -690,7 +690,7 @@ app.get('/my/cart', authenticate, (req, res) => {
         });
 });
 
-app.get('/my/confirmation', authentication, (req, res) => {
+app.get('/my/confirmation', authenticate, (req, res) => {
     app.get('/my/register', (req, res) => {
         accountStatus(req.cookies.token)
             .catch((err) => {
