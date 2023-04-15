@@ -690,6 +690,41 @@ app.get('/my/cart', authenticate, (req, res) => {
         });
 });
 
+app.get('/my/confirmation', authentication, (req, res) => {
+    app.get('/my/register', (req, res) => {
+        accountStatus(req.cookies.token)
+            .catch((err) => {
+                loggedIn = 'na';
+            })
+            .then((result) => {
+                loggedIn = result
+            })
+            .finally(() => {
+                const dt = new Date();
+                const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
+
+                // YYYY-MM-DD HH:MM:SS format
+                const datetime = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`
+
+                let buy_sql = `UPDATE ticket
+                SET user_id = ${req.cookies.token}, hold=0, sold=1, hold_time=null, sold_date=${datetime}
+                WHERE ticket_id IN (SELECT ticket_id FROM cart WHERE user_id=${req.cookies.token});`
+                let rem_sql = `DELETE FROM cart WHERE user_id=${req.cookies.token}`
+
+                Promise.all([query(buy_sql, []), query(rem_sql, [])])
+                    .catch( (err) => {
+                        console.log('error in my/confirmation in update queries');
+                        console.log(err);
+                    })
+                    .then( (result) => {
+                        res.render('pages/confirmation', {
+                            status: loggedIn
+                        })
+                    })
+            })
+    });
+});
+
 // TODO: pending page
 app.get('/my/checkout', authenticate, (req, res) => {
     checkTimestamps("user_id = " + req.cookies.token)
@@ -1256,7 +1291,7 @@ app.get('/api/admin/editUser', (req, res) => {
         user_id = req.body.user_id;
         username = req.body.username;
         if (req.body.password != null && req.body.password != '');
-            password = req.body.password;
+        password = req.body.password;
         email = req.body.email;
         first_name = req.body.first_name;
         last_name = req.body.last_name;
