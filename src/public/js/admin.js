@@ -138,7 +138,7 @@ function callChangeEvent() {
 				"image_url": `${document.getElementById('image_url').value}`,
 				"category": `${document.getElementById('category').value}`,
 				"date": `${document.getElementById('date').value}`,
-				"time": `${document.getElementById('time').value}`,
+				"time": `${document.getElementById('form_time').value}`,
 				"day": `${document.getElementById('day').value}`,
 				"base_price": `${document.getElementById('base-price').value}`
 			}),
