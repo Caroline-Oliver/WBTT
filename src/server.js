@@ -1325,7 +1325,7 @@ app.get('/admin/editDiscount/:discount_id', authenticate, (req, res) => {
                     if (result.length == 1) {
                         res.render('pages/edit-discount', {
                             status: loggedIn,
-                            user: result[0]
+                            code: result[0]
                         });
                     }
                     else {
