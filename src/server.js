@@ -696,8 +696,9 @@ app.get('/my/cart', authenticate, (req, res) => {
                                     console.log(err.message);
                                 })
                                 .then((results) => {
-                                    if (results.length >= 1)
-                                        console.log(JSON.stringify(results[0]));
+                                    console.log(JSON.stringify(results));
+                                    // if (results.length >= 1)
+                                        
                                     res.render('pages/cart', {
                                         status: loggedIn,
                                         items: tickets,
