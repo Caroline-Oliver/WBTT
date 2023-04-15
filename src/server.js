@@ -736,6 +736,7 @@ app.get('/my/confirmation', authenticate, (req, res) => {
                     console.log(JSON.stringify(result));
                     // creates new order
                     let order_sql = `INSERT INTO \`order\` SET user_id=${req.cookies.token}, total_cost=${result[0].total}, order_date=${datetime}`
+                    console.log(order_sql);
                     query(order_sql, [])
                         .catch((err) => {
                             console.log('errored in confirmation insert')
