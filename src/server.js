@@ -1255,8 +1255,8 @@ app.get('/api/admin/editUser', (req, res) => {
         && req.body.type != null) {
         user_id = req.body.user_id;
         username = req.body.username;
-        if (req.body.password != null);
-        password = req.body.password;
+        if (req.body.password != null && req.body.password != '');
+            password = req.body.password;
         email = req.body.email;
         first_name = req.body.first_name;
         last_name = req.body.last_name;
@@ -1270,7 +1270,7 @@ app.get('/api/admin/editUser', (req, res) => {
             && req_query.type != null) {
             user_id = req_query.user_id;
             username = req_query.username;
-            if (req_query.password != null)
+            if (req_query.password != null && req_query.password != '')
                 password = req_query.password;
             email = req_query.email;
             first_name = req_query.first_name;
@@ -1288,7 +1288,7 @@ app.get('/api/admin/editUser', (req, res) => {
     let user_query = query(user_sql, user_params);
     let pass_query;
 
-    if (password != null) {
+    if (password != null && password != '') {
         let pass_sql = 'UPDATE password SET user_name=?, password=? WHERE password_id=?';
         let pass_params = [username, password, user_id];
         let pass_query = query(pass_sql, pass_params);
