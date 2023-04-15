@@ -708,17 +708,24 @@ app.get('/my/confirmation', authenticate, (req, res) => {
             let buy_sql = `UPDATE ticket
                 SET user_id = ${req.cookies.token}, hold=0, sold=1, hold_time=null, sold_date='${datetime}'
                 WHERE ticket_id IN (SELECT ticket_id FROM cart WHERE user_id=${req.cookies.token});`
-            let rem_sql = `DELETE FROM cart WHERE user_id=${req.cookies.token}`
 
-            Promise.all([query(buy_sql, []), query(rem_sql, [])])
+            query(buy_sql, [])
                 .catch((err) => {
-                    console.log('error in my/confirmation in update queries');
-                    console.log(err);
+                    console.log('error in /my/confirmation in buysql');
+                    console.log(err.message);
                 })
                 .then((result) => {
-                    res.render('pages/confirmation', {
-                        status: loggedIn
-                    })
+                    let rem_sql = `DELETE FROM cart WHERE user_id=${req.cookies.token}`
+                    query(rem_sql, [])
+                        .catch((err) => {
+                            console.log('error in /my/confirmation in remsql');
+                            console.log(err.message);
+                        })
+                        .then( (result) => {
+                            res.render('pages/confirmation', {
+                                status: loggedIn
+                            })
+                        })
                 })
         })
 });
