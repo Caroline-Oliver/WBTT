@@ -8,8 +8,7 @@ function applyDiscount() {
             })
             .then((result) => {
                 if (result == 'Code successfully set.') {
-                    document.getElementById('error-box').innerHTML = '';
-                    document.getElementById('success-box').innerHTML = result;
+                    // refresh page
                 }
                 else {
                     document.getElementById('error-box').innerHTML = result;

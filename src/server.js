@@ -681,10 +681,20 @@ app.get('/my/cart', authenticate, (req, res) => {
                             console.log(err.message);
                         })
                         .then((results) => {
-                            res.render('pages/cart', {
-                                status: loggedIn,
-                                items: results
-                            });
+                            let tickets = results;
+                            query('SELECT * FROM discount_code WHERE code IN (SELECT promocode FROM user WHERE user_id=?)', [req.cookies.token])
+                                .catch((err) => {
+                                    console.log('error in discount query in my/cart');
+                                    console.log(err.message);
+                                })
+                                .then((results) => {
+                                    res.render('pages/cart', {
+                                        status: loggedIn,
+                                        items: tickets,
+                                        promocode: results[0]
+                                    });
+                                })
+
                         })
                 });
         });
@@ -1091,7 +1101,7 @@ app.get('/api/my/setDiscountCode', authenticate, (req, res) => {
                         res.send('Some error occured, please try again.');
                     })
                     .then((result) => {
-                        req.send('Code successfully set.');
+                        res.send('Code successfully set.');
                     })
             }
         })
