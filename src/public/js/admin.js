@@ -245,7 +245,7 @@ function callChangeDiscount() {
 }
 
 function createDiscount() {
-	callChangeDiscount()
+	callCreateDiscount()
 		.catch((err) => {
 			console.log('errored');
 			console.log(err);
