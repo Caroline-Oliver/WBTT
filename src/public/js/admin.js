@@ -113,7 +113,7 @@ function createEvent_ad() {
 			document.getElementById('error-box').innerHTML = 'Failed to create event';
 		})
 		.then((result) => {
-			if (result != "Successfully create event.") {
+			if (result != "Successfully created event.") {
 				document.getElementById('error-box').innerHTML = result;
 				document.getElementById('success-box').innerHTML = '';
 			}
