@@ -706,7 +706,7 @@ app.get('/my/confirmation', authenticate, (req, res) => {
             const datetime = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`
 
             let buy_sql = `UPDATE ticket
-                SET user_id = ${req.cookies.token}, hold=0, sold=1, hold_time=null, sold_date=${datetime}
+                SET user_id = ${req.cookies.token}, hold=0, sold=1, hold_time=null, sold_date='${datetime}'
                 WHERE ticket_id IN (SELECT ticket_id FROM cart WHERE user_id=${req.cookies.token});`
             let rem_sql = `DELETE FROM cart WHERE user_id=${req.cookies.token}`
 
