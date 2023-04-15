@@ -266,7 +266,7 @@ function addToCart() {
 	if (cartSeats.length != 0) {
 		//update cart list will call backend AddToCart
 		updateCartList()
-		startTimer("1","10");
+		startTimer("10","0");
 		const holdSeats = document.getElementsByClassName('hold');
 		const tickets = [];
 		for (var i = 0; i < holdSeats.length; i++) {
