@@ -733,17 +733,14 @@ app.get('/my/confirmation', authenticate, (req, res) => {
                     console.log(err.message);
                 })
                 .then((result) => {
-                    console.log(JSON.stringify(result));
                     // creates new order
                     let order_sql = `INSERT INTO \`order\` SET user_id=${req.cookies.token}, total_cost=${result[0].total}, order_date='${datetime}'`
-                    console.log(order_sql);
                     query(order_sql, [])
                         .catch((err) => {
                             console.log('errored in confirmation insert')
                             console.log(err.message);
                         })
                         .then((result) => {
-                            console.log(JSON.stringify(result));
                             // gets order id from previously created order
                             let order_num_sql = `SELECT MAX(order_id) as max FROM \`order\` WHERE user_id=${req.cookies.token}`;
                             query(order_num_sql)
@@ -752,7 +749,6 @@ app.get('/my/confirmation', authenticate, (req, res) => {
                                     console.log(err.message);
                                 })
                                 .then((result) => {
-                                    console.log(JSON.stringify(result));
                                     // updates tickets with info from order
                                     let buy_sql = `UPDATE ticket
                                     SET user_id = ${req.cookies.token}, hold=0, sold=1, hold_time=null, sold_date='${datetime}', order_id=${result[0].max}
@@ -763,7 +759,6 @@ app.get('/my/confirmation', authenticate, (req, res) => {
                                             console.log(err.message);
                                         })
                                         .then((result) => {
-                                            console.log(JSON.stringify(result));
                                             // removes tickets from cart
                                             let rem_sql = `DELETE FROM cart WHERE user_id=${req.cookies.token}`
                                             query(rem_sql, [])
@@ -772,10 +767,16 @@ app.get('/my/confirmation', authenticate, (req, res) => {
                                                     console.log(err.message);
                                                 })
                                                 .then((result) => {
-                                                    console.log(JSON.stringify(result));
-                                                    res.render('pages/confirmation', {
-                                                        status: loggedIn
-                                                    })
+                                                    query(`UPDATE user SET promocode=null WHERE user_id=${req.cookies.token}`, [])
+                                                        .catch((err) => {
+                                                            console.log('error in /my/confirmation in update user');
+                                                            console.log(err.message);
+                                                        })
+                                                        .then((result) => {
+                                                            res.render('pages/confirmation', {
+                                                                status: loggedIn
+                                                            })
+                                                        })
                                                 })
                                         })
                                 })
