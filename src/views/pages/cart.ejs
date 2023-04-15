@@ -31,49 +31,50 @@
               </tr>
             </thead>
             <tbody>
-              <% var totalCost=0; %>
-                <% if (items==null) items=[]; %>
-                  <% items.forEach(function(item) { %>
-                    <% totalCost +=Math.round((parseFloat(item.price) * parseFloat(item.quantity)) * 100) / 100; %>
-                      <tr>
-                        <td class="p-4">
-                          <div class="media align-items-center">
-                            <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="d-block ui-w-40 ui-bordered mr-4" alt=""> -->
-                            <div class="media-body">
-                              <a href="#" class="d-block text-dark">
-                                <%= item.event_name %>
-                              </a>
-                              <small>
-                                <!--<span class="text-muted">Color:</span> -->
-                                <span class="ui-product-color ui-product-color-sm align-text-bottom"
-                                  style="background:#e81e2c;"></span> &nbsp;
-                              </small>
-                            </div>
-                            <div>
-                              <img class="img-fluid" alt="<%= item.event_name %>" src="<%= item.image_url %>"
-                                style="max-height: 100px">
+              <% const formatter=new Intl.NumberFormat('en-US', {minimumFractionDigits: 2}) %>
+                <% var totalCost=0; %>
+                  <% if (items==null) items=[]; %>
+                    <% items.forEach(function(item) { %>
+                      <% totalCost += Math.round((parseFloat(item.price) * parseFloat(item.quantity)) * 100) / 100; %>
+                        <tr>
+                          <td class="p-4">
+                            <div class="media align-items-center">
+                              <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="d-block ui-w-40 ui-bordered mr-4" alt=""> -->
+                              <div class="media-body">
+                                <a href="#" class="d-block text-dark">
+                                  <%= item.event_name %>
+                                </a>
+                                <small>
+                                  <!--<span class="text-muted">Color:</span> -->
+                                  <span class="ui-product-color ui-product-color-sm align-text-bottom"
+                                    style="background:#e81e2c;"></span> &nbsp;
+                                </small>
+                              </div>
                               <div>
-                                <p>
-                                  <%= item.event_description %>
-                                </p>
+                                <img class="img-fluid" alt="<%= item.event_name %>" src="<%= item.image_url %>"
+                                  style="max-height: 100px">
+                                <div>
+                                  <p>
+                                    <%= item.event_description %>
+                                  </p>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </td>
-                        <td class="text-right font-weight-semibold align-middle p-4">$<%= item.price %>
-                        </td>
-                        <td class="text-right font-weight-semibold align-middle p-4">
-                          <%= item.quantity %>
-                        </td>
-                        <td class="text-right font-weight-semibold align-middle p-4">$<%=
-                            Math.round((parseFloat(item.price) * parseFloat(item.quantity)) * 100) / 100 %>
-                        </td>
-                        <td class="text-center align-middle px-0"><a href="#"
-                            class="shop-tooltip close float-none text-danger" title=""
-                            data-original-title="Remove">×</a>
-                        </td>
-                      </tr>
-                      <% }); %>
+                          </td>
+                          <td class="text-right font-weight-semibold align-middle p-4">$<%= item.price %>
+                          </td>
+                          <td class="text-right font-weight-semibold align-middle p-4">
+                            <%= item.quantity %>
+                          </td>
+                          <td class="text-right font-weight-semibold align-middle p-4">$<%=
+                              formatter.format(parseFloat(item.price) * parseFloat(item.quantity)) %>
+                          </td>
+                          <td class="text-center align-middle px-0"><a href="#"
+                              class="shop-tooltip close float-none text-danger" title=""
+                              data-original-title="Remove">×</a>
+                          </td>
+                        </tr>
+                        <% }); %>
             </tbody>
           </table>
         </div>
@@ -90,23 +91,27 @@
           <div class="d-flex">
             <div class="text-right mt-4 mr-5">
               <label class="text-muted font-weight-normal m-0">Discount</label>
-              <% if (promocode == null) { %>
+              <% if (promocode==null) { %>
                 <div class="text-large"><strong></strong></div>
-              <% } else if (promocode.type == 1) { %>
-                <div class="text-large"><strong><%=promocode.amount%>%</strong></div>
-              <% } else { %>
-                <div class="text-large"><strong>$<%=promocode.amount%></strong></div>
-              <% } %>
+                <% } else if (promocode.type==1) { %>
+                  <div class="text-large"><strong>
+                      <%=promocode.amount%>%
+                    </strong></div>
+                  <% } else { %>
+                    <div class="text-large"><strong>$<%=promocode.amount%></strong></div>
+                    <% } %>
             </div>
             <div class="text-right mt-4">
               <label class="text-muted font-weight-normal m-0">Total price</label>
-              <% if (promocode == null) { %>
+              <% if (promocode==null) { %>
                 <div class="text-large"><strong></strong></div>
-              <% } else if (promocode.type == 1) { %>
-                <div class="text-large"><strong>$<%= Math.round(((totalCost * (1-parseFloat(promocode.amount)/100)) * 1.0825) * 100) / 100 %></strong></div>
-              <% } else { %>
-                <div class="text-large"><strong>$<%= Math.round(((totalCost - parseFloat(promocode.amount)) * 1.0825) * 100) / 100 %></strong></div>
-              <% } %>
+                <% } else if (promocode.type==1) { %>
+                  <div class="text-large"><strong>$<%= formatter.format((totalCost *
+                        (1-parseFloat(promocode.amount)/100)) * 1.0825) %></strong></div>
+                  <% } else { %>
+                    <div class="text-large"><strong>$<%= formatter.format((totalCost - parseFloat(promocode.amount)) *
+                          1.0825) %></strong></div>
+                    <% } %>
             </div>
           </div>
         </div>
