@@ -279,13 +279,15 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                </tr>
+                <% discount_codes.forEach( (code) => { %>
+                  <tr>
+                    <td><%= code.discount_id %></td>
+                    <td><%= code.code %></td>
+                    <td><%= code.type == 1 ? "Percentage" : "Actual" %></td>
+                    <td><%= code.amount %></td>
+                    <td><%= code.expiration %></td>
+                  </tr>
+                <% }) %>
               </tbody>
             </table>
           </div>

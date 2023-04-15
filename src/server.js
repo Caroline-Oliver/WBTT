@@ -346,9 +346,10 @@ function adminDashboard(filters) {
                     "GROUP BY u.user_name, e.event_name, e.venue, e.date;",
                     date);
                 var u_promise = query("SELECT * FROM user", []);
-                Promise.all([c_o_promise, h_o_promise, u_promise])
+                var d_promise = query("SELECT * FROM discount_code", []);
+                Promise.all([c_o_promise, h_o_promise, u_promise, d_promise])
                     .then((values) => {
-                        resolve([events, values[0], values[1], values[2]]);
+                        resolve([events, values[0], values[1], values[2], values[3]]);
                     });
             });
 
@@ -1181,6 +1182,7 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
             var current_orders_l = [];
             var historical_orders_l = [];
             var users_l = [];
+            var discount_l = [];
             adminDashboard()
                 .catch((err) => {
                     console.log(err);
@@ -1194,6 +1196,8 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
                         historical_orders_l = values[2];
                     if (values[3] != null)
                         users_l = values[3];
+                    if (values[4] != null)
+                        discount_l = values[4];
                 })
                 .finally(() => {
                     res.render('pages/admin-page', {
@@ -1201,7 +1205,8 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
                         events: events_l,
                         current_orders: current_orders_l,
                         historical_orders: historical_orders_l,
-                        users: users_l
+                        users: users_l,
+                        discount_codes: discount_l
                     });
                 });
         });
