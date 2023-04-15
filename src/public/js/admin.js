@@ -140,7 +140,7 @@ function callChangeEvent() {
 				"date": `${document.getElementById('date').value}`,
 				"time": `${document.getElementById('time').value}`,
 				"day": `${document.getElementById('day').value}`,
-				"base_price": `${document.getElementById('base_price').value}`
+				"base_price": `${document.getElementById('base-price').value}`
 			}),
 			success: function (data) {
 				resolve(data);
