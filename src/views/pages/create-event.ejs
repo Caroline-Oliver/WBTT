@@ -9,7 +9,8 @@
   <header>
     <%- include('../partials/header') %>
   </header>
-  <div id="createEventDiv">
+  <h2 style="margin-top:15px; margin-bottom:15px;">Create Event</h2>
+  <div class="container" id="createEventDiv">
     <form>
       <div class="form-group">
         <label for="event-name">Event Name</label>
@@ -20,12 +21,17 @@
         <input type="text" class="form-control" id="create_description" placeholder="Description">
       </div>
       <div class="form-group">
-        <label for="image">Image URL</label>
-        <input type="text" class="form-control" id="create_image" placeholder="Image URL">
+        <label for="imageSelect">Choose an image:</label>
+          <select name="existingImages" id="existing-images">
+            <option value="/images/event-images/file-name1.jpg">Image 1</option>
+            <option value="/images/event-images/file-name2.jpg">Image 2</option>
+            <option value="/images/event-images/file-name3.jpg">Image 3</option>
+          </select>
       </div>
-      <div class="form-group mt-3">
-        <label class="mr-2">Upload your Image: (this one and the next are not finalized)</label>
-        <input type="file" name="file">
+      <h4 style="margin-left:25px">-or-</h4>
+      <div class="form-group">
+        <label for="image">Upload An Image</label>
+        <input type="text" class="form-control" id="create_image" placeholder="Image URL">
       </div>
       <div class="form-group">
         <input type="file" name="chooseFile" id="chooseFile">
@@ -68,6 +74,10 @@
       <button type="reset" value="Reset">Reset</button>
     </form>
   </div>
+  <hr style="margin-bottom: 15px; margin-top: 15px">
+  <footer class="text-center">
+    <%- include('../partials/footer') %>
+  </footer>
   <%- include('../partials/scripts') %>
 </body>
 
