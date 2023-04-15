@@ -175,12 +175,12 @@ function searchEvents(search_terms) {
                             case 'costbelow':
                             case 'costb':
                                 if (special_terms == '') special_terms = '( ';
-                                special_terms += `base_cost < '${term}' AND\n`
+                                special_terms += `base_price < '${term}' AND\n`
                                 break;
                             case 'costabove':
                             case 'costa':
                                 if (special_terms == '') special_terms = '( ';
-                                special_terms += `base_cost > '${term}' AND\n`
+                                special_terms += `base_price > '${term}' AND\n`
                                 break;
                         }
                         // handle bad regex?
