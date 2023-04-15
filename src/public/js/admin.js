@@ -12,9 +12,10 @@ tabDiscounts.addEventListener('click', function () { setView('discounts-body') }
 tabEvents.addEventListener('click', function () { setView('events-body') }, false);
 
 $(document).ready(function() {
-	$('#orders-table').DataTable( {
-		
-	})
+	$('#orders-table').DataTable();
+	$('#users-table').DataTable();
+	$('#discounts-table').DataTable();
+	$('#events-table').DataTable();
 });
 
 function createUser() {
