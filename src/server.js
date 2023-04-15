@@ -1457,7 +1457,7 @@ app.get('/api/admin/editEvent', (req, res) => {
 
     let sql = `UPDATE event SET event_name=?, event_description=?, image_url=?, category=?, date=?, time=?, day=?, base_price=? WHERE event_id=${event_id}`;
     let params = [event_name, event_description, image_url, category, date, time, day, base_price];
-
+    console.log(params);
     query(sql, params)
         .catch( (err) => {
             console.log('errored in edit event');
