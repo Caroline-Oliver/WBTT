@@ -289,3 +289,9 @@ hr {
 	margin-top: 75px;
 	background-color:  #14213D;
 }
+
+.admin-page-header {
+	text-align:center;
+	margin-top:15px;
+	margin-bottom:15px;
+}
