@@ -16,7 +16,9 @@ function checkTimer(){
 }
 
 function startTimer(min,sec) {
-	//window.clearInterval(time);
+	window.clearInterval(time);
+	//window.localStorage.setItem("minutes",-1);
+	//window.localStorage.setItem("seconds",-1);
 	
 	s = sec;
 	m = min;
