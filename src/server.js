@@ -1218,8 +1218,13 @@ app.get('/admin/editEvent/:event_id', authenticate, (req, res) => {
         .finally(() => {
             getEvent(req.params.event_id)
                 .catch((err) => {
-                    console.log('errored in admin edit event from get event');
-                    console.log(err.message);
+                    if (err.message == 'no such event found') {
+                        res.redirect('/admin/createEvent');
+                    }
+                    else {
+                        console.log('errored in admin edit event from get event');
+                        console.log(err.message);
+                    }
                 })
                 .then((result) => {
                     res.render('pages/edit-event', {
