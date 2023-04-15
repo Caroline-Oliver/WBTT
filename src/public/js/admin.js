@@ -2,14 +2,14 @@
 
 var tabOrders = document.getElementById('orders');
 var tabUsers = document.getElementById('users');
-var tabTickets = document.getElementById('tickets');
-var tabVenues = document.getElementById('venues');
+//var tabTickets = document.getElementById('tickets');
+var tabDiscounts = document.getElementById('discount-codes');
 var tabEvents = document.getElementById('events');
 
 tabOrders.addEventListener('click', function () { setView('orders-body') }, true);
 tabUsers.addEventListener('click', function () { setView('users-body') }, false);
-tabTickets.addEventListener('click', function () { setView('tickets-body') }, false);
-tabVenues.addEventListener('click', function () { setView('venues-body') }, false);
+//tabTickets.addEventListener('click', function () { setView('tickets-body') }, false);
+tabDiscounts.addEventListener('click', function () { setView('discounts-body') }, false);
 tabEvents.addEventListener('click', function () { setView('events-body') }, false);
 
 function createUser() {
