@@ -43,6 +43,10 @@
         <input type="file" name="chooseFile" id="chooseFile">
       </div>
       <div class="form-group">
+        <label for="image_url">Category</label>
+        <input type="text" class="form-control" id="image_url" placeholder="Image URL" value="<%= event.image_url %>">
+      </div>
+      <div class="form-group">
         <label for="date">Date</label>
         <input type="text" class="form-control" id="date" placeholder="Date (GMT Universal Format)" value="<%= event.date %>">
       </div>
@@ -58,7 +62,7 @@
         <label for="base_price">Base Price</label>
         <input type="text" class="form-control" id="base-price" placeholder="Base Price" value="<%= event.base_price %>">
       </div>
-      <button onclick="changeEvent()" id="change_event">Update</button>
+      <button onclick="changeEvent()" id="change_event" type="button">Update</button>
       <button type="reset" value="Reset">Reset</button>
     </form>
   </div>
