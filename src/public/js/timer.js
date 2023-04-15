@@ -64,8 +64,9 @@ function dispTime() {
 		timeLabel.setAttribute('class', '');
 		timeNumberLabel.setAttribute('class', '');
 		timeNumberLabel.innerHTML = '';
-		timeWarningLabel.innerHTML = '';
-		timeLabel.innerHTML = 'Your tickets have been removed from your cart';
+		timeWarningLabel.innerHTML = '';timeLabel.innerHTML = '';
+		window.localStorage.setItem("minutes",-1);
+		window.localStorage.setItem("seconds",-1);
 		return;
 	}
 	else if ((s == 0 && m == 1)) {
