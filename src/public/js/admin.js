@@ -60,13 +60,13 @@ function callRegister() {
 
 function changeUser() {
 	callEditUser()
-		.catch( (err) => {
+		.catch((err) => {
 			console.log('errored');
 			console.log(err);
 			console.log(err.message);
 			document.getElementById('error_box').innerHTML = 'Failed to edit account';
 		})
-		.then( (result) => {
+		.then((result) => {
 			if (result != "Account edited successfully!") {
 				document.getElementById('error-box').innerHTML = result;
 				document.getElementById('success-box').innerHTML = '';
@@ -98,7 +98,54 @@ function callEditUser() {
 				resolve(data);
 			},
 			error: function (data) {
-				// consider doing more sophisticated error messages
+				reject(data);
+			}
+		});
+	});
+}
+
+function changeEvent() {
+	callChangeEvent()
+		.catch((err) => {
+			console.log('errored');
+			console.log(err);
+			console.log(err.message);
+			document.getElementById('error_box').innerHTML = 'Failed to edit event';
+		})
+		.then((result) => {
+			if (result != "Successfully edited event.") {
+				document.getElementById('error-box').innerHTML = result;
+				document.getElementById('success-box').innerHTML = '';
+			}
+			else {
+				document.getElementById('error-box').innerHTML = '';
+				document.getElementById('success-box').innerHTML = result;
+			}
+		})
+}
+
+function callChangeEvent() {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			url: '/api/admin/editEvent',
+			dataType: 'text',
+			type: 'get',
+			contentType: 'application/jsonp',
+			data: JSON.stringify({
+				"event_id": `${document.getElementById('event_id').value}`,
+				"event_name": `${document.getElementById('event_name').value}`,
+				"event_description": `${document.getElementById('event_description').value}`,
+				"image_url": `${document.getElementById('image_url').value}`,
+				"category": `${document.getElementById('category').value}`,
+				"date": `${document.getElementById('date').value}`,
+				"time": `${document.getElementById('time').value}`,
+				"day": `${document.getElementById('day').value}`,
+				"base_price": `${document.getElementById('base_price').value}`
+			}),
+			success: function (data) {
+				resolve(data);
+			},
+			error: function (data) {
 				reject(data);
 			}
 		});

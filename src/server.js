@@ -1416,6 +1416,59 @@ app.get('/api/admin/editUser', (req, res) => {
         });
 });
 
+app.get('/api/admin/editEvent', (req, res) => {
+    var event_id, event_name, event_description, image_url, category, date, time, day, base_price;
+    // make sure request contains all elements of a user account
+    if (req.body.event_id != null && req.body.event_name != null
+        && req.body.image_url != null && req.body.category != null
+        && req.body.date != null && req.body.type != null
+        && req.body.day != null && req.body.base_price != null) {
+        event_id = req.body.event_id;
+        event_name = req.body.event_name;
+        event_description = req.body.event_description;
+        image_url = req.body.image_url;
+        category = req.body.category;
+        date = req.body.date;
+        time = req.body.time;
+        day = req.body.day;
+        base_price = req.body.base_price;
+    }
+    else {
+        var req_query = JSON.parse(Object.keys(req.query)[0]);
+        if (req_query.event_id != null && req_query.event_name != null
+            && req_query.image_url != null && req_query.category != null
+            && req_query.date != null && req_query.time != null
+            && req_query.day != null && req_query.base_price != null) {
+            event_id = req_query.event_id;
+            event_name = req_query.event_name;
+            event_description = req_query.event_description;
+            image_url = req_query.image_url;
+            category = req_query.category;
+            date = req_query.date;
+            time = req_query.time;
+            day = req_query.day;
+            base_price = req_query.base_price;
+        }
+        else {
+            res.status(403).send("Missing body parts");
+            return;
+        }
+    }
+
+    let sql = `UPDATE event SET event_name=?, event_description=?, image_url=?, category=?, date=?, time=?, day=?, base_price=? WHERE event_id=${event_id}`;
+    let params = [event_name, event_description, image_url, category, date, time, day, base_price];
+
+    query(sql, params)
+        .catch( (err) => {
+            console.log('errored in edit event');
+            console.log(err.message);
+            res.send(err.message);
+        })
+        .then( (result) => {
+            res.send('Successfully edited event.')
+        })
+})
+
 app.post('/api/admin/upload', authenticate, (req, res) => {
     fs.writeFile(`venues/${req.body.name}.html`, req.body.html, (err) => {
         if (err) return console.log(err);
