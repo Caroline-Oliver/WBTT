@@ -332,24 +332,19 @@ function adminDashboard(filters) {
                         cur_event_ids.push(event.event_id)
                 })
                 cur_event_ids = cur_event_ids.toString();
-                var c_o_promise = query(`SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity
+                var sold_promise = query(`SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity
                     FROM ticket AS t
                     JOIN user AS u ON u.user_id = t.user_id
                     JOIN event AS e ON e.event_id = t.event_id
-                    WHERE sold=1 AND e.date >= ?
+                    WHERE sold=1
                     GROUP BY u.user_name, e.event_name, e.venue, e.date;`, date);
-                var h_o_promise = query("SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity" + '\n' +
-                    "FROM ticket AS t" + '\n' +
-                    "JOIN user AS u ON u.user_id = t.user_id" + '\n' +
-                    "JOIN event AS e ON e.event_id = t.event_id" + '\n' +
-                    "WHERE sold=1 AND e.date < ?" + '\n' +
-                    "GROUP BY u.user_name, e.event_name, e.venue, e.date;",
-                    date);
+                
                 var u_promise = query("SELECT * FROM user", []);
                 var d_promise = query("SELECT * FROM discount_code", []);
-                Promise.all([c_o_promise, h_o_promise, u_promise, d_promise])
+                Promise.all([sold_promise, u_promise, d_promise])
                     .then((values) => {
-                        resolve([events, values[0], values[1], values[2], values[3]]);
+                        // events, sold tickets, users, discount codes
+                        resolve([events, values[0], values[1], values[2]]);
                     });
             });
 
@@ -1179,8 +1174,7 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
         .finally(() => {
 
             var events_l = [];
-            var current_orders_l = [];
-            var historical_orders_l = [];
+            var orders_l = [];
             var users_l = [];
             var discount_l = [];
             adminDashboard()
@@ -1188,23 +1182,21 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
                     console.log(err);
                 })
                 .then((values) => {
+                    // events, sold tickets, users, discount codes
                     if (values[0] != null)
                         events_l = values[0];
                     if (values[1] != null)
-                        current_orders_l = values[1];
+                        orders_l = values[1];
                     if (values[2] != null)
-                        historical_orders_l = values[2];
+                        users_l = values[2];
                     if (values[3] != null)
-                        users_l = values[3];
-                    if (values[4] != null)
-                        discount_l = values[4];
+                        discount_l = values[3];
                 })
                 .finally(() => {
                     res.render('pages/admin-page', {
                         status: loggedIn,
                         events: events_l,
-                        current_orders: current_orders_l,
-                        historical_orders: historical_orders_l,
+                        orders: orders_l,
                         users: users_l,
                         discount_codes: discount_l
                     });
