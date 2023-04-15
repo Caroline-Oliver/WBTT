@@ -1,6 +1,7 @@
 // JavaScript Document
 var m;
 var s;
+var time;
 
 window.onload = function() {
 	checkTimer();
@@ -41,10 +42,6 @@ function startTimer(min,sec) {
 
 }
 
-var s = 0;
-var m = 5;
-var time;
-
 
 function dispTime() {
 	var timeLabel = document.getElementById('time-text');
@@ -75,7 +72,7 @@ function dispTime() {
 		timeWarningLabel.setAttribute('class', 'warning-label');
 		timeLabel.setAttribute('class', 'warning-label');
 		timeNumberLabel.setAttribute('class', 'warning-label');
-		timeWarningLabel.innerHTML = 'Warning: your tickets will soon be removed from your cart. Press add to cart button for more time';
+		timeWarningLabel.innerHTML = 'Warning: your tickets will soon be removed from your cart';
 	}
 	// end of calculation for next display
 	// Format the output by adding 0 if it is single digit //
