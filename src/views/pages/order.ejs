@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<body>
+
+    <header>
+        <%- include('../partials/header') %>
+    </header>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>Ticket ID</th>
+              <th>Event ID</th>
+              <th>Section Name</th>
+              <th>Seat</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% order.forEach(function(ticket) { %>
+              <tr>
+                <td><%= ticket.ticket_id %></td>
+                <td><%= ticket.event_id %></td>
+                <td><%= ticket.section_name %></td>
+                <td><%= ticket.seat %></td>
+                <td><%= ticket.price %></td>
+              </tr>
+              <% }); %>
+          </tbody>
+        </table>
+      </div>
+
+    <footer class="text-center">
+        <%- include('../partials/footer') %>
+    </footer>
+    <%- include('../partials/scripts') %>
+
+</body>
+
+</html>

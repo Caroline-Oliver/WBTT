@@ -1251,6 +1251,35 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
         });
 });
 
+app.get('/admin/order/:order_id', authenticate, (req, res) => {
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            query(`SELECT * FROM ticket WHERE order_id = ${req.params.order_id};`, [])
+                .catch( (err) => {
+                    console.log('error in admin order');
+                    console.log(err.message);
+                })
+                .then( (result) => {
+                    if (result.length >= 1) {
+                        res.render('pages/order', {
+                            status: loggedIn,
+                            order: result
+                        })
+                    }
+                    else {
+                        res.redirect('/404')
+                    }
+                })
+            
+        });
+})
+
 app.get('/admin/editEvent/:event_id', authenticate, (req, res) => {
     accountStatus(req.cookies.token)
         .catch((err) => {
