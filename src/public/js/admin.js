@@ -13,7 +13,7 @@ tabEvents.addEventListener('click', function () { setView('events-body') }, fals
 
 $(document).ready(function() {
 	$('#orders-table').DataTable( {
-		order: [[3, 'desc']]
+		
 	})
 });
 
