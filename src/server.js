@@ -745,7 +745,7 @@ app.get('/my/confirmation', authenticate, (req, res) => {
                         .then((result) => {
                             console.log(JSON.stringify(result));
                             // gets order id from previously created order
-                            let order_num_sql = `SELECT MAX(order_id) as max IN \`order\` WHERE user_id=${req.cookies.token}`;
+                            let order_num_sql = `SELECT MAX(order_id) as max FROM \`order\` WHERE user_id=${req.cookies.token}`;
                             query(order_num_sql)
                                 .catch((err) => {
                                     console.log('errored in confirmation max')
