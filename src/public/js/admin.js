@@ -1,7 +1,7 @@
 // JavaScript Document
 
-$(document).ready(function () {
-	$('#orders').DataTable({});
+$(document).ready(function() {
+	$('#orders-table').DataTable();
 });
 
 var tabOrders = document.getElementById('orders');
