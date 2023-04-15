@@ -1215,9 +1215,10 @@ app.get('/admin/editEvent/:event_id', authenticate, (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            getEvent(req.query.event_id)
+            getEvent(req.params.event_id)
                 .catch((err) => {
-                    // oh well
+                    console.log('errored in admin edit event from get event');
+                    console.log(err.message);
                 })
                 .then((result) => {
                     res.render('pages/edit-event', {
