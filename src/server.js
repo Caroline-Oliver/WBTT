@@ -340,7 +340,7 @@ function adminDashboard(filters) {
                     GROUP BY u.user_name, e.event_name, e.venue, e.date;
                     ORDER BY e.date DESC`, date);*/
                 var order_date_promise = query(`SELECT * FROM order ORDER BY order_date DESC`, []);
-                var order_customer_promise = query(`SELECT * FROM order ORDER BY user_id ASC`, []);
+                var order_customer_promise = query(`SELECT * FROM \`order\` ORDER BY user_id ASC`, []);
                 var order_dollar_promise = query(`SELECT * FROM order ORDER BY total_cost DESC`, []);
 
                 var u_promise = query("SELECT * FROM user", []);
