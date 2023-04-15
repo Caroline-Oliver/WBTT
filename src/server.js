@@ -1455,7 +1455,7 @@ app.get('/api/admin/createEvent', (req, res) => {
         }
     }
     var max_tickets = configuration == 'concert' ? 644 : 928;
-    let sql = `INSERT INTO event (event_name, event_description, image_url, venue, configuration, max_tickets, category, date, time, day, base_price, discount_eligible, fee_eligble)
+    let sql = `INSERT INTO event (event_name, event_description, image_url, venue, configuration, max_tickets, category, date, time, day, base_price, discount_eligible, fee_eligible)
     VALUES ('${event_name}', '${event_description}', '${image_url}', AT&T, '${configuration}', ${max_tickets}, '${category}', '${date}', '${time}', '${day}', ${base_price}, 1, 1)`;
     query(sql, [])
         .catch( (err) => {
