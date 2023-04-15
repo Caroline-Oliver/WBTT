@@ -1220,6 +1220,7 @@ app.get('/admin/editEvent/:event_id', authenticate, (req, res) => {
                 .catch((err) => {
                     if (err.message == 'no such event found') {
                         res.redirect('/admin/createEvent');
+                        return;
                     }
                     else {
                         console.log('errored in admin edit event from get event');
