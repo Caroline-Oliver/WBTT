@@ -1477,7 +1477,7 @@ app.get('/api/admin/createEvent', (req, res) => {
         .then( (result) => {
             res.send('Successfully created event.')
         })
-})
+});
 
 app.get('/api/admin/editEvent', (req, res) => {
     var event_id, event_name, event_description, image_url, category, date, time, day, base_price;
@@ -1530,7 +1530,54 @@ app.get('/api/admin/editEvent', (req, res) => {
         .then( (result) => {
             res.send('Successfully edited event.')
         })
-})
+});
+
+app.get('/api/admin/createDiscount', (req, res) => {
+
+});
+
+app.get('/api/admin/editDiscount', (req, res) => {
+    var discount_id, code, type, amount, expiration;
+    // make sure request contains all elements of a user account
+    if (req.body.discount_id != null && req.body.code != null 
+        && req.body.type != null && req.body.amount != null 
+        && req.body.expiration != null) {
+        discount_id = req.body.discount_id;
+        code = req.body.code;
+        type = req.body.type;
+        amount = req.body.amount;
+        expiration = req.body.expiration;
+    }
+    else {
+        var req_query = JSON.parse(Object.keys(req.query)[0]);
+        if (req_query.discount_id != null && req_query.code != null 
+            && req_query.type != null && req_query.amount != null 
+            && req_query.type != null) {
+            discount_id = req_query.discount_id;
+            code = req_query.code;
+            type = req_query.type;
+            amount = req_query.amount;
+            expiration = req_query.expiration;
+        }
+        else {
+            res.status(403).send("Missing body parts");
+            return;
+        }
+    }
+
+    let sql = `UPDATE discount_code SET code=?, type=?, amount=?, expiration=? WHERE discount_id=${discount_id}`;
+    let params = [code, type, amount, expiration];
+
+    query(sql, params)
+        .catch( (err) => {
+            console.log('errored in edit discount');
+            console.log(err.message);
+            res.send(err.message);
+        })
+        .then( (result) => {
+            res.send('Successfully edited discount.');
+        })
+});
 
 app.post('/api/admin/upload', authenticate, (req, res) => {
     fs.writeFile(`venues/${req.body.name}.html`, req.body.html, (err) => {
