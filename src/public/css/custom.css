@@ -41,16 +41,35 @@
 	color:#FCA311;
 }
 
+.sports h1 {
+	background-color:#03030399;
+}
+
 .concert{
 	background-image: url("/images/concert-category.jpg");
+	color:#FCA311;
+}
+
+.concert h1 {
+	background-color: #03030399;
 }
 
 .theater{
 	background-image: url("/images/theater-category.jpg");
+	color:#FCA311;
 }
 
-.other-category{
+.theater h1 {
+	background-color: #03030399;
+}
+
+.other{
 	background-image: url("/images/other-category.jpg");
+	color:#FCA311;
+}
+
+.other h1 {
+	background-color: #03030399;
 }
 
 hr {
@@ -127,12 +146,54 @@ hr {
 	fill:#00678F;	
 }
 
+.unused {
+	fill:#757575;
+	cursor:not-allowed;
+}
+
 .legend-div {
 	/*padding-bottom: 50px;*/
 }
 
 .background-svg {
+	min-height: 600px;
 	background-color:#f5f5f566;
+}
+/*
+@media(max-width: 991px){
+	.background-svg {
+	min-height: 600px;
+	}
+}
+*/
+@media(max-width: 800px){
+	.background-svg {
+	min-height: 500px;
+	}
+}
+
+@media(max-width: 700px){
+	.background-svg {
+	min-height: 400px;
+	}
+}
+
+@media(max-width: 600px){
+	.background-svg {
+	min-height: 350px;
+	}
+}
+
+@media(max-width: 500px){
+	.background-svg {
+	min-height: 300px;
+	}
+}
+
+@media(max-width: 400px){
+	.background-svg {
+	min-height: 250px;
+	}
 }
 
 .section-svg {
@@ -147,7 +208,16 @@ hr {
 	fill: #FDE5BE;
 }
 
+.available-legend {
+	fill: #FCA311;
+}
+
 .sold {
+	fill: #969a9e;
+	cursor: not-allowed;
+}
+
+.sold-legend {
 	fill: #969a9e;
 	cursor: not-allowed;
 }
@@ -156,6 +226,9 @@ hr {
 	fill:#25a447;
 }
 
+.in-cart-legend {
+	fill:#25a447;
+}
 .floor-bottom {
 	fill: #14213D;
 }
@@ -194,4 +267,31 @@ hr {
 
 .panel-center {
 	min-height: 490px;
+}
+
+.search-results {
+	text-align: center;
+	margin-top: 25px;
+}
+
+.warning-label {
+	color:red;
+}
+
+.search-help {
+    margin-right: 40px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.about-row-dark {
+	color: white;
+	margin-top: 75px;
+	background-color:  #14213D;
+}
+
+.admin-page-header {
+	text-align:center;
+	margin-top:15px;
+	margin-bottom:15px;
 }

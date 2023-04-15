@@ -11,10 +11,15 @@
     </header>
 
     <div class="jumbotron-fluid" style="background-color: #14213D; padding: 50px">
-        <h1 style="color: #FCA311; font-size: 50px">Search</h1>
+        <h1 style="color: #FCA311; font-size: 50px">Search: '<%= search %>'</h1>
     </div>
 
     <% let idx = 0; %>
+    <% if (events == null) events = []; %>
+    <% if (JSON.stringify(events) === "[]") { %>
+      <h3 class="search-results">No results found</h3>
+    <% } %>
+
     <% events.forEach(function(event) { %>
       
       <div class="row" style="margin-top: 25px">

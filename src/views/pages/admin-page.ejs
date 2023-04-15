@@ -200,35 +200,45 @@
           style="display: block; height: 506px; width: 1199px;"></canvas>
         -->
         <div class="admin-menu" id="orders-body">
-        <div
-          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h2>Currently Placed Orders</h2>
-        </div>  
-        <div class="table-responsive">
-          <table class="table table-striped table-sm">
-            <thead>
-              <tr>
-                <th>Event</th>
-                <th>Venue</th>
-                <th>Username</th>
-                <th>Quantity</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% current_orders.forEach(function(order) { %>
-              <tr>
-                <td><%= order.event_name %></td>
-                <td><%= order.venue %></td>
-                <td><%= order.user_name %></td>
-                <td><%= order.quantity %></td>
-                <td><%= order.date %></td>
-              </tr>
-              <% }); %>
-            </tbody>
-          </table>
-        </div>
-        </div>
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h2>Orders</h2>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Venue</th>
+                  <th>Username</th>
+                  <th>Quantity</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% current_orders.forEach(function(order) { %>
+                  <tr>
+                    <td>
+                      <%= order.event_name %>
+                    </td>
+                    <td>
+                      <%= order.venue %>
+                    </td>
+                    <td>
+                      <%= order.user_name %>
+                    </td>
+                    <td>
+                      <%= order.quantity %>
+                    </td>
+                    <td>
+                      <%= order.date %>
+                    </td>
+                  </tr>
+                  <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div><!--
         <div class="admin-menu" id="tickets-body">
         <div
           class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -258,53 +268,68 @@
             </tbody>
           </table>
         </div>
-        </div>
+        </div>-->
         <div class="admin-menu" id="venues-body">
-        <div
-          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h2>Venues</h2>
-        </div>  
-        <div class="table-responsive">
-          <table class="table table-striped table-sm">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Future Event Count</th>
-                <th>Historical Event Count</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h2>Venues</h2>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Future Event Count</th>
+                  <th>Historical Event Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1,001</td>
+                  <td>Lorem</td>
+                  <td>ipsum</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="admin-menu" id="events-body">
-        <div
-          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h2>Events</h2>
-        </div>  
-        <div class="table-responsive">
-          <table class="table table-striped table-sm">
-            <thead>
-              <tr>
-                <th>Event</th>
-                <th>Description</th>
-                <th>Venue</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% events.forEach(function(order) { %>
-              <tr>
-                <td><%= order.event_name %></td>
-                <td><%= order.event_description %></td>
-                <td><%= order.venue %></td>
-                <td><%= order.date %></td>
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h2>Events</h2>
+          </div>
+          <div id=event-edit>
+            <button type="button" class="btn btn-inverse" style="margin-right: 95px;"
+              onclick="location.href='/admin/createEvent'">Create Event</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Description</th>
+                  <th>Venue</th>
+                  <th>Date</th>
+                  <th>Day</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% events.forEach(function(event) { %>
+                  <tr>
+                    <td><a href="/admin/editEvent/<%= event.event_id %>">
+                        <%= event.event_name %>
+                      </a></td>
+                    <td>
+                      <%= event.event_description %>
+                    </td>
+                    <td>
+                      <%= event.venue %>
+                    </td>
+                    <td>
+                      <%= (event.date + '' ).split(' ').slice(1, 4).join(' ') %></td>
+                <td><%= event.day %></td>
+                <td><%= event.time %></td>
               </tr>
               <% }); %>
             </tbody>
@@ -316,38 +341,60 @@
           class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h2>Users</h2>
         </div>
-        <div class="table-responsive">
-          <table class="table table-striped table-sm">
-            <thead>
-              <tr>
-                <th>User ID</th>
-                <th>Username</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>User Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% users.forEach(function(user) { %>
+        <div id=event-edit>
+        <button type="button" class="btn btn-inverse" style="margin-right: 95px;" onclick="location.href='
+                        /admin/createUser'">Create User</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
                 <tr>
-                  <td><%= user.user_id %></td>
-                  <td><%= user.user_name %></td>
-                  <td><%= user.first_name %></td>
-                  <td><%= user.last_name %></td>
-                  <td><%= user.email %></td>
-                  <td><%= user.type %></td>
+                  <th>Username</th>
+                  <th>User ID</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th>User Type</th>
                 </tr>
-                <% }); %>
-            </tbody>
-          </table>
-        </div>
-        
+              </thead>
+              <tbody>
+                <% users.forEach(function(user) { %>
+                  <tr>
+                    <td><a href="/admin/editUser/<%= user.user_id%>">
+                        <%= user.user_name %>
+                      </a></td>
+                    <td>
+                      <%= user.user_id %>
+                    </td>
+                    <td>
+                      <%= user.first_name %>
+                    </td>
+                    <td>
+                      <%= user.last_name %>
+                    </td>
+                    <td>
+                      <%= user.email %>
+                    </td>
+                    <% if (user.type=='0' ) { %>
+                      <td>
+                        <%= "Admin" %>
+                      </td>
+                      <% } else { %>
+                        <td>
+                          <%= "User" %>
+                        </td>
+                        <% } %>
+                  </tr>
+                  <% }); %>
+              </tbody>
+            </table>
+          </div>
+          <!--
         <div
           class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h2>Create User</h2>
         </div>
-        <div id="createDiv">
+        <div id="createUserDiv">
           <form>
             <div class="form-group">
               <label for="username">User Name</label>
@@ -379,7 +426,7 @@
           class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h2>Change User</h2>
         </div>
-        <div id="createDiv">
+        <div id="changeUserDiv">
           <form>
             <div class="form-group">
               <label for="user_id">User ID</label>
@@ -412,7 +459,7 @@
             <button onclick="changeUser()" id="change_user">Update</button>
             <button type="reset" value="Reset">Reset</button>
           </form>
-        </div>
+        </div>-->
         </div>
       </main>
     </div>
@@ -466,14 +513,12 @@
     });
   </script>
 
-  <script src="../../js/admin.js"></script>
-   
+  <script src="/js/admin.js"></script>
+  <hr style="margin-bottom: 15px; margin-top: 15px">
   <footer class="text-center">
     <%- include('../partials/footer') %>
   </footer>
   <%- include('../partials/scripts') %>
 </body>
-
-
 
 </html>

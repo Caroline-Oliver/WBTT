@@ -10,6 +10,12 @@
 		<%- include('../partials/header') %>
 	</header>
 
+	<div class="jumbotron-fluid jumbo-header">
+		<h1>
+			<%= event.event_name %>
+		</h1>
+	</div>
+
 	<div class="row event-row">
 		<div class="col-lg-3">
 			<div id="leftPanel" class="event-left-panel">
@@ -18,14 +24,14 @@
 						<h4>Seat Legend</h4>
 						<svg id="legend-svg" width="60%" height="auto">
 							<text x="85" y="20">Available</text>
-							<circle cx="70" cy="15" r="8" class="available"></circle>
+							<circle cx="70" cy="15" r="8" class="available-legend"></circle>
 							<text x="85" y="55">In-Cart</text>
-							<circle cx="70" cy="50" r="8" class="in-cart"></circle>
+							<circle cx="70" cy="50" r="8" class="in-cart-legend"></circle>
 							<text x="85" y="90">Sold</text>
-							<circle cx="70" cy="85" r="8" class="sold"></circle>
+							<circle cx="70" cy="85" r="8" class="sold-legend"></circle>
 						</svg>
 					</div>
-
+					<div id="floor-seat-div"></div>
 					<div>
 						<svg id="seating-section">
 						</svg>
@@ -33,8 +39,8 @@
 				</div>
 				<hr>
 				<div>
-					<button type="button" class="btn btn-inverse" style="margin-top:15px; margin-bottom:50px"
-						onClick="addToCart()">Add To Cart</button>
+					<button id="add-button" type="button" class="btn btn-inverse"
+						style="margin-top:15px; margin-bottom:50px" onClick="addToCart()">Add To Cart</button>
 					<!--<button type="button" class="btn  btn-inverse">Cancel</button>-->
 				</div>
 			</div>
@@ -42,8 +48,8 @@
 
 		</div>
 		<div class="col-lg-6">
-			<svg width="100%" height="auto" class="background-svg">
-				<svg id="basketball" viewBox=" 0 0 500 400">
+			<svg id="arena-outer-svg" width="100%" height="auto" class="background-svg">
+				<svg id="arena-inner-svg" viewBox=" 0 0 500 400">
 					<g>
 						<title>top-far-left-lower</title>
 						<polygon points="60,90 90,65 90,90" id="top-far-left-lower" class="seats" />
@@ -61,8 +67,8 @@
 						<rect x="100" y="65" width="90" height="25" id="top-center-left-lower" class="seats" />
 					</g>
 					<g>
-						<title>top-center-center-lower</title>
-						<rect x="200" y="30" width="100" height="25" id="top-center-center-lower" class="seats" />
+						<title>top-center-center-upper</title>
+						<rect x="200" y="30" width="100" height="25" id="top-center-center-upper" class="seats" />
 					</g>
 					<g>
 						<title>top-center-center-lower</title>
@@ -154,6 +160,11 @@
 			<div id="rightPanel" class="event-right-panel">
 				<div class="panel-center" id="cart">
 					<h4>Cart</h4>
+					<div id="timer-div" align="center" style="text-align: center;" hidden="true">
+						<label id="time-warning"></label>
+						<label id="time-text">Time Remaining to Purchase:</label>
+						<label id="time" style="margin-left: 10px"></label>
+					</div>
 					<div id="rightPanelCart"></div>
 				</div>
 				<hr>

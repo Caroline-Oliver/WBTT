@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+
+<head>
+	<%- include('../partials/head') %>
+</head>
+
+<body>
+	<header>
+		<%- include('../partials/header') %>
+	</header>
+	<div class="jumbotron-fluid jumbo-header">
+    		<h1>Register New Account</h1>
+  	</div>
+  	<hr>
+	<div class="container">
+		<form>
+			<div class="form-row">
+				<div class="form-group col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+					<label for="inputUsername">Username</label>
+					<input type="text" class="form-control" id="username" placeholder="Username">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+					<label for="inputPassword">Password</label>
+					<input type="password" class="form-control" id="password" placeholder="Password">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+					<label for="inputEmailAddress">Email</label>
+					<input type="email" class="form-control" id="email" placeholder="Email">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+					<label for="inputFirst">First Name</label>
+					<input type="text" class="form-control" id="first_name" placeholder="First">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+					<label for="inputLast">Last Name</label>
+					<input type="text" class="form-control" id="last_name" placeholder="Last">
+				</div>
+			</div>
+			<div align="center">
+				<button onclick="register()" type="button" class="btn btn-primary">Register</button>
+			</div>
+			<h5 style="color:red" id="error-box"></h5>
+			<h5 style="color:green" id="success-box"></h5>
+		</form>
+	</div>
+	<hr style="margin-bottom: 15px; margin-top: 15px">
+	  <footer class="text-center">
+	    <div class="container">
+	      <div class="row">
+		<div class="col-12">
+		  <p>Copyright © WBTT. All rights reserved.</p>
+		</div>
+	      </div>
+	    </div>
+	  </footer>
+	<script src="/js/register.js"></script>
+	<%- include('../partials/scripts') %>
+</body>
+
+</html>
