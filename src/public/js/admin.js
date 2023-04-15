@@ -244,7 +244,7 @@ function callChangeDiscount() {
 	});
 }
 
-function createDiscount() {
+function createDiscount_ad() {
 	callCreateDiscount()
 		.catch((err) => {
 			console.log('errored');
