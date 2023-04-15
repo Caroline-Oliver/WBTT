@@ -42,7 +42,7 @@ function checkTimestamps(search_terms) {
     var deleteSql = `DELETE cart FROM cart
         JOIN ticket as t ON cart.ticket_id = t.ticket_id
         WHERE cart.user_id = 4 AND t.hold = 0;`
-    
+
     return new Promise((resolve, reject) => {
         query(deleteSql, [])
             .catch((err) => {
@@ -332,23 +332,25 @@ function adminDashboard(filters) {
                         cur_event_ids.push(event.event_id)
                 })
                 cur_event_ids = cur_event_ids.toString();
-                var sold_promise = query(`SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity
+                /*var tickets_date_promise = query(`SELECT u.user_name, e.event_name, e.venue, e.date, COUNT(*) as quantity
                     FROM ticket AS t
                     JOIN user AS u ON u.user_id = t.user_id
                     JOIN event AS e ON e.event_id = t.event_id
                     WHERE sold=1
-                    GROUP BY u.user_name, e.event_name, e.venue, e.date;`, date);
-                
+                    GROUP BY u.user_name, e.event_name, e.venue, e.date;
+                    ORDER BY e.date DESC`, date);*/
+                var order_date_promise = query(`SELECT * FROM order ORDER BY order_date DESC`, []);
+                var order_customer_promise = query(`SELECT * FROM order ORDER BY user_id ASC`, []);
+                var order_dollar_promise = query(`SELECT * FROM order ORDER BY total_cost DESC`, []);
+
                 var u_promise = query("SELECT * FROM user", []);
                 var d_promise = query("SELECT * FROM discount_code", []);
-                Promise.all([sold_promise, u_promise, d_promise])
+                Promise.all([order_date_promise, order_customer_promise, order_dollar_promise, u_promise, d_promise])
                     .then((values) => {
-                        // events, sold tickets, users, discount codes
-                        resolve([events, values[0], values[1], values[2]]);
+                        // events, orders by date, orders by customer, orders by dollar, users, discount codes
+                        resolve([events, values[0], values[1], values[2], values[3], values[4]]);
                     });
             });
-
-
     });
 }
 
@@ -429,7 +431,7 @@ const pool = mysql.createPool({
     user: "root",
     password: "UTSACSgroup7",
     database: "wbtt",
-    dateStrings: true 
+    dateStrings: true
 });
 // #endregion
 
@@ -723,29 +725,56 @@ app.get('/my/confirmation', authenticate, (req, res) => {
             // YYYY-MM-DD HH:MM:SS format
             const datetime = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`
 
-            let buy_sql = `UPDATE ticket
-                SET user_id = ${req.cookies.token}, hold=0, sold=1, hold_time=null, sold_date='${datetime}'
-                WHERE ticket_id IN (SELECT ticket_id FROM cart WHERE user_id=${req.cookies.token});`
-
-            query(buy_sql, [])
+            // gets the total cost of the order
+            let total_cost_sql = `SELECT SUM(price) as total FROM ticket WHERE ticket_id IN (SELECT ticket_id FROM cart WHERE user_id=${req.cookies.token})`;
+            query(total_cost_sql, [])
                 .catch((err) => {
-                    console.log('error in /my/confirmation in buysql');
-                    console.log(err.message);
+
                 })
                 .then((result) => {
-                    let rem_sql = `DELETE FROM cart WHERE user_id=${req.cookies.token}`
-                    query(rem_sql, [])
+                    // creates new order
+                    let order_sql = `INSERT INTO order SET user_id=${req.cookies.token}, total_cost=${result[0].total}, order_date=${datetime}`
+                    query(order_sql, [])
                         .catch((err) => {
-                            console.log('error in /my/confirmation in remsql');
-                            console.log(err.message);
+
                         })
                         .then((result) => {
-                            res.render('pages/confirmation', {
-                                status: loggedIn
-                            })
+                            // gets order id from previously created order
+                            let order_num_sql = `SELECT MAX(order_id) as max IN order WHERE user_id=${req.cookies.token}`;
+                            query(order_num_sql)
+                                .catch((err) => {
+
+                                })
+                                .then((result) => {
+                                    // updates tickets with info from order
+                                    let buy_sql = `UPDATE ticket
+                                    SET user_id = ${req.cookies.token}, hold=0, sold=1, hold_time=null, sold_date='${datetime}', order_id=${result[0].max}
+                                    WHERE ticket_id IN (SELECT ticket_id FROM cart WHERE user_id=${req.cookies.token});`
+                                    query(buy_sql, [])
+                                        .catch((err) => {
+                                            console.log('error in /my/confirmation in buysql');
+                                            console.log(err.message);
+                                        })
+                                        .then((result) => {
+                                            // removes tickets from cart
+                                            let rem_sql = `DELETE FROM cart WHERE user_id=${req.cookies.token}`
+                                            query(rem_sql, [])
+                                                .catch((err) => {
+                                                    console.log('error in /my/confirmation in remsql');
+                                                    console.log(err.message);
+                                                })
+                                                .then((result) => {
+                                                    res.render('pages/confirmation', {
+                                                        status: loggedIn
+                                                    })
+                                                })
+                                        })
+                                })
+
                         })
                 })
         })
+
 });
 
 // TODO: pending page
@@ -1174,7 +1203,9 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
         .finally(() => {
 
             var events_l = [];
-            var orders_l = [];
+            var orders_date_l = [];
+            var orders_cust_l = [];
+            var orders_doll_l = [];
             var users_l = [];
             var discount_l = [];
             adminDashboard()
@@ -1182,21 +1213,27 @@ app.get('/admin/dashboard', authenticate, (req, res) => {
                     console.log(err);
                 })
                 .then((values) => {
-                    // events, sold tickets, users, discount codes
+                    // events 0, orders by date 1, orders by customer 2, orders by dollar 3, users 4, discount codes 5
                     if (values[0] != null)
                         events_l = values[0];
                     if (values[1] != null)
-                        orders_l = values[1];
+                        orders_date_l = values[1];
                     if (values[2] != null)
-                        users_l = values[2];
+                        orders_cust_l = values[2];
                     if (values[3] != null)
-                        discount_l = values[3];
+                        orders_doll_l = values[3];
+                    if (values[4] != null)
+                        users_l = values[4];
+                    if (values[5] != null)
+                        discount_l = values[5];
                 })
                 .finally(() => {
                     res.render('pages/admin-page', {
                         status: loggedIn,
                         events: events_l,
-                        orders: orders_l,
+                        orders_date: orders_date_l,
+                        orders_customer: orders_cust_l,
+                        orders_dollar: orders_doll_l,
                         users: users_l,
                         discount_codes: discount_l
                     });
@@ -1506,12 +1543,12 @@ app.get('/api/admin/createEvent', (req, res) => {
     let sql = `INSERT INTO event (event_name, event_description, image_url, venue, configuration, max_tickets, category, date, time, day, base_price, discount_eligible, fee_eligible)
     VALUES ('${event_name}', '${event_description}', '${image_url}', 'AT&T', '${configuration}', ${max_tickets}, '${category}', '${date}', '${time}', '${day}', ${base_price}, 1, 1)`;
     query(sql, [])
-        .catch( (err) => {
+        .catch((err) => {
             console.log('errored in create event');
             console.log(err.message);
             res.send(err.message);
         })
-        .then( (result) => {
+        .then((result) => {
             res.send('Successfully created event.')
         })
 });
@@ -1559,12 +1596,12 @@ app.get('/api/admin/editEvent', (req, res) => {
     let params = [event_name, event_description, image_url, category, date, time, day, base_price];
 
     query(sql, params)
-        .catch( (err) => {
+        .catch((err) => {
             console.log('errored in edit event');
             console.log(err.message);
             res.send(err.message);
         })
-        .then( (result) => {
+        .then((result) => {
             res.send('Successfully edited event.')
         })
 });
@@ -1572,8 +1609,8 @@ app.get('/api/admin/editEvent', (req, res) => {
 app.get('/api/admin/createDiscount', (req, res) => {
     var code, type, amount, expiration;
     // make sure request contains all elements of a user account
-    if (req.body.code != null 
-        && req.body.type != null && req.body.amount != null 
+    if (req.body.code != null
+        && req.body.type != null && req.body.amount != null
         && req.body.expiration != null) {
         discount_id = req.body.discount_id;
         code = req.body.code;
@@ -1583,8 +1620,8 @@ app.get('/api/admin/createDiscount', (req, res) => {
     }
     else {
         var req_query = JSON.parse(Object.keys(req.query)[0]);
-        if (req_query.code != null 
-            && req_query.type != null && req_query.amount != null 
+        if (req_query.code != null
+            && req_query.type != null && req_query.amount != null
             && req_query.type != null) {
             discount_id = req_query.discount_id;
             code = req_query.code;
@@ -1602,12 +1639,12 @@ app.get('/api/admin/createDiscount', (req, res) => {
     let params = [code, type, amount, expiration];
 
     query(sql, params)
-        .catch( (err) => {
+        .catch((err) => {
             console.log('errored in create discount');
             console.log(err.message);
             res.send(err.message);
         })
-        .then( (result) => {
+        .then((result) => {
             res.send('Successfully created discount.');
         })
 });
@@ -1615,8 +1652,8 @@ app.get('/api/admin/createDiscount', (req, res) => {
 app.get('/api/admin/editDiscount', (req, res) => {
     var discount_id, code, type, amount, expiration;
     // make sure request contains all elements of a user account
-    if (req.body.discount_id != null && req.body.code != null 
-        && req.body.type != null && req.body.amount != null 
+    if (req.body.discount_id != null && req.body.code != null
+        && req.body.type != null && req.body.amount != null
         && req.body.expiration != null) {
         discount_id = req.body.discount_id;
         code = req.body.code;
@@ -1626,8 +1663,8 @@ app.get('/api/admin/editDiscount', (req, res) => {
     }
     else {
         var req_query = JSON.parse(Object.keys(req.query)[0]);
-        if (req_query.discount_id != null && req_query.code != null 
-            && req_query.type != null && req_query.amount != null 
+        if (req_query.discount_id != null && req_query.code != null
+            && req_query.type != null && req_query.amount != null
             && req_query.type != null) {
             discount_id = req_query.discount_id;
             code = req_query.code;
@@ -1645,12 +1682,12 @@ app.get('/api/admin/editDiscount', (req, res) => {
     let params = [code, type, amount, expiration];
 
     query(sql, params)
-        .catch( (err) => {
+        .catch((err) => {
             console.log('errored in edit discount');
             console.log(err.message);
             res.send(err.message);
         })
-        .then( (result) => {
+        .then((result) => {
             res.send('Successfully edited discount.');
         })
 });
