@@ -11,7 +11,11 @@ tabUsers.addEventListener('click', function () { setView('users-body') }, false)
 tabDiscounts.addEventListener('click', function () { setView('discounts-body') }, false);
 tabEvents.addEventListener('click', function () { setView('events-body') }, false);
 
-
+$(document).ready(function() {
+	$('#orders-table').DataTable( {
+		order: [[3, 'desc']]
+	})
+});
 
 function createUser() {
 	callRegister()
