@@ -696,7 +696,7 @@ app.get('/my/cart', authenticate, (req, res) => {
                                     console.log(err.message);
                                 })
                                 .then((results) => {
-                                    console.log(JSON.stringify(results));
+                                    console.log(JSON.stringify(results[0]));
                                     // if (results.length >= 1)
                                         
                                     res.render('pages/cart', {
