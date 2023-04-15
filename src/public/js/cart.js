@@ -8,7 +8,7 @@ function applyDiscount() {
             })
             .then((result) => {
                 if (result == 'Code successfully set.') {
-                    // refresh page
+                    location.reload();
                 }
                 else {
                     document.getElementById('error-box').innerHTML = result;
