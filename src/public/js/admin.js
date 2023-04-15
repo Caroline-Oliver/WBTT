@@ -104,7 +104,7 @@ function callEditUser() {
 	});
 }
 
-function createEvent() {
+function createEvent_ad() {
 	callCreateEvent()
 		.catch((err) => {
 			console.log('errored');
