@@ -1301,6 +1301,40 @@ app.get('/admin/createUser', authenticate, (req, res) => {
         });
 });
 
+app.get('/admin/createDiscount', authenticate, (req, res) => {
+
+});
+
+app.get('/admin/editDiscount/:discount_id', authenticate, (req, res) => {
+    var loggedIn = '';
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            query('SELECT * FROM discount_code WHERE discount_id=? LIMIT 1', req.params.discount_id)
+                .catch((err) => {
+                    console.log('errored in edit discount');
+                    console.log(err.message);
+                    res.status(403).send('error');
+                })
+                .then((result) => {
+                    if (result.length == 1) {
+                        res.render('pages/edit-discount', {
+                            status: loggedIn,
+                            user: result[0]
+                        });
+                    }
+                    else {
+                        res.redirect('/admin/createDiscount');
+                    }
+                })
+        });
+})
+
 app.post('/api/admin/createTickets', (req, res) => {
     let event_id = -1;
 
