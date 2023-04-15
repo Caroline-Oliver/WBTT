@@ -1416,6 +1416,58 @@ app.get('/api/admin/editUser', (req, res) => {
         });
 });
 
+app.get('/api/admin/createEvent', (req, res) => {
+    var event_name, event_description, image_url, configuration, category, date, time, day, base_price;
+    // make sure request contains all elements of a user account
+    if (req.body.event_name != null && req.body.image_url != null
+        && req.body.configuration != null && req.body.category != null
+        && req.body.date != null && req.body.type != null
+        && req.body.day != null && req.body.base_price != null) {
+        event_name = req.body.event_name;
+        event_description = req.body.event_description;
+        image_url = req.body.image_url;
+        configuration = req.body.configuration;
+        category = req.body.category;
+        date = req.body.date;
+        time = req.body.time;
+        day = req.body.day;
+        base_price = req.body.base_price;
+    }
+    else {
+        var req_query = JSON.parse(Object.keys(req.query)[0]);
+        if (req_query.event_name != null && req_query.image_url != null
+            && req_query.configuration != null && req_query.category != null
+            && req_query.date != null && req_query.time != null
+            && req_query.day != null && req_query.base_price != null) {
+            event_name = req_query.event_name;
+            event_description = req_query.event_description;
+            image_url = req_query.image_url;
+            configuration = req_query.configuration;
+            category = req_query.category;
+            date = req_query.date;
+            time = req_query.time;
+            day = req_query.day;
+            base_price = req_query.base_price;
+        }
+        else {
+            res.status(403).send("Missing body parts");
+            return;
+        }
+    }
+    var max_tickets = configuration == concert ? 644 : 928;
+    let sql = `INSERT INTO event (event_name, event_description, image_url, venue, configuration, max_tickets, category, date, time, day, base_price, discount_eligible, fee_eligble)
+    VALUES (${event_name}, ${event_description}, ${image_url}, AT&T, ${configuration}, ${max_tickets}, ${cateogry}, ${date}, ${time}, ${day}, ${base_price}, 1, 1)`;
+    query(sql, [])
+        .catch( (err) => {
+            console.log('errored in create event');
+            console.log(err.message);
+            res.send(err.message);
+        })
+        .then( (result) => {
+            res.send('Successfully created event.')
+        })
+})
+
 app.get('/api/admin/editEvent', (req, res) => {
     var event_id, event_name, event_description, image_url, category, date, time, day, base_price;
     // make sure request contains all elements of a user account

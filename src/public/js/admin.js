@@ -104,6 +104,54 @@ function callEditUser() {
 	});
 }
 
+function createEvent() {
+	callCreateEvent()
+		.catch((err) => {
+			console.log('errored');
+			console.log(err);
+			console.log(err.message);
+			document.getElementById('error_box').innerHTML = 'Failed to create event';
+		})
+		.then((result) => {
+			if (result != "Successfully create event.") {
+				document.getElementById('error-box').innerHTML = result;
+				document.getElementById('success-box').innerHTML = '';
+			}
+			else {
+				document.getElementById('error-box').innerHTML = '';
+				document.getElementById('success-box').innerHTML = result;
+			}
+		})
+}
+
+function callCreateEvent() {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			url: '/api/admin/createEvent',
+			dataType: 'text',
+			type: 'get',
+			contentType: 'application/jsonp',
+			data: JSON.stringify({
+				"event_name": `${document.getElementById('event_name').value}`,
+				"event_description": `${document.getElementById('event_description').value}`,
+				"image_url": `${document.getElementById('image_url').value}`,
+				"configuration": `${document.getElementById('configuration').value}`,
+				"category": `${document.getElementById('category').value}`,
+				"date": `${document.getElementById('date').value}`,
+				"time": `${document.getElementById('form_time').value}`,
+				"day": `${document.getElementById('day').value}`,
+				"base_price": `${document.getElementById('base-price').value}`
+			}),
+			success: function (data) {
+				resolve(data);
+			},
+			error: function (data) {
+				reject(data);
+			}
+		});
+	});
+}
+
 function changeEvent() {
 	callChangeEvent()
 		.catch((err) => {
