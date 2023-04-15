@@ -1,9 +1,4 @@
 // JavaScript Document
-
-$(document).ready(function() {
-	$('#orders-table').DataTable();
-});
-
 var tabOrders = document.getElementById('orders');
 var tabUsers = document.getElementById('users');
 //var tabTickets = document.getElementById('tickets');
