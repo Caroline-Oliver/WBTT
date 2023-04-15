@@ -201,7 +201,7 @@ function callChangeEvent() {
 }
 
 function changeDiscount() {
-	callChangeEvent()
+	callChangeDiscount()
 		.catch((err) => {
 			console.log('errored');
 			console.log(err);
