@@ -14,10 +14,8 @@ tabEvents.addEventListener('click', function () { setView('events-body') }, fals
 
 // Basic example
 $(document).ready(function () {
-	$('#orders').DataTable({
-	 "ordering": true // false to disable sorting (or any other option)
-	});
-	$('.dataTables_length').addClass('bs-select');
+	$('#orders').DataTable({});
+	//$('.dataTables_length').addClass('bs-select');
   });
 
 function createUser() {
