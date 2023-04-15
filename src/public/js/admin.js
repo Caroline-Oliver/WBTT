@@ -110,7 +110,7 @@ function createEvent_ad() {
 			console.log('errored');
 			console.log(err);
 			console.log(err.message);
-			document.getElementById('error_box').innerHTML = 'Failed to create event';
+			document.getElementById('error-box').innerHTML = 'Failed to create event';
 		})
 		.then((result) => {
 			if (result != "Successfully create event.") {
@@ -158,7 +158,7 @@ function changeEvent() {
 			console.log('errored');
 			console.log(err);
 			console.log(err.message);
-			document.getElementById('error_box').innerHTML = 'Failed to edit event';
+			document.getElementById('error-box').innerHTML = 'Failed to edit event';
 		})
 		.then((result) => {
 			if (result != "Successfully edited event.") {
