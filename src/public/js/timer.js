@@ -73,7 +73,7 @@ function dispTime() {
 		timeWarningLabel.setAttribute('class', 'warning-label');
 		timeLabel.setAttribute('class', 'warning-label');
 		timeNumberLabel.setAttribute('class', 'warning-label');
-		timeWarningLabel.innerHTML = 'Warning: your tickets will soon be removed from your cart';
+		timeLabel.innerHTML = 'Warning: '+timeLabel.innerHTML;
 	}
 	// end of calculation for next display
 	// Format the output by adding 0 if it is single digit //
