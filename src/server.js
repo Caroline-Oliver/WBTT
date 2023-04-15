@@ -42,18 +42,27 @@ function checkTimestamps(search_terms) {
     var deleteSql = `DELETE cart FROM cart
         JOIN ticket as t ON cart.ticket_id = t.ticket_id
         WHERE cart.user_id = 4 AND t.hold = 0;`
-
+    
     return new Promise((resolve, reject) => {
-        Promise.all([query(updateSql, []), query(deleteSql, [])])
+        query(deleteSql, [])
             .catch((err) => {
-                console.log('errored in checkTimestamps');
-                console.log(err);
+                console.log('error in delete sql in checktimestamps');
+                console.log(err.message);
                 reject(err);
             })
             .then((result) => {
-                resolve(result);
+                query(updateSql, [])
+                    .catch((err) => {
+                        console.log('error in update sql in checktimestamps');
+                        console.log(err.message);
+                        reject(err);
+                    })
+                    .then((result) => {
+                        resolve(result);
+                    })
             })
     })
+
 }
 
 function getTicketList(user_id) {
