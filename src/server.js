@@ -433,6 +433,7 @@ const pool = mysql.createPool({
     user: "root",
     password: "UTSACSgroup7",
     database: "wbtt",
+    dateStrings: true 
 });
 // #endregion
 
