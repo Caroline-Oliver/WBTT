@@ -721,7 +721,7 @@ app.get('/my/confirmation', authenticate, (req, res) => {
                             console.log('error in /my/confirmation in remsql');
                             console.log(err.message);
                         })
-                        .then( (result) => {
+                        .then((result) => {
                             res.render('pages/confirmation', {
                                 status: loggedIn
                             })
@@ -1052,6 +1052,48 @@ app.get('/api/my/getCart', authenticate, (req, res) => {
         })
         .then((results) => {
             res.send(results);
+        })
+})
+
+app.get('/api/my/setDiscountCode', authenticate, (req, res) => {
+    var promocode;
+    if (req.body.promocode != null) {
+        promocode = req.body.promocode;
+    }
+    else {
+        var json_query = JSON.parse(Object.keys(req.query)[0]);
+
+        if (json_query.promocode != null) {
+            promocode = json_query.promocode;
+        }
+
+        else {
+            res.status(403).send(`Missing body parts`);
+            return;
+        }
+    }
+
+    query('SELECT * FROM discount_code WHERE code=?;', [promocode])
+        .catch((err) => {
+            console.log('errored in /api/my/setDiscountCode in get codes')
+            console.log(err.message);
+            res.send('Some error occured, please try again.');
+        })
+        .then((result) => {
+            if (result.length != 1) {
+                res.send('No code found.');
+            }
+            else {
+                query('UPDATE user SET promocode=? WHERE user_id=?;', [promocode, req.cookies.token])
+                    .catch((err) => {
+                        console.log('errored in /api/my/setDiscountCode in update');
+                        console.log(err.message);
+                        res.send('Some error occured, please try again.');
+                    })
+                    .then((result) => {
+                        req.send('Code successfully set.');
+                    })
+            }
         })
 })
 // #endregion
