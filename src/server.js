@@ -729,21 +729,24 @@ app.get('/my/confirmation', authenticate, (req, res) => {
             let total_cost_sql = `SELECT SUM(price) as total FROM ticket WHERE ticket_id IN (SELECT ticket_id FROM cart WHERE user_id=${req.cookies.token})`;
             query(total_cost_sql, [])
                 .catch((err) => {
-
+                    console.log('errored in confirmation sum')
+                    console.log(err.message);
                 })
                 .then((result) => {
                     // creates new order
                     let order_sql = `INSERT INTO \`order\` SET user_id=${req.cookies.token}, total_cost=${result[0].total}, order_date=${datetime}`
                     query(order_sql, [])
                         .catch((err) => {
-
+                            console.log('errored in confirmation insert')
+                            console.log(err.message);
                         })
                         .then((result) => {
                             // gets order id from previously created order
                             let order_num_sql = `SELECT MAX(order_id) as max IN \`order\` WHERE user_id=${req.cookies.token}`;
                             query(order_num_sql)
                                 .catch((err) => {
-
+                                    console.log('errored in confirmation max')
+                                    console.log(err.message);
                                 })
                                 .then((result) => {
                                     // updates tickets with info from order
