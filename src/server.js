@@ -1302,7 +1302,18 @@ app.get('/admin/createUser', authenticate, (req, res) => {
 });
 
 app.get('/admin/createDiscount', authenticate, (req, res) => {
-
+    accountStatus(req.cookies.token)
+        .catch((err) => {
+            loggedIn = 'na';
+        })
+        .then((status) => {
+            loggedIn = status;
+        })
+        .finally(() => {
+            res.render('pages/create-discount', {
+                status: loggedIn
+            })
+        });
 });
 
 app.get('/admin/editDiscount/:discount_id', authenticate, (req, res) => {
@@ -1610,6 +1621,49 @@ app.get('/api/admin/editDiscount', (req, res) => {
         })
         .then( (result) => {
             res.send('Successfully edited discount.');
+        })
+});
+
+app.get('/api/admin/createDiscount', (req, res) => {
+    var code, type, amount, expiration;
+    // make sure request contains all elements of a user account
+    if (req.body.code != null 
+        && req.body.type != null && req.body.amount != null 
+        && req.body.expiration != null) {
+        discount_id = req.body.discount_id;
+        code = req.body.code;
+        type = req.body.type;
+        amount = req.body.amount;
+        expiration = req.body.expiration;
+    }
+    else {
+        var req_query = JSON.parse(Object.keys(req.query)[0]);
+        if (req_query.code != null 
+            && req_query.type != null && req_query.amount != null 
+            && req_query.type != null) {
+            discount_id = req_query.discount_id;
+            code = req_query.code;
+            type = req_query.type;
+            amount = req_query.amount;
+            expiration = req_query.expiration;
+        }
+        else {
+            res.status(403).send("Missing body parts");
+            return;
+        }
+    }
+
+    let sql = `INSERT INTO discount_code (code, type, amount, expiration) VALUES (?, ?, ?, ?)`;
+    let params = [code, type, amount, expiration];
+
+    query(sql, params)
+        .catch( (err) => {
+            console.log('errored in create discount');
+            console.log(err.message);
+            res.send(err.message);
+        })
+        .then( (result) => {
+            res.send('Successfully created discount.');
         })
 });
 

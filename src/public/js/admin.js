@@ -244,6 +244,49 @@ function callChangeDiscount() {
 	});
 }
 
+function createDiscount() {
+	callChangeDiscount()
+		.catch((err) => {
+			console.log('errored');
+			console.log(err);
+			console.log(err.message);
+			document.getElementById('error-box').innerHTML = 'Failed to create discount';
+		})
+		.then((result) => {
+			if (result != "Successfully created discount.") {
+				document.getElementById('error-box').innerHTML = result;
+				document.getElementById('success-box').innerHTML = '';
+			}
+			else {
+				document.getElementById('error-box').innerHTML = '';
+				document.getElementById('success-box').innerHTML = result;
+			}
+		})
+}
+
+function callCreateDiscount() {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			url: '/api/admin/createDiscount',
+			dataType: 'text',
+			type: 'get',
+			contentType: 'application/jsonp',
+			data: JSON.stringify({
+				"code": `${document.getElementById('code').value}`,
+				"type": `${document.getElementById('type').value}`,
+				"amount": `${document.getElementById('amount').value}`,
+				"expiration": `${document.getElementById('expiration').value}`
+			}),
+			success: function (data) {
+				resolve(data);
+			},
+			error: function (data) {
+				reject(data);
+			}
+		});
+	});
+}
+
 function setMessage(message) {
 	var printThing = document.getElementById('results');
 	printThing.innerHTML = '<P>' + message + '</P>'//response;
