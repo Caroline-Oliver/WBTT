@@ -84,7 +84,7 @@
           <div class="mt-4">
             <label class="text-muted font-weight-normal">Promocode</label>
             <% var discountCode = ''; %>
-            <% if (promocode != null) {
+            <% if (promocode != null) { %>
               <% discountCode = promocode.code %>
             <% } %>
             <input type="text" placeholder="ABC" class="form-control" id="promocode" value="<%= discountCode %>">
