@@ -281,9 +281,9 @@ function searchEvents(search_terms) {
             search_terms = ((search_terms + '').replace("'", "\\'")).split(' ');
 
             search_terms.forEach((token) => {
-                if (element.includes(':')) {
-                    let type = element.substring(0, element.indexOf(':')).toLowerCase();
-                    let term = element.substring(element.indexOf(':') + 1);
+                if (token.includes(':')) {
+                    let type = token.substring(0, token.indexOf(':')).toLowerCase();
+                    let term = token.substring(token.indexOf(':') + 1);
 
                     if (type != '' && term != '') {
                         switch (type) {
