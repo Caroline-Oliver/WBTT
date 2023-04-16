@@ -30,7 +30,7 @@ function authenticate(req, res, next) {
 // #endregion
 
 // #region db helper functions
-function checkTimestamps(search_terms) {
+function checkTimestamps(search_terms_A, search_terms_B) {
     const dt = new Date();
     const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
 
@@ -38,10 +38,10 @@ function checkTimestamps(search_terms) {
     const datetime = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(dt.getSeconds())}`
 
     var updateSql = "UPDATE ticket\nSET hold = 0, hold_time = null, user_id = null" + '\n' +
-        `WHERE (${search_terms}) AND hold=1 AND hold_time < '${datetime}';` + '\n';
+        `WHERE (${search_terms_A}) AND hold=1 AND hold_time < '${datetime}';` + '\n';
     var deleteSql = `DELETE cart FROM cart
         JOIN ticket as t ON cart.ticket_id = t.ticket_id
-        WHERE (${search_terms}) AND t.hold = 0;`
+        WHERE (${search_terms_B}) AND t.hold = 0;`
 
     return new Promise((resolve, reject) => {
         query(deleteSql, [])
@@ -62,8 +62,8 @@ function checkTimestamps(search_terms) {
                     })
             })
     })
-
 }
+
 
 function getTicketList(user_id) {
     var ticket_list = [];
@@ -283,7 +283,7 @@ function getCart(token) {
     GROUP BY e.event_name, e.event_description, e.image_url, t.price`
 
     return new Promise((resolve, reject) => {
-        checkTimestamps(`cart.user_id = ${token}`)
+        checkTimestamps(`user_id = ${token}`, `cart.user_id = ${token}`)
             .catch((err) => {
                 reject(err);
             })
@@ -671,7 +671,7 @@ app.get('/my/cart', authenticate, (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            checkTimestamps(`cart.user_id = ${req.cookies.token}`)
+            checkTimestamps(`user_id = ${req.cookies.token}`, `cart.user_id = ${req.cookies.token}`)
                 .catch((err) => {
                     console.log('error in check timestamps in my/cart');
                     console.log(err.message);
@@ -785,93 +785,6 @@ app.get('/my/confirmation', authenticate, (req, res) => {
 
 });
 
-// TODO: pending page
-app.get('/my/checkout', authenticate, (req, res) => {
-    checkTimestamps("cart.user_id = " + req.cookies.token)
-        .catch((err) => {
-            console.log(err.message);
-        })
-        .finally(() => {
-            var tickets;
-            getTicketList()
-                .catch((err) => {
-                    console.log(err.message);
-                })
-                .then((ticket_list) => {
-                    tickets = ticket_list;
-                })
-                .finally(() => {
-                    var info;
-                    ticketListToInfoList(tickets)
-                        .catch((err) => {
-                            console.log(err.message);
-                        })
-                        .then((info_list) => {
-                            info = info_list;
-                        })
-                        .finally(() => {
-                            var loggedIn = '';
-                            accountStatus(req.cookies.token)
-                                .catch((err) => {
-                                    loggedIn = 'na';
-                                })
-                                .then((status) => {
-                                    loggedIn = status;
-                                })
-                                .finally(() => {
-                                    res.render('pages/checkout', {
-                                        cart: info,
-                                        status: loggedIn
-                                    });
-                                });
-                        });
-                });
-        });
-});
-
-// TODO: pending page
-app.get('/my/tickets', authenticate, (req, res) => {
-    checkTimestamps("cart.user_id = " + req.cookies.token)
-        .catch((err) => {
-            console.log(err.message);
-        })
-        .finally(() => {
-            var tickets;
-            getTicketList()
-                .catch((err) => {
-                    console.log(err.message);
-                })
-                .then((ticket_list) => {
-                    tickets = ticket_list;
-                })
-                .finally(() => {
-                    var info;
-                    ticketListToInfoList(tickets)
-                        .catch((err) => {
-                            console.log(err.message);
-                        })
-                        .then((info_list) => {
-                            info = info_list;
-                        })
-                        .finally(() => {
-                            var loggedIn = '';
-                            accountStatus(req.cookies.token)
-                                .catch((err) => {
-                                    loggedIn = 'na';
-                                })
-                                .then((status) => {
-                                    loggedIn = status;
-                                })
-                                .finally(() => {
-                                    res.render('pages/my-tickets', {
-                                        cart: info,
-                                        status: loggedIn
-                                    });
-                                });
-                        });
-                });
-        });
-});
 // #endregion
 
 // #region user account api
