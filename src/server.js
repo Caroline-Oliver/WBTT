@@ -330,19 +330,19 @@ function searchEvents(search_terms) {
                                 break;
                         }
                     }
-                    else {
-                        // handle default sort
-                        if (normal_search == '' && ordering == 'DATE DESC')
-                            ordering = 'count_words DESC, date DESC';
+                }
+                else {
+                    // handle default sort
+                    if (normal_search == '' && ordering == 'DATE DESC')
+                        ordering = 'count_words DESC, date DESC';
 
-                        // build normal search & count search strings
-                        if (normal_search != '')
-                            normal_search += 'OR ';
-                        normal_search += `e.event_name LIKE '%${token}%' OR e.description LIKE '%${token}%'`;
-                        if (count_search != '')
-                            count_search += ' + ';
-                        count_search += `(e.event_name LIKE '%${token}%') + (e.event_name LIKE '${token}%') + (e.event_name LIKE '%${token}') + (e.event_name LIKE '${token}') + (e.event_name LIKE '${token}')`
-                    }
+                    // build normal search & count search strings
+                    if (normal_search != '')
+                        normal_search += 'OR ';
+                    normal_search += `e.event_name LIKE '%${token}%' OR e.description LIKE '%${token}%'`;
+                    if (count_search != '')
+                        count_search += ' + ';
+                    count_search += `(e.event_name LIKE '%${token}%') + (e.event_name LIKE '${token}%') + (e.event_name LIKE '%${token}') + (e.event_name LIKE '${token}') + (e.event_name LIKE '${token}')`
                 }
             });
 
