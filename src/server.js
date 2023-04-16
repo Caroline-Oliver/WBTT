@@ -268,7 +268,7 @@ function searchEvents(search_terms) {
             special_search += ' AND ';
         special_search += sql;
     }
-    var count_search = '', normal_search = '', special_search, ordering = 'DATE DESC';
+    var count_search = '', normal_search = '', special_search = '', ordering = 'DATE DESC';
 
     return new Promise((resolve, reject) => {
         if (search_terms == '') {
