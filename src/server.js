@@ -322,7 +322,7 @@ function searchEvents(search_terms) {
                             case 'availibility':
                             case 'avail':
                                 if (term.toLowerCase() == 'desc' || term.toLowerCase() == 'asc')
-                                    ordering = `availibility ${term}`;
+                                    ordering = `percent ${term}`;
                                 break;
                             case 'cost':
                                 if (term.toLowerCase() == 'desc' || term.toLowerCase() == 'asc')
