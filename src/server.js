@@ -41,7 +41,7 @@ function checkTimestamps(search_terms) {
         `WHERE (${search_terms}) AND hold=1 AND hold_time < '${datetime}';` + '\n';
     var deleteSql = `DELETE cart FROM cart
         JOIN ticket as t ON cart.ticket_id = t.ticket_id
-        WHERE cart.user_id = 4 AND t.hold = 0;`
+        WHERE (${search_terms}) AND t.hold = 0;`
 
     return new Promise((resolve, reject) => {
         query(deleteSql, [])
