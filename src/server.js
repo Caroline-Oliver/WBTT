@@ -339,7 +339,7 @@ function searchEvents(search_terms) {
                     // build normal search & count search strings
                     if (normal_search != '')
                         normal_search += 'OR ';
-                    normal_search += `e.event_name LIKE '%${token}%' OR e.description LIKE '%${token}%'`;
+                    normal_search += `e.event_name LIKE '%${token}%' OR e.event_description LIKE '%${token}%'`;
                     if (count_search != '')
                         count_search += ' + ';
                     count_search += `(e.event_name LIKE '%${token}%') + (e.event_name LIKE '${token}%') + (e.event_name LIKE '%${token}') + (e.event_name LIKE '${token}') + (e.event_name LIKE '${token}')`
