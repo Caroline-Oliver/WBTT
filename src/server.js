@@ -131,7 +131,7 @@ function ticketListToInfoList(ticket_list) {
 
 }
 
-function searchEvents(search_terms) {
+function searchEvents2(search_terms) {
     return new Promise((resolve, reject) => {
         if (search_terms == '') {
             resolve([]);
@@ -242,6 +242,123 @@ function searchEvents(search_terms) {
                     resolve(events);
                 }
             });
+        }
+    });
+}
+
+function searchEvents(search_terms) {
+    const generateSQL = (sort_search = '', normal_search = '', special_search, ordering) => {
+        if (sort_search != '') sort_search = `, (${sort_search}) AS count_words`;
+        if (normal_search != '') normal_search = `AND (${normal_search})`;
+        if (special_search != '') special_search = `AND (${special_search})`;
+
+        return `SELECT e.event_id, e.event_name, e.event_description, e.image_url, COUNT(*)/e.max_tickets as percent
+        ${sort_search}
+        FROM \`event\` as e
+        JOIN \`ticket\` as t ON e.event_id = t.event_id
+        WHERE (t.hold = 0 AND t.sold = 0)
+        ${normal_search}
+        ${special_search}
+        GROUP BY e.event_id, e.event_name, e.event_description, e.image_url
+        ORDER BY
+        ${ordering};`
+    }
+    const special = (sql) => {
+        if (special_search != '')
+            special_search += ' AND ';
+        special_search += sql;
+    }
+    var count_search = '', normal_search = '', special_search, ordering = 'DATE DESC';
+
+    return new Promise((resolve, reject) => {
+        if (search_terms == '') {
+            resolve([]);
+        }
+        else if (search_terms.includes('--') || search_terms.includes(';')) {
+            reject(new Error('attempted SQL injection in search function'));
+        }
+        else {
+            search_terms = ((search_terms + '').replace("'", "\\'")).split(' ');
+
+            search_terms.forEach((token) => {
+                if (element.includes(':')) {
+                    let type = element.substring(0, element.indexOf(':')).toLowerCase();
+                    let term = element.substring(element.indexOf(':') + 1);
+
+                    if (type != '' && term != '') {
+                        switch (type) {
+                            case 'category':
+                            case 'cat':
+                                special(`category='${term}`);
+                                break;
+                            case 'befored':
+                            case 'beforedate':
+                                special(`date < '${term}'`);
+                                break;
+                            case 'afterd':
+                            case 'afterdate':
+                                special(`date > '${term}'`);
+                                break;
+                            case 'ond':
+                            case 'ondate':
+                                special(`date = '${term}'`);
+                                break;
+                            case 'dotw':
+                            case 'dayoftheweek':
+                                special(`day = '${term}'`);
+                                break;
+                            case 'venue':
+                            case 'ven':
+                                special(`venue = '${term}'`);
+                                break;
+                            case 'costbelow':
+                            case 'costb':
+                                special(`base_price < '${term}'`);
+                                break;
+                            case 'costabove':
+                            case 'costa':
+                                special(`base_price > '${term}'`);
+                                break;
+                            case 'availibility':
+                            case 'avail':
+                                if (term.toLowerCase() == 'desc' || term.toLowerCase() == 'asc')
+                                    ordering = `availibility ${term}`;
+                                break;
+                            case 'cost':
+                                if (term.toLowerCase() == 'desc' || term.toLowerCase() == 'asc')
+                                    ordering = `base_price ${term}`;
+                                break;
+                        }
+                    }
+                    else {
+                        // handle default sort
+                        if (normal_search == '' && ordering == 'DATE DESC')
+                            ordering = 'count_words DESC, date DESC';
+
+                        // build normal search & count search strings
+                        if (normal_search != '')
+                            normal_search += 'OR ';
+                        normal_search += `e.event_name LIKE '%${token}%' OR e.description LIKE '%${token}%'`;
+                        if (count_search != '')
+                            count_search += ' + ';
+                        count_search += `(e.event_name LIKE '%${token}%') + (e.event_name LIKE '${token}%') + (e.event_name LIKE '%${token}') + (e.event_name LIKE '${token}') + (e.event_name LIKE '${token}')`
+                    }
+                }
+            });
+
+            let sql = generateSQL(count_search, normal_search, special_search, ordering);
+
+            console.log(sql);
+
+            query(sql, [])
+                .catch( (err) => {
+                    console.log('errored in sql in search events');
+                    console.log(err.message);
+                    reject(err);
+                })
+                .then( (result) => {
+                    resolve(result);
+                })
         }
     });
 }
@@ -1174,11 +1291,11 @@ app.get('/admin/order/:order_id', authenticate, (req, res) => {
         })
         .finally(() => {
             query(`SELECT * FROM ticket WHERE order_id = ${req.params.order_id};`, [])
-                .catch( (err) => {
+                .catch((err) => {
                     console.log('error in admin order');
                     console.log(err.message);
                 })
-                .then( (result) => {
+                .then((result) => {
                     if (result.length >= 1) {
                         res.render('pages/order', {
                             status: loggedIn,
@@ -1189,7 +1306,7 @@ app.get('/admin/order/:order_id', authenticate, (req, res) => {
                         res.redirect('/404')
                     }
                 })
-            
+
         });
 })
 
@@ -1337,7 +1454,8 @@ app.post('/api/admin/createTickets', (req, res) => {
         if (query_search.event_id != null)
             event_id = query_search.event_id;
         else {
-            // probably should error out
+            res.send('missing body parts');
+            return;
         }
     }
 
