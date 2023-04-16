@@ -82,16 +82,21 @@ function generate(id) {
 	currentSectionSold = []
 	let event_id = window.location.href.split('/')[4]
 	//console.log(event_id);
+	var ticket_price;
 	getSoldTickets(event_id, id)
 		.catch((err) => {
 			console.log(err.message);
 		})
 		.then((result) => {
 			result.forEach((ticket) => {
+				ticket_price = ticket.price;
 				currentSectionSold.push(Number(ticket.seat));
 				//console.log(ticket.seat);
 			})
 			//console.log(currentSectionSold+" this is what is in the array");
+			document.getElementById('ticket_price').innerHTML = ``
+			if (ticket_price != null)
+				document.getElementById('ticket_price').innerHTML = `$${ticket_price} Per Ticket`
 			var addButton = document.getElementById('add-button');
 			addButton.setAttribute('onClick', 'addToCart()');
 			var floorSeats = document.getElementById('floor-seat-div');
