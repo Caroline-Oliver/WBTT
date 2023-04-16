@@ -13,11 +13,12 @@ tabEvents.addEventListener('click', function () { setView('events-body') }, fals
 
 $(document).ready(function () {
 	$('#orders-table').DataTable({
-		searching: false,
-		info: false
+		searching: false
 	});
 	$('#users-table').DataTable();
-	$('#discounts-table').DataTable();
+	$('#discounts-table').DataTable({
+		searching: false
+	});
 	$('#events-table').DataTable();
 });
 
