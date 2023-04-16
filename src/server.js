@@ -259,7 +259,7 @@ function searchEvents(search_terms) {
         WHERE (t.hold = 0 AND t.sold = 0)
         ${normal_search}
         ${special_search}
-        GROUP BY e.event_id, e.event_name, e.event_description, e.image_url
+        GROUP BY id, name, desc, imgSrc
         ORDER BY
         ${ordering};`
     }
@@ -339,10 +339,10 @@ function searchEvents(search_terms) {
                     // build normal search & count search strings
                     if (normal_search != '')
                         normal_search += 'OR ';
-                    normal_search += `e.event_name LIKE '%${token}%' OR e.event_description LIKE '%${token}%'`;
+                    normal_search += `name LIKE '%${token}%' OR des LIKE '%${token}%'`;
                     if (count_search != '')
                         count_search += ' + ';
-                    count_search += `(e.event_name LIKE '%${token}%') + (e.event_name LIKE '${token}%') + (e.event_name LIKE '%${token}') + (e.event_name LIKE '${token}') + (e.event_name LIKE '${token}')`
+                    count_search += `(name LIKE '%${token}%') + (name LIKE '${token}%') + (name LIKE '%${token}') + (name LIKE '${token}') + (name LIKE '${token}')`
                 }
             });
 
