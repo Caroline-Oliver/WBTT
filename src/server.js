@@ -252,7 +252,7 @@ function searchEvents(search_terms) {
         if (normal_search != '') normal_search = `AND (${normal_search})`;
         if (special_search != '') special_search = `AND (${special_search})`;
 
-        return `SELECT e.event_id as id, e.event_name as name, e.event_description as description, e.image_url as imgSrc, COUNT(*)/e.max_tickets as percent
+        return `SELECT e.event_id as id, e.event_name as name, e.event_description as desc, e.image_url as imgSrc, COUNT(*)/e.max_tickets as percent
         ${sort_search}
         FROM \`event\` as e
         JOIN \`ticket\` as t ON e.event_id = t.event_id
