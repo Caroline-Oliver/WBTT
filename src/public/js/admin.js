@@ -163,7 +163,7 @@ function changeEvent() {
 	var old_price = document.getElementById('base-price').placeholder
 	var factor = new_price / old_price;
 	var promises = [callChangeEvent()];
-	if (factor != 0) promises.push(updateTickets(factor));
+	if (factor != 0) promises.push(callUpdateTickets(factor));
 	Promise.all(promises)
 		.catch((err) => {
 			console.log('errored');
