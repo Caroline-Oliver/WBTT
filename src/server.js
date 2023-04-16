@@ -1391,12 +1391,16 @@ app.post('/api/admin/createTickets', (req, res) => {
 
 app.get('/api/admin/updateTickets', (req, res) => {
     let event_id, factor;
+    console.log(req.body);
+    console.log(JSON.stringify(req.body));
 
     if (req.body.event_id != null && req.body.factor != null){
         event_id = req.body.event_id;
         factor = req.body.factor;
     }
     else {
+        console.log(req.query);
+        console.log(JSON.stringify(req.query));
         var query_search = JSON.parse(Object.keys(req.query)[0]);
         if (query_search.event_id != null && req.body.factor != null){
             event_id = query_search.event_id;
