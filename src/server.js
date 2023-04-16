@@ -1716,6 +1716,21 @@ app.get('/tmp/concert-configuration', (req, res) => {
             });
         });
 });
+
+app.get('/tempsort', (req, res) => {
+    pool.query("SELECT section_name, seat, price FROM ticket WHERE event_id = 1", (err, results) => {
+      if (err) {
+        console.error(err);
+      } else {
+        // convert the array of objects into a JSON string
+        const jsonData = JSON.stringify(results);
+  
+        // render the EJS file and pass the JSON data as a variable
+        res.render('pages/tempsort', { myData: jsonData });
+      }
+    });
+  });
+
 // #endregion
 
 // #region 404
