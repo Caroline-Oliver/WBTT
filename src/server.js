@@ -283,7 +283,7 @@ function getCart(token) {
     GROUP BY e.event_name, e.event_description, e.image_url, t.price`
 
     return new Promise((resolve, reject) => {
-        checkTimestamps(`user_id = ${token}`)
+        checkTimestamps(`user.user_id = ${token}`)
             .catch((err) => {
                 reject(err);
             })
@@ -671,7 +671,7 @@ app.get('/my/cart', authenticate, (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            checkTimestamps(`user_id = ${req.cookies.token}`)
+            checkTimestamps(`user.user_id = ${req.cookies.token}`)
                 .catch((err) => {
                     console.log('error in check timestamps in my/cart');
                     console.log(err.message);
@@ -787,7 +787,7 @@ app.get('/my/confirmation', authenticate, (req, res) => {
 
 // TODO: pending page
 app.get('/my/checkout', authenticate, (req, res) => {
-    checkTimestamps("user_id = " + req.cookies.token)
+    checkTimestamps("user.user_id = " + req.cookies.token)
         .catch((err) => {
             console.log(err.message);
         })
@@ -831,7 +831,7 @@ app.get('/my/checkout', authenticate, (req, res) => {
 
 // TODO: pending page
 app.get('/my/tickets', authenticate, (req, res) => {
-    checkTimestamps("user_id = " + req.cookies.token)
+    checkTimestamps("user.user_id = " + req.cookies.token)
         .catch((err) => {
             console.log(err.message);
         })
