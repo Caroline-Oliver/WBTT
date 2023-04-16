@@ -252,14 +252,14 @@ function searchEvents(search_terms) {
         if (normal_search != '') normal_search = `AND (${normal_search})`;
         if (special_search != '') special_search = `AND (${special_search})`;
 
-        return `SELECT e.event_id as id, e.event_name as name, e.event_description as desc, e.image_url as imgSrc, COUNT(*)/e.max_tickets as percent
+        return `SELECT e.event_id, e.event_name, e.event_description, e.image_url, COUNT(*)/e.max_tickets as percent
         ${sort_search}
         FROM \`event\` as e
         JOIN \`ticket\` as t ON e.event_id = t.event_id
         WHERE (t.hold = 0 AND t.sold = 0)
         ${normal_search}
         ${special_search}
-        GROUP BY id, name, desc, imgSrc
+        GROUP BY e.event_id, e.event_name, e.event_description, e.image_url
         ORDER BY
         ${ordering};`
     }
@@ -339,10 +339,10 @@ function searchEvents(search_terms) {
                     // build normal search & count search strings
                     if (normal_search != '')
                         normal_search += 'OR ';
-                    normal_search += `name LIKE '%${token}%' OR desc LIKE '%${token}%'`;
+                    normal_search += `e.event_name LIKE '%${token}%' OR e.event_description LIKE '%${token}%'`;
                     if (count_search != '')
                         count_search += ' + ';
-                    count_search += `(name LIKE '%${token}%') + (name LIKE '${token}%') + (name LIKE '%${token}') + (name LIKE '${token}') + (name LIKE '${token}')`
+                    count_search += `(e.event_name LIKE '%${token}%') + (e.event_name LIKE '${token}%') + (e.event_name LIKE '%${token}') + (e.event_name LIKE '${token}') + (e.event_name LIKE '${token}')`
                 }
             });
 
