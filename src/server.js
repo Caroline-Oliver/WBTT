@@ -339,7 +339,7 @@ function searchEvents(search_terms) {
                     // build normal search & count search strings
                     if (normal_search != '')
                         normal_search += 'OR ';
-                    normal_search += `name LIKE '%${token}%' OR des LIKE '%${token}%'`;
+                    normal_search += `name LIKE '%${token}%' OR desc LIKE '%${token}%'`;
                     if (count_search != '')
                         count_search += ' + ';
                     count_search += `(name LIKE '%${token}%') + (name LIKE '${token}%') + (name LIKE '%${token}') + (name LIKE '${token}') + (name LIKE '${token}')`
