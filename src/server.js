@@ -1397,6 +1397,8 @@ app.post('/api/admin/updateTickets', (req, res) => {
         factor = req.body.factor;
     }
     else {
+        console.log(req.query);
+        console.log(JSON.stringify(req.query));
         var query_search = JSON.parse(Object.keys(req.query)[0]);
         if (query_search.event_id != null && req.body.factor != null){
             event_id = query_search.event_id;
