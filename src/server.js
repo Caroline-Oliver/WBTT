@@ -1417,7 +1417,7 @@ app.get('/api/admin/updateTickets', (req, res) => {
             console.log(err.message);
         })
         .then( (result) => {
-
+            res.send("success!")
         })
 })
 
