@@ -1091,7 +1091,7 @@ app.get('/api/search', (req, res) => {
 });
 
 app.get('/api/getTickets/:event_id/:section_name', authenticate, (req, res) => {
-    checkTimestamps(`event_id = ${req.params.event_id}`)
+    checkTimestamps(`event_id = ${req.params.event_id}`, `event_id = ${req.params.event_id}`)
         .catch((err) => {
             console.log('errored in /api/getTickets/:event_id/:section_name');
             console.log(err.message);
