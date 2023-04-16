@@ -1398,10 +1398,8 @@ app.get('/api/admin/updateTickets', (req, res) => {
     }
     else {
         var query_search = JSON.parse(Object.keys(req.query)[0]);
-        console.log(query_search);
-        console.log(JSON.stringify(query_search));
 
-        if (query_search.event_id != null && req.body.factor != null){
+        if (query_search.event_id != null && query_search.factor != null){
             event_id = query_search.event_id;
             factor = query_search.factor;
         }
