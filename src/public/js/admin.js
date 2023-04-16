@@ -208,8 +208,8 @@ function callChangeEvent() {
 }
 
 function updateTickets() {
-	var new_price = document.getElementById('base_price').value;
-	var old_price = document.getElementById('base_price').placeholder
+	var new_price = document.getElementById('base-price').value;
+	var old_price = document.getElementById('base-price').placeholder
 	var factor = new_price / old_price;
 	if (factor != 1) {
 		callUpdateTickets(factor)
