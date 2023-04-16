@@ -10,7 +10,7 @@
   <header>
     <%- include('../partials/header') %>
   </header>
-
+  <% const formatter=new Intl.NumberFormat('en-US', {minimumFractionDigits: 2}) %>
   <div class="container-fluid">
     <div class="row">
       <nav class="col-md-2 d-none d-md-block bg-light sidebar">
@@ -119,7 +119,7 @@
                       <%= order.user_id %>
                     </td>
                     <td>
-                      <%= order.total_cost %>
+                      $<%= formatter.format(order.total_cost) %>
                     </td>
                     <td>
                       <%= order.order_date %>

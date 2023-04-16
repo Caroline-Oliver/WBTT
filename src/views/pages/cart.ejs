@@ -83,7 +83,11 @@
         <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
           <div class="mt-4">
             <label class="text-muted font-weight-normal">Promocode</label>
-            <input type="text" placeholder="ABC" class="form-control" id="promocode">
+            <% var discountCode = ''; %>
+            <% if (promocode != null) {
+              <% discountCode = promocode.code %>
+            <% } %>
+            <input type="text" placeholder="ABC" class="form-control" id="promocode" value="<%= discountCode %>">
             <button type="button" class="btn btn-md btn-primary mt-2" onclick="applyDiscount()">Apply Discount</button>
             <h5 style="color:red" id="error-box"></h5>
             <h5 style="color:green" id="success-box"></h5>

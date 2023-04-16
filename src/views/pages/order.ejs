@@ -4,7 +4,7 @@
 <head>
     <%- include('../partials/head') %>
 </head>
-
+<% const formatter=new Intl.NumberFormat('en-US', {minimumFractionDigits: 2}) %>
 <body>
 
     <header>
@@ -29,7 +29,7 @@
                 <td><%= ticket.event_id %></td>
                 <td><%= ticket.section_name %></td>
                 <td><%= ticket.seat %></td>
-                <td><%= ticket.price %></td>
+                <td><%= formatter.format(ticket.price) %></td>
               </tr>
               <% }); %>
           </tbody>
