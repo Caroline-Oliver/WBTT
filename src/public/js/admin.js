@@ -172,7 +172,7 @@ function changeEvent() {
 			document.getElementById('error-box').innerHTML = 'Failed to edit event';
 		})
 		.then((result) => {
-			if (result != "Successfully edited event.") {
+			if (result != "Successfully edited event.,success!") {
 				document.getElementById('error-box').innerHTML = result;
 				document.getElementById('success-box').innerHTML = '';
 			}
