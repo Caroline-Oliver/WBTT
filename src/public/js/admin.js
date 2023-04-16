@@ -11,7 +11,7 @@ tabUsers.addEventListener('click', function () { setView('users-body') }, false)
 tabDiscounts.addEventListener('click', function () { setView('discounts-body') }, false);
 tabEvents.addEventListener('click', function () { setView('events-body') }, false);
 
-$(document).ready(function() {
+$(document).ready(function () {
 	$('#orders-table').DataTable();
 	$('#users-table').DataTable();
 	$('#discounts-table').DataTable();
@@ -159,6 +159,7 @@ function callCreateEvent() {
 }
 
 function changeEvent() {
+	updateTickets();
 	callChangeEvent()
 		.catch((err) => {
 			console.log('errored');
@@ -195,6 +196,40 @@ function callChangeEvent() {
 				"time": `${document.getElementById('form_time').value}`,
 				"day": `${document.getElementById('day').value}`,
 				"base_price": `${document.getElementById('base-price').value}`
+			}),
+			success: function (data) {
+				resolve(data);
+			},
+			error: function (data) {
+				reject(data);
+			}
+		});
+	});
+}
+
+function updateTickets() {
+	var factor = document.getElementById('base_price').value / document.getElementById('base_price').placeholder
+	if (factor != 1) {
+		callUpdateTickets(factor)
+			.catch((err) => {
+
+			})
+			.then((result) => {
+
+			})
+	}
+}
+
+function callUpdateTickets(factor) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			url: '/api/admin/updateTickets',
+			dataType: 'text',
+			type: 'get',
+			contentType: 'application/jsonp',
+			data: JSON.stringify({
+				"event_id": `${document.getElementById('event_id').value}`,
+				"factor": `${factor}`
 			}),
 			success: function (data) {
 				resolve(data);

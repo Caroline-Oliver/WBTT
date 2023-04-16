@@ -131,121 +131,6 @@ function ticketListToInfoList(ticket_list) {
 
 }
 
-function searchEvents2(search_terms) {
-    return new Promise((resolve, reject) => {
-        if (search_terms == '') {
-            resolve([]);
-        }
-        else if (search_terms.includes('--') || search_terms.includes(';')) {
-            reject(new Error('attempted SQL injection in search function'));
-        }
-        else {
-            search_terms = ((search_terms + '').replace("'", "\\'")).split(' ');
-            let where_search = '';
-            let count_search = '';
-            let special_terms = '';
-            search_terms.forEach(element => {
-                if (element.includes(':')) {
-                    let type = element.substring(0, element.indexOf(':')).toLowerCase();
-                    let term = element.substring(element.indexOf(':') + 1);
-
-                    if (type != '' && term != '') {
-                        switch (type) {
-                            case 'category':
-                            case 'cat':
-                                if (special_terms == '') special_terms = '( ';
-                                special_terms += `category='${term}' AND\n`;
-                                break;
-                            case 'befored':
-                            case 'beforedate':
-                                if (special_terms == '') special_terms = '( ';
-                                special_terms += `date < '${term}' AND\n`;
-                                break;
-                            case 'afterd':
-                            case 'afterdate':
-                                if (special_terms == '') special_terms = '( ';
-                                special_terms += `date > '${term}' AND\n`;
-                                break;
-                            case 'ond':
-                            case 'ondate':
-                                if (special_terms == '') special_terms = '( ';
-                                special_terms += `date = '${term}' AND\n`;
-                                break;
-                            case 'dotw':
-                            case 'dayoftheweek':
-                                if (special_terms == '') special_terms = '( ';
-                                special_terms += `day = '${term}' AND\n`;
-                                break;
-                            case 'venue':
-                            case 'ven':
-                                if (special_terms == '') special_terms = '( ';
-                                special_terms += `venue = '${term}' AND\n`
-                                break;
-                            case 'costbelow':
-                            case 'costb':
-                                if (special_terms == '') special_terms = '( ';
-                                special_terms += `base_price < '${term}' AND\n`
-                                break;
-                            case 'costabove':
-                            case 'costa':
-                                if (special_terms == '') special_terms = '( ';
-                                special_terms += `base_price > '${term}' AND\n`
-                                break;
-                        }
-                        // handle bad regex?
-                    }
-                } else {
-                    if (where_search == '' && count_search == '') {
-                        where_search = '( ';
-                        count_search = ', ( ';
-                    }
-                    where_search += `event_name LIKE '\%${element}\%' OR\n`;
-                    count_search += `(event_name LIKE '\%${element}\%') + `
-                }
-            });
-            // removes final OR\n
-            if (where_search != '' && count_search != '') {
-                where_search = where_search.substring(0, where_search.length - 3) + ')';
-                count_search = count_search.substring(0, count_search.length - 2) + ') as count_words';
-                if (special_terms != '') {
-                    special_terms = "AND " + special_terms;
-                }
-            }
-            if (special_terms != '')
-                special_terms = special_terms.substring(0, special_terms.length - 4) + ')';
-
-            let sql = 'SELECT *' + count_search + '\n' + 'FROM event ';
-            if (where_search != '' || special_terms != '') {
-                sql += 'WHERE\n' +
-                    where_search + '\n' +
-                    special_terms + '\n';
-            }
-            if (count_search == '') {
-                sql += 'ORDER BY date DESC;';
-            } else {
-                sql += 'ORDER BY count_words DESC, date DESC;';
-            }
-
-            console.log(sql);
-
-            pool.query(sql, (err, result) => {
-                if (err) {
-                    console.log('search function errored\n');
-                    console.log(sql);
-                    reject(err);
-                }
-                else {
-                    let events = [];
-                    result.forEach(event => {
-                        events.push({ id: event.event_id, name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date, imgSrc: event.image_url });
-                    });
-                    resolve(events);
-                }
-            });
-        }
-    });
-}
-
 function searchEvents(search_terms) {
     const generateSQL = (sort_search = '', normal_search = '', special_search, ordering) => {
         if (sort_search != '') sort_search = `, (${sort_search}) AS count_words`;
@@ -1503,6 +1388,37 @@ app.post('/api/admin/createTickets', (req, res) => {
 
 
 });
+
+app.post('/api/admin/updateTickets', (req, res) => {
+    let event_id, factor;
+
+    if (req.body.event_id != null && req.body.factor != null){
+        event_id = req.body.event_id;
+        factor = req.body.factor;
+    }
+    else {
+        var query_search = JSON.parse(Object.keys(req.query)[0]);
+        if (query_search.event_id != null && req.body.factor != null){
+            event_id = query_search.event_id;
+            factor = query_search.factor;
+        }
+        else {
+            res.send('missing body parts');
+            return;
+        }
+    }
+
+    var sql = `UPDATE ticket SET price = price * ${factor} WHERE event_id = ${event_id}`
+
+    query(sql, [])
+        .catch( (err) => {
+            console.log('error in update ticket select');
+            console.log(err.message);
+        })
+        .then( (result) => {
+            
+        })
+})
 
 app.get('/api/admin/editUser', (req, res) => {
     var user_id, username, password, email, first_name, last_name, type;
