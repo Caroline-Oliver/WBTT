@@ -1390,7 +1390,6 @@ app.post('/api/admin/createTickets', (req, res) => {
 });
 
 app.post('/api/admin/updateTickets', (req, res) => {
-    console.log('attemtping');
     let event_id, factor;
 
     if (req.body.event_id != null && req.body.factor != null){

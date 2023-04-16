@@ -159,8 +159,12 @@ function callCreateEvent() {
 }
 
 function changeEvent() {
-	updateTickets();
-	callChangeEvent()
+	var new_price = document.getElementById('base-price').value;
+	var old_price = document.getElementById('base-price').placeholder
+	var factor = new_price / old_price;
+	var promises = [callChangeEvent()];
+	if (factor != 0) promises.push(updateTickets(factor));
+	Promise.all(promises)
 		.catch((err) => {
 			console.log('errored');
 			console.log(err);
