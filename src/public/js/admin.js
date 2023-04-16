@@ -231,7 +231,7 @@ function callUpdateTickets(factor) {
 		$.ajax({
 			url: '/api/admin/updateTickets',
 			dataType: 'text',
-			type: 'get',
+			type: 'post',
 			contentType: 'application/jsonp',
 			data: JSON.stringify({
 				"event_id": `${document.getElementById('event_id').value}`,
