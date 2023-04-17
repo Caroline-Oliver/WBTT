@@ -82,21 +82,33 @@ function generate(id) {
 	currentSectionSold = []
 	let event_id = window.location.href.split('/')[4]
 	//console.log(event_id);
-	var ticket_price;
+	var ticket_price = null;
+	var discount_price = null;
 	getSoldTickets(event_id, id)
 		.catch((err) => {
 			console.log(err.message);
 		})
 		.then((result) => {
-			result.forEach((ticket) => {
-				ticket_price = ticket.price;
+			ticket_price = result[1].price;
+			if (result[1].sale_price != null)
+				discount_price = result[1].sale_price;
+			result[0].forEach((ticket) => {
 				currentSectionSold.push(Number(ticket.seat));
 				//console.log(ticket.seat);
 			})
 			//console.log(currentSectionSold+" this is what is in the array");
+
 			document.getElementById('ticket_price').innerHTML = ``
-			if (ticket_price != null)
+			document.getElementById('sale_price').innerHTML = ``
+			document.getElementById('original_price').innerHTML = ``
+			if (discount_price != null) {
+				document.getElementById('ticket_price').innerHTML = `$${ticket_price}`
+				document.getElementById('sale_price').innerHTML = `$${sale_price}`
+				document.getElementById('ticket_price').innerHTML = `Per Ticket`
+			}
+			else if (ticket_price != null) {
 				document.getElementById('ticket_price').innerHTML = `$${ticket_price} Per Ticket`
+			}
 			var addButton = document.getElementById('add-button');
 			addButton.setAttribute('onClick', 'addToCart()');
 			var floorSeats = document.getElementById('floor-seat-div');
@@ -271,7 +283,7 @@ function addToCart() {
 	if (cartSeats.length != 0) {
 		//update cart list will call backend AddToCart
 		updateCartList()
-		startTimer("10","0");
+		startTimer("10", "0");
 		const holdSeats = document.getElementsByClassName('hold');
 		const tickets = [];
 		for (var i = 0; i < holdSeats.length; i++) {

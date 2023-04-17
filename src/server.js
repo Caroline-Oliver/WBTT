@@ -1099,12 +1099,17 @@ app.get('/api/getTickets/:event_id/:section_name', authenticate, (req, res) => {
             console.log(err.message);
         })
         .then((result) => {
-            query('SELECT * FROM ticket WHERE event_id = ? AND section_name = ? AND (hold = 1 OR sold = 1)', [req.params.event_id, req.params.section_name])
+            let tickets_sql = 'SELECT seat FROM ticket WHERE event_id = ? AND section_name = ? AND (hold = 1 OR sold = 1);';
+            let params = [req.params.event_id, req.params.section_name];
+            let price_sql = 'SELECT price, sale_price event_id = ? AND section_name = ? LIMIT 1';
+
+            let promises = [query(tickets_sql, params), query(price_sql, params)];
+            Promise.all(promises)
                 .catch((err) => {
                     console.log(err.message);
                     res.send('error');
                 })
-                .then((result) => {
+                .then((results) => {
                     res.send(JSON.stringify(result));
                 })
         })
