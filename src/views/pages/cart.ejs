@@ -76,9 +76,15 @@
                           <td class="text-right font-weight-semibold align-middle p-4">
                             <%= item.quantity %>
                           </td>
+                          <% if (item.sale_price == null) { %>
                           <td class="text-right font-weight-semibold align-middle p-4">$<%=
                               formatter.format(parseFloat(item.price) * parseFloat(item.quantity)) %>
                           </td>
+                          <% } else { %>
+                            <td class="text-right font-weight-semibold align-middle p-4">$<%=
+                              formatter.format(parseFloat(item.sale_price) * parseFloat(item.quantity)) %>
+                          </td>
+                          <% } %>
                           <td class="text-center align-middle px-0"><a href="#"
                               class="shop-tooltip close float-none text-danger" title=""
                               data-original-title="Remove">×</a>
