@@ -1109,7 +1109,7 @@ app.get('/api/getTickets/:event_id/:section_name', authenticate, (req, res) => {
                     console.log(err.message);
                 })
                 .then((results) => {
-                    res.send(JSON.stringify(result));
+                    res.send(JSON.stringify(results));
                 })
         })
 
