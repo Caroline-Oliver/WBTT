@@ -230,7 +230,6 @@ function callChangeEvent() {
 
 function callUpdateTickets(factor, discount_factor) {
 	console.log(discount_factor);
-	var name = discount_factor != null ? 'discount_factor' : '';
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			url: '/api/admin/updateTickets',
@@ -240,7 +239,7 @@ function callUpdateTickets(factor, discount_factor) {
 			data: JSON.stringify({
 				"event_id": `${document.getElementById('event_id').value}`,
 				"factor": `${factor}`,
-				name : `${discount_factor}`
+				"discount_factor" : `${discount_factor}`
 			}),
 			success: function (data) {
 				resolve(data);
