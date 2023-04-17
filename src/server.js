@@ -684,7 +684,7 @@ app.get('/my/cart', authenticate, (req, res) => {
                     JOIN ticket AS t ON c.ticket_id = t.ticket_id
                     JOIN event AS e ON t.event_id = e.event_id
                     WHERE c.user_id = ${req.cookies.token}
-                    GROUP BY e.event_name, e.event_description, e.image_url, t.price`;
+                    GROUP BY e.event_name, e.event_description, e.image_url, t.price, t.sale_price`;
                     query(sql, [])
                         .catch((err) => {
                             console.log('error in big sql query in my/cart');
