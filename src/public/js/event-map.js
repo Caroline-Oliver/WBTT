@@ -89,6 +89,7 @@ function generate(id) {
 			console.log(err.message);
 		})
 		.then((result) => {
+			console.log(JSON.stringify(result));
 			ticket_price = result[1].price;
 			if (result[1].sale_price != null)
 				discount_price = result[1].sale_price;
