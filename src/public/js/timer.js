@@ -69,6 +69,7 @@ function dispTime() {
 		timeWarningLabel.innerHTML = '';timeLabel.innerHTML = '';
 		window.localStorage.setItem("minutes",-1);
 		window.localStorage.setItem("seconds",-1);
+		location.reload();
 		return;
 	}
 	else if ((s == 0 && m == 1)) {
