@@ -1423,7 +1423,7 @@ app.get('/api/admin/updateTickets', (req, res) => {
         discount_str = `, sale_price = price * ${discount_factor}`;
     else if (discount_factor != null && discount_factor == 0)
         discount_str = ', sale_price = null';
-    var sql = `UPDATE ticket SET price = price * ${factor}${discount_str} WHERE event_id = ${event_id}`
+    var sql = `UPDATE ticket SET price = price * ${factor}${discount_str} WHERE event_id = ${event_id} AND sold=0`
 
     query(sql, [])
         .catch( (err) => {
