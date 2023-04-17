@@ -186,42 +186,7 @@
 
 	<script src="/js/event-map.js"></script>
 	<script src="/js/event-map-floor.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css"/>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css"/>
 	<footer class="text-center">
-	<div id="myGrid" class="ag-theme-alpine" style="height: 500px"></div>
-		<script type="text/javascript">
-			function deselect(){
-				gridOptions.api.deselectAll()
-			}
-			function sizeToFit() {
-  				gridOptions.api.sizeColumnsToFit();
-			}
-
-			const gridOptions = {
-
-				// each entry here represents one column
-				columnDefs: [
-				{ field: "Section" },
-				{ field: "Seat" },
-				{ field: "Price" },
-				],
-
-				defaultColDef: {sortable: true, filter: true},
-
-			};
-			const eGridDiv = document.getElementById("myGrid");
-			new agGrid.Grid(eGridDiv, gridOptions);
-
-			// Fetch data from server
-			fetch("http://18.189.94.24:3000/tempsort")
-			.then(response => response.json())
-			.then(data => {
-				// load fetched data into grid
-				gridOptions.api.setRowData(data);
-			});
-		</script>
 		<%- include('../partials/footer') %>
 	</footer>
 	<%- include('../partials/scripts') %>
