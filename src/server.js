@@ -1396,6 +1396,7 @@ app.post('/api/admin/createTickets', (req, res) => {
 });
 
 app.get('/api/admin/updateTickets', (req, res) => {
+    console.log('editing ticket');
     let event_id, factor, discount_factor;
 
     if (req.body.event_id != null && req.body.factor != null){
@@ -1553,6 +1554,7 @@ app.get('/api/admin/createEvent', (req, res) => {
 });
 
 app.get('/api/admin/editEvent', (req, res) => {
+    console.log('editing event');
     var event_id, event_name, event_description, image_url, category, date, time, day, base_price, discount_base_price;
     // make sure request contains all elements of a user account
     if (req.body.event_id != null && req.body.event_name != null
