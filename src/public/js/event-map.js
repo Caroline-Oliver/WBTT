@@ -89,7 +89,6 @@ function generate(id) {
 			console.log(err.message);
 		})
 		.then((result) => {
-			console.log(JSON.stringify(result));
 			ticket_price = result[1].price;
 			if (result[1].sale_price != null)
 				discount_price = result[1].sale_price;
@@ -102,6 +101,10 @@ function generate(id) {
 			document.getElementById('ticket_price').innerHTML = ``
 			document.getElementById('sale_price').innerHTML = ``
 			document.getElementById('original_price').innerHTML = ``
+
+			console.log(ticket_price);
+			console.log(discount_price);
+
 			if (discount_price != null) {
 				document.getElementById('ticket_price').innerHTML = `$${ticket_price}`
 				document.getElementById('sale_price').innerHTML = `$${sale_price}`
