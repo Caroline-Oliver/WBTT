@@ -57,7 +57,8 @@ function checkTimestamps(search_terms_A, search_terms_B) {
                         console.log(err.message);
                         reject(err);
                     })
-                    .then((result) => {
+                    .then(async (result) => {
+                        await new Promise(resolve => setTimeout(resolve, 1000));
                         resolve(result);
                     })
             })
