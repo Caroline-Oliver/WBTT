@@ -89,7 +89,7 @@ function generate(id) {
 			console.log(err.message);
 		})
 		.then((result) => {
-			console.log(result[1]);
+			console.log(result[1][0].price);
 			ticket_price = result[1].price;
 			if (result[1].sale_price != null)
 				discount_price = result[1].sale_price;
