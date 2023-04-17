@@ -1,3 +1,5 @@
+// #region helper functions
+
 // #region authenticate middleware
 function authenticate(req, res, next) {
     if (req.cookies.token == null) {
@@ -64,7 +66,6 @@ function checkTimestamps(search_terms_A, search_terms_B) {
             })
     })
 }
-
 
 function getTicketList(user_id) {
     var ticket_list = [];
@@ -411,6 +412,10 @@ function getEvent(id) {
 }
 // #endregion
 
+// #endregion
+
+// #region initialization
+
 // #region require
 const express = require('express');
 const mysql = require('mysql');
@@ -420,7 +425,7 @@ const http = require('http');
 const https = require('https');
 // #endregion
 
-// #region init
+// #region config
 const app = express();
 
 const privateKey = fs.readFileSync('/etc/letsencrypt/live/wbtt.us/privkey.pem', 'utf8');
@@ -449,6 +454,10 @@ const pool = mysql.createPool({
     dateStrings: true
 });
 // #endregion
+
+// #endregion
+
+// #region public pages
 
 // #region basic pages
 app.get('/', (req, res) => {
@@ -537,7 +546,6 @@ app.get('/faq', (req, res) => {
             });
         });
 })
-
 // #endregion
 
 // #region event pages
@@ -631,6 +639,10 @@ app.get('/events/:category', (req, res) => {
         });
 });
 // #endregion
+
+// #endregion
+
+// #region user
 
 // #region user account pages
 app.get('/my/register', (req, res) => {
@@ -799,7 +811,6 @@ app.get('/my/confirmation', authenticate, (req, res) => {
         })
 
 });
-
 // #endregion
 
 // #region user account api
@@ -877,7 +888,6 @@ app.get('/api/my/create', (req, res) => {
         })
 });
 
-// TODO change to async & promises to have more readable code
 app.get('/api/my/login', (req, res) => {
     var user;
     // make sure request contains all elements of a user account
@@ -1081,6 +1091,8 @@ app.get('/api/my/setDiscountCode', authenticate, (req, res) => {
 })
 // #endregion
 
+// #endregion
+
 // #region search api
 app.get('/api/search', (req, res) => {
     event_list = []
@@ -1129,6 +1141,8 @@ app.get('/api/getTickets/:event_id/:section_name', authenticate, (req, res) => {
 });
 
 // #endregion
+
+// #region admin
 
 // #region admin dashboard pages
 app.get('/admin/dashboard', authenticate, (req, res) => {
@@ -1720,39 +1734,6 @@ app.post('/api/admin/upload', authenticate, (req, res) => {
 });
 //#endregion
 
-// #region testing
-app.get('/tmp/event-tickets', (req, res) => {
-    var loggedIn = '';
-    accountStatus(req.cookies.token)
-        .catch((err) => {
-            loggedIn = 'na';
-        })
-        .then((status) => {
-            loggedIn = status;
-        })
-        .finally(() => {
-            res.render('pages/event-tickets', {
-                status: loggedIn
-            });
-        });
-});
-
-app.get('/tmp/concert-configuration', (req, res) => {
-    var loggedIn = '';
-    accountStatus(req.cookies.token)
-        .catch((err) => {
-            loggedIn = 'na';
-        })
-        .then((status) => {
-            loggedIn = status;
-        })
-        .finally(() => {
-            res.render('pages/concert-configuration', {
-                status: loggedIn
-            });
-        });
-});
-
 // #endregion
 
 // #region 404
@@ -1773,7 +1754,7 @@ app.use((req, res) => {
 });
 // #endregion
 
-// #region listen on ports
+// #region start webserver
 
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
