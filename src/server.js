@@ -1553,7 +1553,7 @@ app.get('/api/admin/createEvent', (req, res) => {
 });
 
 app.get('/api/admin/editEvent', (req, res) => {
-    var event_id, event_name, event_description, image_url, category, date, time, day, base_price, discount_base_price;
+    var event_id, event_name, event_description, image_url, category, date, time, day, base_price, discount_base_price = null;
     // make sure request contains all elements of a user account
     if (req.body.event_id != null && req.body.event_name != null
         && req.body.image_url != null && req.body.category != null
@@ -1587,7 +1587,7 @@ app.get('/api/admin/editEvent', (req, res) => {
             day = req_query.day;
             base_price = req_query.base_price;
             if (req_query.discount_base_price != null && req_query.discount_base_price != '')
-            discount_base_price = req_query.discount_base_price
+                discount_base_price = req_query.discount_base_price
         }
         else {
             res.status(403).send("Missing body parts");
@@ -1600,7 +1600,7 @@ app.get('/api/admin/editEvent', (req, res) => {
     }
     let sql = `UPDATE event SET event_name=?, event_description=?, image_url=?, category=?, date=?, time=?, day=?, base_price=? ${discount_str} WHERE event_id=${event_id}`;
     let params = [event_name, event_description, image_url, category, date, time, day, base_price];
-
+    console.log(sql);
     query(sql, params)
         .catch((err) => {
             console.log('errored in edit event');
