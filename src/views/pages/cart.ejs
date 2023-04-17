@@ -35,7 +35,7 @@
                 <% var totalCost=0; %>
                   <% if (items==null) items=[]; %>
                     <% items.forEach(function(item) { %>
-                      <% if (item.sale_price == null) {
+                      <% if (item.sale_price == null) { %>
                       <% totalCost += Math.round((parseFloat(item.price) * parseFloat(item.quantity)) * 100) / 100; %>
                       <% } else { %>
                         <% totalCost += Math.round((parseFloat(item.sale_price) * parseFloat(item.quantity)) * 100) / 100; %>
