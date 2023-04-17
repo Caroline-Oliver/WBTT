@@ -232,7 +232,7 @@ function searchEvents(search_terms) {
             });
 
             let sql = generateSQL(count_search, normal_search, special_search, ordering);
-            console.log(sql);
+            
             query(sql, [])
                 .catch( (err) => {
                     console.log('errored in sql in search events');
@@ -241,7 +241,6 @@ function searchEvents(search_terms) {
                 })
                 .then( (result) => {
                     resolve(result);
-                    console.log(JSON.stringify(result));
                 })
         }
     });
