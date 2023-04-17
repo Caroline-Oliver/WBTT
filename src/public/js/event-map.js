@@ -103,8 +103,8 @@ function generate(id) {
 			document.getElementById('original_price').innerHTML = ``
 			
 			if (discount_price != null) {
-				document.getElementById('ticket_price').innerHTML = `$${ticket_price}`
-				document.getElementById('sale_price').innerHTML = `$${sale_price}`
+				document.getElementById('original_price').innerHTML = `$${ticket_price}`
+				document.getElementById('sale_price').innerHTML = `$${discount_price}`
 				document.getElementById('ticket_price').innerHTML = `Per Ticket`
 			}
 			else if (ticket_price != null) {
