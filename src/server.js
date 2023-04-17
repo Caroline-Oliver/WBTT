@@ -415,11 +415,23 @@ function getEvent(id) {
 const express = require('express');
 const mysql = require('mysql');
 const cookieParser = require('cookie-parser');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
 // #endregion
 
 // #region init
 const app = express();
-const port = 3000;
+
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/wbtt.us/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/wbtt.us/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/wbtt.us/chain.pem', 'utf8');
+
+const credentials = {
+	key: privateKey,
+	cert: certificate,
+	ca: ca
+};
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -1762,7 +1774,15 @@ app.use((req, res) => {
 // #endregion
 
 // #region listen on ports
-app.listen(8000);
 
-app.listen(8443);
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(8000, () => {
+	console.log('HTTP Server running on port 80');
+});
+
+httpsServer.listen(8443, () => {
+	console.log('HTTPS Server running on port 443');
+});
 // #endregion
