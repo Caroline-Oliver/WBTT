@@ -215,7 +215,8 @@ function callChangeEvent() {
 				"date": `${document.getElementById('date').value}`,
 				"time": `${document.getElementById('form_time').value}`,
 				"day": `${document.getElementById('day').value}`,
-				"base_price": `${document.getElementById('base-price').value}`
+				"base_price": `${document.getElementById('base-price').value}`,
+				"discount_base_price" : `${document.getElementById('base-price').value}`
 			}),
 			success: function (data) {
 				resolve(data);
