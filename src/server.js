@@ -174,7 +174,7 @@ function searchEvents(search_terms) {
                         switch (type) {
                             case 'category':
                             case 'cat':
-                                special(`category='${term}`);
+                                special(`category='${term}'`);
                                 break;
                             case 'befored':
                             case 'beforedate':
