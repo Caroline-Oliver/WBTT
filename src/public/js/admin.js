@@ -166,9 +166,12 @@ function changeEvent() {
 	var new_price = document.getElementById('base-price').value;
 	var old_price = document.getElementById('base-price').placeholder;
 	var discount_price = document.getElementById('discount-base-price').value;
+	var old_discount_price = document.getElementById('discount-base-price').placeholder;
 	var factor = new_price / old_price;
 	var discount_factor;
-	if (discount_price != '' && discount_price != null)
+	if (old_discount_price != null && old_discount_price != '' && (discount_price == null || discount == ''))
+		discount_factor = 0;
+	else if (discount_price != '' && discount_price != null)
 		discount_factor = discount_price / old_price;
 	var promises = [callChangeEvent()];
 	if (factor != 0) {
