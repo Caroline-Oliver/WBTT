@@ -604,8 +604,8 @@ app.get('/events/:category', (req, res) => {
                     .catch((err) => {
                         console.log(err);
                     })
-                    .then((events) => {
-                        event_list = events;
+                    .then((results) => {
+                        event_list = results;
                     })
                     .finally(() => {
                         res.render('pages/category', {
