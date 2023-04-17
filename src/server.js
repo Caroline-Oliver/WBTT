@@ -679,7 +679,7 @@ app.get('/my/cart', authenticate, (req, res) => {
                     console.log(err.message);
                 })
                 .finally(() => {
-                    let sql = `SELECT e.event_name, e.event_description, e.image_url, t.price, COUNT(*) as quantity
+                    let sql = `SELECT e.event_name, e.event_description, e.image_url, t.price, t.sale_price, COUNT(*) as quantity
                     FROM cart AS c
                     JOIN ticket AS t ON c.ticket_id = t.ticket_id
                     JOIN event AS e ON t.event_id = e.event_id
