@@ -377,7 +377,7 @@ function updateCartList() {
 function sendToCart(tickets, eventIndex) {
 	return new Promise((resolve, reject) => {
 		var settings = {
-			"url": "http://18.189.94.24:3000/api/my/addToCart",
+			"url": "/api/my/addToCart",
 			"method": "POST",
 			"timeout": 0,
 			"headers": {
