@@ -35,7 +35,11 @@
                 <% var totalCost=0; %>
                   <% if (items==null) items=[]; %>
                     <% items.forEach(function(item) { %>
+                      <% if (item.sale_price == null) {
                       <% totalCost += Math.round((parseFloat(item.price) * parseFloat(item.quantity)) * 100) / 100; %>
+                      <% } else { %>
+                        <% totalCost += Math.round((parseFloat(item.sale_price) * parseFloat(item.quantity)) * 100) / 100; %>
+                      <% } %>
                         <tr>
                           <td class="p-4">
                             <div class="media align-items-center">
@@ -61,8 +65,12 @@
                               </div>
                             </div>
                           </td>
-                          <td class="text-right font-weight-semibold align-middle p-4">$<%= item.price %>
-                          </td>
+                          <% if (item.sale_price == null) {
+                            <td class="text-right font-weight-semibold align-middle p-4">$<%= item.price %></td>
+                          <% } else { %>
+                            <p3 class="sale-price" id="sale_price">$<%= item.sale_price %> </p3>
+                            <p3 class="original-price" id="original_price">$<%= item.price %></p3>
+                          <% } %>
                           <td class="text-right font-weight-semibold align-middle p-4">
                             <%= item.quantity %>
                           </td>
