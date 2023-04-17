@@ -1737,8 +1737,8 @@ app.use((req, res) => {
 });
 // #endregion
 
-// #region listen on port
-app.listen(port, () => {
-    console.log('WBTT server listening at 3.141.202.74:3000');
-});
+// #region listen on ports
+app.listen(8000);
+
+app.listen(8443);
 // #endregion
