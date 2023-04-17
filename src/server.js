@@ -1595,6 +1595,8 @@ app.get('/api/admin/editEvent', (req, res) => {
         }
     }
     let discount_str = '';
+    if (discount_base_price != null && discount_base_price == 0)
+        discount_str = `, discount_base_price = null`
     if (discount_base_price != null) {
         discount_str = `, discount_base_price = ${discount_base_price}`
     }
