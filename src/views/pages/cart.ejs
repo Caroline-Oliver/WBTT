@@ -68,8 +68,10 @@
                           <% if (item.sale_price == null) { %>
                             <td class="text-right font-weight-semibold align-middle p-4">$<%= item.price %></td>
                           <% } else { %>
-                            <p3 class="sale-price" id="sale_price">$<%= item.sale_price %> </p3>
-                            <p3 class="original-price" id="original_price">$<%= item.price %></p3>
+                            <td class="text-right font-weight-semibold align-middle p-4">
+                              <p3 class="sale-price" id="sale_price">$<%= item.sale_price %> </p3>
+                              <p3 class="original-price" id="original_price">$<%= item.price %></p3>
+                            </td>
                           <% } %>
                           <td class="text-right font-weight-semibold align-middle p-4">
                             <%= item.quantity %>
