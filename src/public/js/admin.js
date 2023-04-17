@@ -216,7 +216,7 @@ function callChangeEvent() {
 				"time": `${document.getElementById('form_time').value}`,
 				"day": `${document.getElementById('day').value}`,
 				"base_price": `${document.getElementById('base-price').value}`,
-				"discount_base_price" : `${document.getElementById('base-price').value}`
+				"discount_base_price" : `${document.getElementById('discount-base-price').value}`
 			}),
 			success: function (data) {
 				resolve(data);
@@ -229,6 +229,7 @@ function callChangeEvent() {
 }
 
 function callUpdateTickets(factor, discount_factor) {
+	var name = discount_factor != null ? 'discount_factor' : '';
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			url: '/api/admin/updateTickets',
@@ -238,7 +239,7 @@ function callUpdateTickets(factor, discount_factor) {
 			data: JSON.stringify({
 				"event_id": `${document.getElementById('event_id').value}`,
 				"factor": `${factor}`,
-				"discount_factor" : `${discount_factor}`
+				name : `${discount_factor}`
 			}),
 			success: function (data) {
 				resolve(data);
