@@ -1117,7 +1117,7 @@ app.get('/api/getTickets/:event_id/:section_name', authenticate, (req, res) => {
 
 // #endregion
 
-// #region admin
+// #region admin dashboard pages
 app.get('/admin/dashboard', authenticate, (req, res) => {
     var loggedIn = '';
     accountStatus(req.cookies.token)
@@ -1330,7 +1330,9 @@ app.get('/admin/editDiscount/:discount_id', authenticate, (req, res) => {
                 })
         });
 })
+// #endregion
 
+// #region admin api
 app.post('/api/admin/createTickets', (req, res) => {
     let event_id = -1;
 
@@ -1394,11 +1396,13 @@ app.post('/api/admin/createTickets', (req, res) => {
 });
 
 app.get('/api/admin/updateTickets', (req, res) => {
-    let event_id, factor;
+    let event_id, factor, discount_factor;
 
     if (req.body.event_id != null && req.body.factor != null){
         event_id = req.body.event_id;
         factor = req.body.factor;
+        if (req.body.discount_factor != null)
+            discount_factor = req.body.discount_factor;
     }
     else {
         var query_search = JSON.parse(Object.keys(req.query)[0]);
@@ -1406,14 +1410,20 @@ app.get('/api/admin/updateTickets', (req, res) => {
         if (query_search.event_id != null && query_search.factor != null){
             event_id = query_search.event_id;
             factor = query_search.factor;
+            if (query_search.discount_factor != null)
+                discount_factor = query_search.discount_factor;
         }
         else {
             res.send('missing body parts');
             return;
         }
     }
-
-    var sql = `UPDATE ticket SET price = price * ${factor} WHERE event_id = ${event_id}`
+    var discount_str = '';
+    if (discount_factor != null && discount_factor != 0)
+        discount_str = `, sale_price = price * ${discount_factor}`;
+    else if (discount_factor != null && discount_factor == 0)
+        discount_str = ', sale_price = null';
+    var sql = `UPDATE ticket SET price = price * ${factor}${discount_str} WHERE event_id = ${event_id}`
 
     query(sql, [])
         .catch( (err) => {

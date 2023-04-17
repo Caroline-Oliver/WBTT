@@ -164,10 +164,19 @@ function callCreateEvent() {
 
 function changeEvent() {
 	var new_price = document.getElementById('base-price').value;
-	var old_price = document.getElementById('base-price').placeholder
+	var old_price = document.getElementById('base-price').placeholder;
+	var discount_price = document.getElementById('discount-base-price').value;
 	var factor = new_price / old_price;
+	var discount_factor;
+	if (discount_price != '' && discount_price != null)
+		discount_factor = discount_price / old_price;
 	var promises = [callChangeEvent()];
-	if (factor != 0) promises.push(callUpdateTickets(factor));
+	if (factor != 0) {
+		if (discount_factor == null)
+			promises.push(callUpdateTickets(factor));
+		else
+			promises.push(callUpdateTickets(factor, discount_factor));
+	}
 	Promise.all(promises)
 		.catch((err) => {
 			console.log('errored');
@@ -215,22 +224,7 @@ function callChangeEvent() {
 	});
 }
 
-function updateTickets() {
-	var new_price = document.getElementById('base-price').value;
-	var old_price = document.getElementById('base-price').placeholder
-	var factor = new_price / old_price;
-	if (factor != 1) {
-		callUpdateTickets(factor)
-			.catch((err) => {
-
-			})
-			.then((result) => {
-
-			})
-	}
-}
-
-function callUpdateTickets(factor) {
+function callUpdateTickets(factor, discount_factor) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			url: '/api/admin/updateTickets',
@@ -239,7 +233,8 @@ function callUpdateTickets(factor) {
 			contentType: 'application/jsonp',
 			data: JSON.stringify({
 				"event_id": `${document.getElementById('event_id').value}`,
-				"factor": `${factor}`
+				"factor": `${factor}`,
+				"discount_factor" : `${discount_factor}`
 			}),
 			success: function (data) {
 				resolve(data);
