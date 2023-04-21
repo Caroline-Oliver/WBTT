@@ -225,7 +225,7 @@ function searchEvents(search_terms) {
                 else {
                     // handle default sort
                     if (normal_search == '' && ordering == 'DATE ASC')
-                        ordering = 'count_words DESC, date DESC';
+                        ordering = 'count_words DESC, date ASC';
 
                     // build normal search & count search strings
                     if (normal_search != '')
