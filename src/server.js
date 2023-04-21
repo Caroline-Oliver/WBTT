@@ -598,7 +598,7 @@ app.get('/my/cart', authenticate, (req, res) => {
                 })
                 .finally(() => {
                     let sql = 
-                    `SELECT e.event_name, e.image_url, t.price, t.sale_price, t.ticket_id
+                    `SELECT e.event_name, e.image_url, t.price, t.sale_price, t.ticket_id, t.section, t.seat
                     FROM cart AS c
                     JOIN ticket AS t ON c.ticket_id = t.ticket_id
                     JOIN event AS e ON t.event_id = e.event_id
