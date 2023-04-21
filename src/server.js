@@ -928,6 +928,7 @@ app.get('/api/my/login', (req, res) => {
 
 app.post('/api/my/addToCart', authenticate, (req, res) => {
     const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
+    const min = 5;
 
     let holdTime = (minutes) => {
         const dt = new Date((new Date()).getTime() + minutes * 60000);
@@ -964,11 +965,11 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
     // e.g., INSERT INTO `wbtt`.`cart` (`user_id`, `ticket_id`, `age`) VALUES ('1', '2', '2023-04-10');
     var cartSQL = 'INSERT INTO cart (user_id, ticket_id, age) VALUES ';
     // e.g., UPDATE `wbtt`.`ticket` SET `user_id` = '2', `hold` = '1', `hold_time` = '2023-04-08 14:00:00' WHERE (`ticket_id` = '4');
-    var holdSQL = `UPDATE ticket SET user_id = ${user_id}, hold = 1, hold_time = '${holdTime(10)}' WHERE (`;
+    var holdSQL = `UPDATE ticket SET user_id = ${user_id}, hold = 1, hold_time = '${holdTime(min)}' WHERE (`;
 
     var getTicketIds = `SELECT ticket_id FROM ticket WHERE (`;
 
-    var updateHoldsSQL = `UPDATE ticket SET hold_time = '${holdTime(10)}' WHERE user_id = ${user_id} AND hold = 1;`
+    var updateHoldsSQL = `UPDATE ticket SET hold_time = '${holdTime(min)}' WHERE user_id = ${user_id} AND hold = 1;`
 
     // convert tickets from string to array
     var idx = 0;
