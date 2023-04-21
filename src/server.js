@@ -60,7 +60,8 @@ function checkTimestamps(search_terms_A, search_terms_B) {
                         reject(err);
                     })
                     .then(async (result) => {
-                        // await new Promise(resolve => setTimeout(resolve, 500));
+                        if (result.affectedRows != 0)
+                            await new Promise(resolve => setTimeout(resolve, 500));
                         resolve(result);
                     })
             })
