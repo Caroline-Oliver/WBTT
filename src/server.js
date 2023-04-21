@@ -948,7 +948,6 @@ app.get('/api/my/removeFromCart', authenticate, (req, res) => {
     }
     else {
         var json_query = JSON.parse(Object.keys(req.query)[0]);
-        console.log(json_query);
 
         if (json_query.ticket_id != null) {
             ticket_id = json_query.ticket_id;
@@ -963,8 +962,7 @@ app.get('/api/my/removeFromCart', authenticate, (req, res) => {
     var deleteCartSQL = `DELETE FROM cart WHERE ticket_id=${ticket_id} AND user_id=${req.cookies.token}`;
     var updateTicketSQL = `UPDATE ticket SET user_id=null, hold=0, hold_time=null WHERE ticket_id=${ticket_id} AND user_id=${req.cookies.token}`;
     var promises = [query(deleteCartSQL, []), query(updateTicketSQL, [])];
-    console.log(deleteCartSQL);
-    console.log(updateTicketSQL);
+
     Promise.all(promises)
         .catch( (err) => {
             console.log('errored in removeFromCart')
