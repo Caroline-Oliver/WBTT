@@ -74,9 +74,8 @@
                               <p3 class="original-price" id="original_price">$<%= item.price %></p3>
                             </td>
                           <% } %>
-                          <td class="text-center align-middle px-0"><a href="#"
-                              class="shop-tooltip close float-none text-danger" title=""
-                              data-original-title="Remove">×</a>
+                          <td class="text-center align-middle px-0">
+                            <button type="button" class="shop-tooltip close float-none text-danger" onclick="console.log('remove <%= item.ticket_id %>')">×</button>
                           </td>
                         </tr>
                         <% }); %>
