@@ -76,7 +76,7 @@
                             <%= item.section_name %>
                           </td>
                           <td class="text-right font-weight-semibold align-middle p-4">
-                            <%= convert(item.seat, item.row_decrement, item.section_rows, item.section.cols) %>
+                            <%= convert(item.seat, item.row_decrement, item.section_rows, item.section_cols) %>
                           </td>
                           <% if (item.sale_price == null) { %>
                             <td class="text-right font-weight-semibold align-middle p-4">$<%= item.price %></td>
