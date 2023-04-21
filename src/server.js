@@ -560,27 +560,28 @@ app.get('/my/register', (req, res) => {
 });
 
 app.get('/my/account', authenticate, (req, res) => {
-    var sql = "SELECT * FROM user WHERE user_id = ?;"
-    sqlParams = [req.cookies.token];
-    pool.query(sql, sqlParams, function (err, result) {
-        if (err) throw err;
+    query("SELECT * FROM user WHERE user_id = ?;", req.cookies.token)
+        .catch( (err) => {
+            console.log('errored in my/account');
+            console.log(err);
+        })
+        .then( (result) => {
+            var loggedIn = '';
+            if (result[0].type == 1) loggedIn = 'user';
+            if (result[0].type == 0) loggedIn = 'admin';
 
-        var loggedIn = '';
-        if (result[0].type == 1) loggedIn = 'user';
-        if (result[0].type == 0) loggedIn = 'admin';
-
-        if (result.length != 0) {
-            res.render('pages/customer', {
-                username: result[0].user_name,
-                first_name: result[0].first_name,
-                last_name: result[0].last_name,
-                status: loggedIn
-            });
-        }
-        else {
-            res.status(404).send("Error, authenticated but not able to log in.");
-        }
-    });
+            if (result.length != 0) {
+                res.render('pages/customer', {
+                    username: result[0].user_name,
+                    first_name: result[0].first_name,
+                    last_name: result[0].last_name,
+                    status: loggedIn
+                });
+            }
+            else {
+                res.status(404).send("Error, authenticated but not able to log in.");
+            }
+        })
 });
 
 app.get('/my/tickets', authenticate, (req, res) => {
