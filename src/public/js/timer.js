@@ -16,6 +16,10 @@ function checkTimer(){
 }
 
 function clearTimer() {
+	var outerDiv = document.getElementById('timer-div');
+	var timeLabel = document.getElementById('time-text');
+	var timeNumberLabel = document.getElementById('time');
+	var timeWarningLabel = document.getElementById('time-warning');
 	window.clearInterval(time);
 	timeWarningLabel.setAttribute('class', '');
 	timeLabel.setAttribute('class', '');
