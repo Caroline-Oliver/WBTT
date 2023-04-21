@@ -97,8 +97,8 @@
         <% if (totalCost != 0) { %>
           <table class="table table-bordered m-0">
           <tr>
-            <td style="width: 650px;">Taxes (8.25%) </td>
-            <td style="width: 80px;"><%= formatter.format(totalCost * 0.0825) %></td>
+            <td class="text-right font-weight-semibold align-middle p-4" style="width: 605px;">Taxes (8.25%) </td>
+            <td class="text-right font-weight-semibold align-middle p-4" style="width: 80px;">$<%= formatter.format(totalCost * 0.0825) %></td>
           </tr>
           </table>
         <% } %>
