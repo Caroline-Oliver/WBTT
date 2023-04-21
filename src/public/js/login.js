@@ -26,25 +26,36 @@ function login() {
 	window.localStorage.setItem('minutes', sentinel);
 	window.localStorage.setItem('seconds', sentinel);
 	
-	$.ajax({
-		url: '/api/my/login',
-		dataType: 'json',
-		type: 'get',
-		contentType: 'application/jsonp',
-		data: JSON.stringify({
-			"username": `${document.getElementById('login_username').value}`,
-			"password": `${document.getElementById('login_password').value}`
-		}),
-		processData: false,
-		success: function (data, textStatus, jQxhr) {
-			location.reload();
-		},
-		error: function() {
+	callLogin()
+		.catch( (err) => {
 			console.log('error');
-		},
-		complete: function () {
-			console.log('complete');
-		}
+		})
+		.then( (result) => {
+			location.reload();
+		})
+}
+function callLogin() {
+	return new Promise( (resolve, reject) => {
+		$.ajax({
+			url: '/api/my/login',
+			dataType: 'json',
+			type: 'get',
+			contentType: 'application/jsonp',
+			data: JSON.stringify({
+				"username": `${document.getElementById('login_username').value}`,
+				"password": `${document.getElementById('login_password').value}`
+			}),
+			processData: false,
+			success: function (data, textStatus, jQxhr) {
+				if (document.cookie != '')
+					resolve();
+				else
+					reject();
+			},
+			error: function() {
+				reject();
+			}
+		});
 	});
 }
 
