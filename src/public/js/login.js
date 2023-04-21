@@ -1,9 +1,12 @@
 // JavaScript Document
 window.addEventListener('load', () => {
-	document.getElementById('login-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-        login();
-    })
+
+	if (document.getElementById('logout') == null) {
+		document.getElementById('login-form').addEventListener('submit', (event) => {
+			event.preventDefault();
+			login();
+		})
+	}
 
 	var login_username = document.getElementById("login_username");
 	login_username.addEventListener("keypress", (event) => {
