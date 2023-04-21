@@ -824,7 +824,8 @@ app.get('/api/my/create', (req, res) => {
 });
 
 app.get('/api/my/editAccount', (req, res) => {
-    var user_id = req.cookies.token, username, password, email, first_name, last_name, type;
+    var user_id, username, password, email, first_name, last_name, type;
+    user_id = req.cookies.token;
     // make sure request contains all elements of a user account
     if (req.body.username != null && req.body.email != null
         && req.body.first_name != null && req.body.last_name != null) {
@@ -862,11 +863,11 @@ app.get('/api/my/editAccount', (req, res) => {
     }
     
     let user_sql = 'UPDATE user SET user_name=?, email=?, first_name=?, last_name=? WHERE user_id=?;';
-    let user_params = [username, email, first_name, last_name, type, user_id];
+    let user_params = [username, email, first_name, last_name, user_id];
     let user_query = query(user_sql, user_params);
     let pass_sql;
     let promises = [user_query];
-    console.log(password);
+
     if (password != null && password != '' && password != undefined) {
         pass_sql = 'UPDATE password SET user_name=?, password=? WHERE password_id=?';
         let pass_params = [username, password, user_id];
@@ -880,8 +881,7 @@ app.get('/api/my/editAccount', (req, res) => {
         let pass_query = query(pass_sql, pass_params);
         promises.push(pass_query);
     }
-    console.log(user_sql);
-    console.log(pass_sql);
+    
     Promise.all(promises)
         .catch((err) => {
             console.log('error in update user admin function');
