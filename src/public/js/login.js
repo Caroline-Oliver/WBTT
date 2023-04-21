@@ -1,5 +1,20 @@
 // JavaScript Document
 
+var input_username = document.getElementById("input_username");
+input_username.addEventListener("keypress", (event) => {
+	if (event.key === "Enter") document.getElementById("login-button").click();
+});
+
+var input_password = document.getElementById("input_password");
+input_password.addEventListener("keypress", (event) => {
+	if (event.key === "Enter") document.getElementById("login-button").click();
+});
+
+var event_search = document.getElementById("eventSearch");
+event_search.addEventListener("keypress", (event) => {
+	if (event.key === "Enter") document.getElementById("search-button").click();
+});
+
 function login() {
 	var sentinel = -1
 	window.localStorage.setItem('minutes', sentinel);

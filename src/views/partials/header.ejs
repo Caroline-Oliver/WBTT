@@ -64,7 +64,7 @@
                 <label id="time" style="margin-left: 10px"></label>
         </div>
         <div class="form-inline my-2 my-lg-0">
-            <button class="btn btn-inverse my-2 my-sm-0" style="margin-right:10px" onclick="location.href = `/search?s=${document.getElementById('eventSearch').value}`;">Search</button>
+            <button id="search-button" class="btn btn-inverse my-2 my-sm-0" style="margin-right:10px" onclick="location.href = `/search?s=${document.getElementById('eventSearch').value}`;">Search</button>
             <input class="form-control mr-sm-2" id='eventSearch' placeholder="Search" aria-label="eventSearch">
             <a onclick="location.href='/faq'" title="Search Help"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle search-help" viewBox="0 0 16 16">
   <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -95,7 +95,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" onclick="location.href='/my/register'">Register</button>
-                            <button type="button" class="btn btn-primary" onclick="login()">Login</button>
+                            <button id="login-button" type="button" class="btn btn-primary" onclick="login()">Login</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             
                         </div>
