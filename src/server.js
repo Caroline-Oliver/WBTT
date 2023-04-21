@@ -1230,9 +1230,18 @@ app.get('/admin/createEvent', authenticate, (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            res.render('pages/create-event', {
-                status: loggedIn
-            })
+            query(`SELECT * FROM images`, [])
+                .catch( (err) => {
+                    console.log ('error in select query in create event');
+                    console.log(err.message);
+                })
+                .then( (result) => {
+                    res.render('pages/create-event', {
+                        status: loggedIn,
+                        images: result
+                    })
+                })
+            
         });
 });
 
