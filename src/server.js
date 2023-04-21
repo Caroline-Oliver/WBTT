@@ -1612,13 +1612,17 @@ app.get('/api/admin/deleteUser', (req, res) => {
         }
     }
 
-    query(`DELETE FROM user WHERE user_id=?;`, user_id)
+    var deleteUser = query(`DELETE FROM user WHERE user_id=?;`, user_id);
+    var deleteOrders = query(`DELETE FROM order WHERE user_id=?;`, user_id);
+    var updateTickets = query(`UPDATE ticket SET user_id=null, hold=0, sold=0, sold_date=null, order_id=null`);
+    var promises = [deleteUser, deleteOrders, updateTickets];
+    Promise.all(promises)
         .catch( (err) => {
             console.log('error in deleteUser');
             console.log(err.message);
         })
         .then( (result) => {
-            res.send('successfully deleted user');
+            res.send('Successfully deleted user.');
         });
 
 });
