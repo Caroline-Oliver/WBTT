@@ -941,7 +941,7 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
 });
 
-app.get('/api/my/removeFromCart', authenticate, (req, res) => {
+app.post('/api/my/removeFromCart', authenticate, (req, res) => {
     var event_id;
     if (req.body.event_id != null) {
         event_id = req.body.event_id;

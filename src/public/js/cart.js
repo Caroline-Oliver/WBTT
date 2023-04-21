@@ -27,7 +27,7 @@ function sendServerApplyDiscount(promocode) {
         $.ajax({
             url: '/api/my/setDiscountCode',
             dataType: 'text',
-            type: 'get',
+            type: 'post',
             contentType: 'application/jsonp',
             data: JSON.stringify({
                 "promocode": `${promocode}`
