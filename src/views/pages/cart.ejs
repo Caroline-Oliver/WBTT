@@ -94,6 +94,13 @@
             </tbody>
           </table>
         </div>
+        <% if (totalCost != 0) { %>
+          <tr>
+            <td style="width: 650px;">Taxes (8.25%) </td>
+            <td style="width: 80px;"><%= formatter.format(totalCost * 0.0825) %></td>
+          </tr>
+        <% } %>
+        
         <!-- / Shopping cart table -->
 
         <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
