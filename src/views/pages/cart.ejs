@@ -34,7 +34,7 @@
               <% const convert = (seat, dec, rows, cols) => { %>
                 <% seat++; %>
                 <% for (var i = rows; i >= 1; i--) { %>
-                  <% for (var j = 1; j <= cols - i * dec; j++) { %>
+                  <% for (var j = 1; j <= cols - (rows-i) * dec; j++) { %>
                     <% seat--; %>
                     <% if (seat == 0) return `row-${i} seat-${j}`; %>
                   <% } %>
