@@ -15,6 +15,18 @@ function checkTimer(){
 	}
 }
 
+function clearTimer() {
+	window.clearInterval(time);
+	timeWarningLabel.setAttribute('class', '');
+	timeLabel.setAttribute('class', '');
+	timeNumberLabel.setAttribute('class', '');
+	timeNumberLabel.innerHTML = '';
+	timeWarningLabel.innerHTML = '';
+	timeLabel.innerHTML = '';
+	window.localStorage.setItem("minutes",-1);
+	window.localStorage.setItem("seconds",-1);
+}
+
 function startTimer(min,sec) {
 	window.clearInterval(time);
 	//window.localStorage.setItem("minutes",-1);
@@ -69,7 +81,7 @@ function dispTime() {
 		timeWarningLabel.innerHTML = '';timeLabel.innerHTML = '';
 		window.localStorage.setItem("minutes",-1);
 		window.localStorage.setItem("seconds",-1);
-		location.reload();
+		//location.reload();
 		return;
 	}
 	else if ((s == 0 && m == 1)) {
