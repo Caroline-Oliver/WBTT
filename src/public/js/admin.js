@@ -118,6 +118,43 @@ function callEditUser() {
 	});
 }
 
+function deleteUser(user_id) {
+	callDeleteUser(user_id)
+		.catch( (err) => {
+			console.log(err.message);
+		})
+		.then( (result) => {
+			if (result != "Account deleted successfully!") {
+				document.getElementById('error-box').innerHTML = result;
+				document.getElementById('success-box').innerHTML = '';
+			}
+			else {
+				document.getElementById('error-box').innerHTML = '';
+				document.getElementById('success-box').innerHTML = result;
+			}
+		});
+}
+
+function callDeleteUser(user_id) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			url: '/api/admin/deleteUser',
+			dataType: 'text',
+			type: 'get',
+			contentType: 'application/jsonp',
+			data: JSON.stringify({
+				"user_id": `${user_id}`
+			}),
+			success: function (data) {
+				resolve(data);
+			},
+			error: function (data) {
+				reject(data);
+			}
+		});
+	});
+}
+
 function createEvent_ad() {
 	document.getElementById('error-box').innerHTML = '';
 	document.getElementById('success-box').innerHTML = '';
@@ -236,6 +273,43 @@ function callChangeEvent() {
 	});
 }
 
+function deleteEvent(event_id) {
+	callDeleteEvent(event_id)
+		.catch( (err) => {
+			console.log(err.message);
+		})
+		.then( (result) => {
+			if (result != "Event deleted successfully!") {
+				document.getElementById('error-box').innerHTML = result;
+				document.getElementById('success-box').innerHTML = '';
+			}
+			else {
+				document.getElementById('error-box').innerHTML = '';
+				document.getElementById('success-box').innerHTML = result;
+			}
+		});
+}
+
+function callDeleteEvent(event_id) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			url: '/api/admin/deleteEvent',
+			dataType: 'text',
+			type: 'get',
+			contentType: 'application/jsonp',
+			data: JSON.stringify({
+				"event_id": `${event_id}`
+			}),
+			success: function (data) {
+				resolve(data);
+			},
+			error: function (data) {
+				reject(data);
+			}
+		});
+	});
+}
+
 function callUpdateTickets(factor, discount_factor) {
 	console.log(discount_factor);
 	return new Promise((resolve, reject) => {
@@ -294,6 +368,43 @@ function callChangeDiscount() {
 				"type": `${document.getElementById('type').value}`,
 				"amount": `${document.getElementById('amount').value}`,
 				"expiration": `${document.getElementById('expiration').value}`
+			}),
+			success: function (data) {
+				resolve(data);
+			},
+			error: function (data) {
+				reject(data);
+			}
+		});
+	});
+}
+
+function deleteDiscount(discount_id) {
+	callDeleteUser(discount_id)
+		.catch( (err) => {
+			console.log(err.message);
+		})
+		.then( (result) => {
+			if (result != "Discount deleted successfully!") {
+				document.getElementById('error-box').innerHTML = result;
+				document.getElementById('success-box').innerHTML = '';
+			}
+			else {
+				document.getElementById('error-box').innerHTML = '';
+				document.getElementById('success-box').innerHTML = result;
+			}
+		});
+}
+
+function callDeleteDiscount(discount_id) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			url: '/api/admin/deleteDiscount',
+			dataType: 'text',
+			type: 'get',
+			contentType: 'application/jsonp',
+			data: JSON.stringify({
+				"discount_id": `${discount_id}`
 			}),
 			success: function (data) {
 				resolve(data);
