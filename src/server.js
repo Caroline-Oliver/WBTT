@@ -1588,6 +1588,41 @@ app.get('/api/admin/editUser', (req, res) => {
         });
 });
 
+app.get('/api/admin/deleteUser', (req, res) => {
+    let user_id;
+
+    if (req.body.user_id != null)
+    user_id = req.body.user_id;
+    else {
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
+        if (req_query.user_id != null)
+        user_id = req_query.user_id;
+        else {
+            res.send('missing body parts');
+            return;
+        }
+    }
+
+    query(`DELETE FROM user WHERE user_id=?;`, user_id)
+        .catch( (err) => {
+            console.log('error in deleteUser');
+            console.log(err.message);
+        })
+        .then( (result) => {
+            res.send('successfully deleted user');
+        });
+
+});
+
 app.get('/api/admin/createEvent', (req, res) => {
     var event_name, event_description, image_url, configuration, category, date, time, day, base_price;
     // make sure request contains all elements of a user account
@@ -1718,6 +1753,41 @@ app.get('/api/admin/editEvent', (req, res) => {
         .then((result) => {
             res.send('Successfully edited event.')
         })
+});
+
+app.get('/api/admin/deleteEvent', (req, res) => {
+    let event_id;
+
+    if (req.body.event_id != null)
+        event_id = req.body.event_id;
+    else {
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
+        if (req_query.event_id != null)
+            event_id = req_query.event_id;
+        else {
+            res.send('missing body parts');
+            return;
+        }
+    }
+    var promises = [query(`DELETE FROM ticket WHERE event_id=?;`, event_id), query(`DELETE FROM event WHERE event_id=?;`, event_id)];
+    Promise.all(promises)
+        .catch( (err) => {
+            console.log('error in deleteEvent');
+            console.log(err.message);
+        })
+        .then( (results) => {
+            res.send('successfully deleted tickets');
+        });
+
 });
 
 app.get('/api/admin/createDiscount', (req, res) => {
