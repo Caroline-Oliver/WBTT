@@ -1394,7 +1394,7 @@ app.get('/api/admin/updateTickets', (req, res) => {
     else if (discount_factor != null && discount_factor == 0)
         discount_str = ', sale_price = null';
     var sql = `UPDATE ticket SET price = price * ${factor}${discount_str} WHERE event_id = ${event_id} AND sold=0`
-
+    console.log(sql);
     query(sql, [])
         .catch( (err) => {
             console.log('error in update ticket select');
@@ -1542,7 +1542,6 @@ app.get('/api/admin/editEvent', (req, res) => {
             discount_base_price = req.body.discount_base_price
     }
     else {
-        console.log(req.query);
         var req_query = JSON.parse(Object.keys(req.query)[0]);
         if (req_query.event_id != null && req_query.event_name != null
             && req_query.image_url != null && req_query.category != null
