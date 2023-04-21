@@ -1008,8 +1008,8 @@ app.get('/api/my/removeFromCart', authenticate, (req, res) => {
             req_query = JSON.parse(keys_string);
         }
 
-        if (json_query.ticket_id != null) {
-            ticket_id = json_query.ticket_id;
+        if (req_query.ticket_id != null) {
+            ticket_id = req_query.ticket_id;
         }
 
         else {
