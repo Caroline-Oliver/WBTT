@@ -1334,6 +1334,21 @@ app.get('/admin/editDiscount/:discount_id', authenticate, (req, res) => {
                 })
         });
 })
+
+app.get('/admin/createVenue', authenticate, (req, res) => {
+    accountStatus(req.cookies.token)
+    .catch((err) => {
+        loggedIn = 'na';
+    })
+    .then((status) => {
+        loggedIn = status;
+    })
+    .finally(() => {
+        res.render('pages/venue-builder', {
+            status: loggedIn
+        })
+    });
+})
 // #endregion
 
 // #region admin api
