@@ -197,7 +197,7 @@ function changeEvent() {
 		})
 		.then((result) => {
 			if (result != "Successfully edited event.,success!") {
-				document.getElementById('error-box').innerHTML = result;
+				document.getElementById('error-box').innerHTML = 'Success!';
 				document.getElementById('success-box').innerHTML = '';
 			}
 			else {
