@@ -32,7 +32,7 @@
         <label for="imageSelect">Choose An Existing Image:</label><br>
           <select name="existingImages" id="existing-images" style="min-width:100%;">
             <option value="none" selected disabled hidden>Select an option:</option>
-            <% images.foreach( (image) => { %>
+            <% images.forEach( (image) => { %>
               <option value="<%= image.image_path %>"><%= image.image_path %></option>
             <% }); %>
           </select>
