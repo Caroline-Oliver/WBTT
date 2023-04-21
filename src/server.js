@@ -861,7 +861,7 @@ app.get('/api/my/login', (req, res) => {
             throw err;
         }
         else if (result.length == 0) {
-            res.status(400).send("Invalid username/password combination.");
+            res.send("Invalid username/password combination.");
         }
         else {
             res.cookie(`token`, `${result[0].password_id}`);

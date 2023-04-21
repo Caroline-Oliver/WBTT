@@ -40,7 +40,7 @@ function callLogin() {
 	return new Promise( (resolve, reject) => {
 		$.ajax({
 			url: '/api/my/login',
-			dataType: 'json',
+			dataType: 'text',
 			type: 'get',
 			contentType: 'application/jsonp',
 			data: JSON.stringify({
