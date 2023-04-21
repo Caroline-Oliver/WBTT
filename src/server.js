@@ -947,6 +947,7 @@ app.post('/api/my/removeFromCart', authenticate, (req, res) => {
         event_id = req.body.event_id;
     }
     else {
+        console.log(req.query);
         var json_query = JSON.parse(Object.keys(req.query)[0]);
 
         if (json_query.event_id != null) {
