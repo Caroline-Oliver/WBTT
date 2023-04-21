@@ -27,7 +27,7 @@ function sendServerApplyDiscount(promocode) {
         $.ajax({
             url: '/api/my/setDiscountCode',
             dataType: 'text',
-            type: 'post',
+            type: 'get',
             contentType: 'application/jsonp',
             data: JSON.stringify({
                 "promocode": `${promocode}`
@@ -59,7 +59,7 @@ function sendServerRemoveTicket(ticket_id) {
         $.ajax({
             url: '/api/my/removeFromCart',
             dataType: 'text',
-            type: 'get',
+            type: 'post',
             contentType: 'application/jsonp',
             data: JSON.stringify({
                 "ticket_id": `${ticket_id}`
