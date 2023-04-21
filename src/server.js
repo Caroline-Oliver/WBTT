@@ -1174,7 +1174,8 @@ app.get('/admin/editEvent/:event_id', authenticate, (req, res) => {
             loggedIn = status;
         })
         .finally(() => {
-            getEvent(req.params.event_id)
+            var promises = [getEvent(req.params.event_id), query(`SELECT * FROM images`, [])];
+            Promise.all(promises)
                 .catch((err) => {
                     if (err.message == 'no such event found') {
                         res.redirect('/admin/createEvent');
@@ -1188,7 +1189,8 @@ app.get('/admin/editEvent/:event_id', authenticate, (req, res) => {
                 .then((result) => {
                     res.render('pages/edit-event', {
                         status: loggedIn,
-                        event: result
+                        event: result[0],
+                        images: result[1]
                     });
                 })
         });

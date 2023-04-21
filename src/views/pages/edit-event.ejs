@@ -31,10 +31,10 @@
       <div class="form-group">
         <label for="imageSelect">Choose An Existing Image:</label><br>
           <select name="existingImages" id="existing-images" style="min-width:100%;">
-            <option value="select-image">Select an option:</option>
-            <option value="/images/event-images/file-name1.jpg">Image 1</option>
-            <option value="/images/event-images/file-name2.jpg">Image 2</option>
-            <option value="/images/event-images/file-name3.jpg">Image 3</option>
+            <option value="none" selected disabled hidden>Select an option:</option>
+            <% images.foreach( (image) => { %>
+              <option value="<%= image.image_path %>"><%= image.image_path %></option>
+            <% }); %>
           </select>
       </div>
       <h4 style="margin-left:25px">-or-</h4>
