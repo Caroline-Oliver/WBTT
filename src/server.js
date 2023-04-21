@@ -1372,7 +1372,7 @@ app.get('/api/admin/updateTickets', (req, res) => {
         console.log(req.body);
         event_id = req.body.event_id;
         factor = req.body.factor;
-        if (req.body.discount_factor != null && req.body.discount_factor != '')
+        if (req.body.discount_factor != null && req.body.discount_factor != undefined)
             discount_factor = req.body.discount_factor;
     }
     else {
@@ -1381,7 +1381,7 @@ app.get('/api/admin/updateTickets', (req, res) => {
         if (query_search.event_id != null && query_search.factor != null){
             event_id = query_search.event_id;
             factor = query_search.factor;
-            if (query_search.discount_factor != null && query_search.discount_factor != '')
+            if (query_search.discount_factor != null && query_search.discount_factor != undefined)
                 discount_factor = query_search.discount_factor;
         }
         else {
