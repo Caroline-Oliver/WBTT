@@ -37,7 +37,7 @@ function login() {
 			if (result == 'Successfully logged in')
 				location.reload();
 			else {
-				
+				document.getElementById('error-box').innerHTML = 'Invalid login.';
 			}
 		})
 }
