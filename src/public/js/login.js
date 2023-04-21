@@ -31,6 +31,8 @@ function login() {
 			console.log('error');
 		})
 		.then( (result) => {
+			console.log('reloading...');
+			console.log(document.cookie);
 			location.reload();
 		})
 }
