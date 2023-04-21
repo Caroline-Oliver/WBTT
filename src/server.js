@@ -759,6 +759,12 @@ app.get('/my/confirmation', authenticate, (req, res) => {
                 })
                 .then((result) => {
                     // creates new order
+                    if (result.length == 0) {
+                        res.render('pages/confirmation', {
+                            status: loggedIn
+                        });
+                        return;
+                    }
                     let order_sql = `INSERT INTO \`order\` SET user_id=${req.cookies.token}, total_cost=${result[0].total}, order_date='${datetime}'`
                     query(order_sql, [])
                         .catch((err) => {
