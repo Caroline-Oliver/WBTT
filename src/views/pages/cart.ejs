@@ -74,15 +74,6 @@
                               <p3 class="original-price" id="original_price">$<%= item.price %></p3>
                             </td>
                           <% } %>
-                          <% if (item.sale_price == null) { %>
-                          <td class="text-right font-weight-semibold align-middle p-4">$<%=
-                              formatter.format(parseFloat(item.price)) %>
-                          </td>
-                          <% } else { %>
-                            <td class="text-right font-weight-semibold align-middle p-4">$<%=
-                              formatter.format(parseFloat(item.sale_price)) %>
-                          </td>
-                          <% } %>
                           <td class="text-center align-middle px-0"><a href="#"
                               class="shop-tooltip close float-none text-danger" title=""
                               data-original-title="Remove">×</a>
