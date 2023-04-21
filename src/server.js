@@ -1369,6 +1369,7 @@ app.get('/api/admin/updateTickets', (req, res) => {
     let event_id, factor, discount_factor;
 
     if (req.body.event_id != null && req.body.factor != null){
+        console.log(req.body);
         event_id = req.body.event_id;
         factor = req.body.factor;
         if (req.body.discount_factor != null && req.body.discount_factor != '')
@@ -1376,7 +1377,7 @@ app.get('/api/admin/updateTickets', (req, res) => {
     }
     else {
         var query_search = JSON.parse(Object.keys(req.query)[0]);
-
+        console.log(query_search);
         if (query_search.event_id != null && query_search.factor != null){
             event_id = query_search.event_id;
             factor = query_search.factor;
