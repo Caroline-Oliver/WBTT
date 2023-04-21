@@ -1616,7 +1616,7 @@ app.get('/api/admin/deleteUser', (req, res) => {
     var deletePassword = query(`DELETE FROM password WHERE password_id=?;`, user_id);
     var deleteOrders = query(`DELETE FROM order WHERE user_id=?;`, user_id);
     var updateTickets = query(`UPDATE ticket SET user_id=null, hold=0, sold=0, sold_date=null, order_id=null`);
-    var promises = [deleteUser, deleteOrders, updateTickets];
+    var promises = [deleteUser, deletePassword, deleteOrders, updateTickets];
     Promise.all(promises)
         .catch( (err) => {
             console.log('error in deleteUser');

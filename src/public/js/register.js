@@ -48,6 +48,7 @@ function register() {
             if (result != "Account successfully created!"){
                 document.getElementById('error-box').innerHTML = result;
                 document.getElementById('success-box').innerHTML = '';
+                location.reload();
             }
             else{
                 document.getElementById('error-box').innerHTML = '';
