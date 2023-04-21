@@ -942,16 +942,16 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 });
 
 app.get('/api/my/removeFromCart', authenticate, (req, res) => {
-    var event_id;
-    if (req.body.event_id != null) {
-        event_id = req.body.event_id;
+    var ticket_id;
+    if (req.body.ticket_id != null) {
+        ticket_id = req.body.ticket_id;
     }
     else {
         var json_query = JSON.parse(Object.keys(req.query)[0]);
         console.log(json_query);
 
-        if (json_query.event_id != null) {
-            event_id = json_query.event_id;
+        if (json_query.ticket_id != null) {
+            ticket_id = json_query.ticket_id;
         }
 
         else {
