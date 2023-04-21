@@ -600,7 +600,6 @@ app.get('/my/tickets', authenticate, (req, res) => {
         .then((results) => {
             loggedIn = results[0]
             ticketList = results[1];
-            console.log(JSON.stringify(results[1]));
         })
         .finally(() => {
             res.render('pages/tickets', {
@@ -1617,7 +1616,7 @@ app.get('/api/admin/deleteUser', (req, res) => {
     var deleteUser = query(`DELETE FROM user WHERE user_id=?;`, user_id);
     var deletePassword = query(`DELETE FROM password WHERE password_id=?;`, user_id);
     var deleteOrders = query(`DELETE FROM order WHERE user_id=?;`, user_id);
-    var updateTickets = query(`UPDATE ticket SET user_id=null, hold=0, sold=0, sold_date=null, order_id=null`);
+    var updateTickets = query(`UPDATE ticket SET user_id=null, hold=0, sold=0, sold_date=null, order_id=null WHERE user_id=?`, user_id);
     var promises = [deleteUser, deletePassword, deleteOrders, updateTickets];
     Promise.all(promises)
         .catch( (err) => {
