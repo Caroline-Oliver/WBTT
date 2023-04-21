@@ -67,72 +67,6 @@ function checkTimestamps(search_terms_A, search_terms_B) {
     })
 }
 
-function getTicketList(user_id) {
-    var ticket_list = [];
-    var sql = "SELECT * FROM cart WHERE user_id = ?;";
-    sqlParams = [user_id];
-    return new Promise((resolve, reject) => {
-        pool.query(sql, sqlParams, function (err, result) {
-            if (err) {
-                console.log('errored in getTicketList');
-                console.log(err.message);
-                reject(err);
-            }
-            var i = -1;
-            while (++i < result.length) {
-                ticket_list.push(result[i].item);
-            }
-            resolve(ticket_list);
-        });
-    });
-}
-
-function ticketListToInfoList(ticket_list) {
-    return new Promise((resolve, reject) => {
-        var info_list = [];
-        var sql = "SELECT * FROM tickets WHERE ";
-        var i = -1;
-        if (ticket_list == null) {
-            reject(new Error("ticket_list undefined"));
-        }
-
-        else if (ticket_list.length == 0) {
-            resolve([]);
-        }
-
-        else {
-            while (++i < ticket_list.length) {
-                if (i < ticket_list.length - 1)
-                    sql += "ticket_id = ? OR ";
-                else
-                    sql += "ticket_id = ?;";
-            }
-
-            pool.query(sql, ticket_list, function (err, result) {
-                if (err) {
-                    console.log('errored in ticketListToInfoList');
-                    console.log(err.message);
-                    reject(err);
-                }
-                else {
-                    cart = [];
-                    let i = -1;
-                    while (++i < result.length) {
-                        info_list.push({
-                            event_name: result[i].event_name,
-                            section: result[i].section,
-                            seat: result[i].seat,
-                            price: result[i].price
-                        });
-                    }
-                    resolve(info_list);
-                }
-            });
-        }
-    });
-
-}
-
 function searchEvents(search_terms) {
     const generateSQL = (sort_search = '', normal_search = '', special_search, ordering, limit) => {
         if (sort_search != '') sort_search = `, (${sort_search}) AS count_words`;
@@ -359,39 +293,6 @@ function adminDashboard(filters) {
                         resolve([events, values[0], values[1], values[2], values[3], values[4]]);
                     });
             });
-    });
-}
-
-var gce_current_date = ""
-var current_events = []
-function getCurrentEvents() {
-    return new Promise((resolve, reject) => {
-        const dt = new Date();
-        const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
-
-        // YYYY-MM-DD format
-        const date = `${padL(dt.getFullYear())}-${padL(dt.getMonth() + 1)}-${dt.getDate()}`
-
-        if (gce_current_date == date) {
-            resolve(current_events);
-        }
-        else {
-            gce_current_date = date;
-            const sql = "SELECT * FROM event WHERE date >= ? LIMIT 5;"
-            pool.query(sql, date, (err, result) => {
-                if (err) {
-                    console.log('errored in getCurrentEvents');
-                    reject(err);
-                }
-                else {
-                    current_events = []
-                    result.forEach(event => {
-                        current_events.push({ id: event.event_id, name: event.event_name, desc: event.event_description, venue: event.venue, date: event.date, imgSrc: event.image_url });
-                    });
-                    resolve(current_events);
-                }
-            });
-        }
     });
 }
 
@@ -696,12 +597,12 @@ app.get('/my/cart', authenticate, (req, res) => {
                     console.log(err.message);
                 })
                 .finally(() => {
-                    let sql = `SELECT e.event_name, e.event_description, e.image_url, t.price, t.sale_price, COUNT(*) as quantity
+                    let sql = 
+                    `SELECT e.event_name, e.image_url, t.price, t.sale_price
                     FROM cart AS c
                     JOIN ticket AS t ON c.ticket_id = t.ticket_id
                     JOIN event AS e ON t.event_id = e.event_id
-                    WHERE c.user_id = ${req.cookies.token}
-                    GROUP BY e.event_name, e.event_description, e.image_url, t.price, t.sale_price`;
+                    WHERE c.user_id = ${req.cookies.token};`;
                     query(sql, [])
                         .catch((err) => {
                             console.log('error in big sql query in my/cart');

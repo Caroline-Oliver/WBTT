@@ -21,10 +21,10 @@
             <thead>
               <tr>
                 <!-- Set columns width -->
-                <th class="text-center py-3 px-4" style="min-width: 400px;">Event &amp; Details</th>
-                <th class="text-right py-3 px-4" style="width: 100px;">Price</th>
-                <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
-                <th class="text-right py-3 px-4" style="width: 100px;">Total</th>
+                <th class="text-center py-3 px-4" style="min-width: 400px;">Event</th>
+                <th class="text-right py-3 px-4" style="width: 100px;">Section</th>
+                <th class="text-center py-3 px-4" style="width: 120px;">Seat</th>
+                <th class="text-right py-3 px-4" style="width: 100px;">Cost</th>
                 <th class="text-center align-middle py-3 px-0" style="width: 40px;"><a href="#"
                     class="shop-tooltip float-none text-light" title="" data-original-title="Clear cart"><i
                       class="ino ion-md-trash"></i></a></th>
@@ -57,13 +57,14 @@
                               <div>
                                 <img class="img-fluid" alt="<%= item.event_name %>" src="<%= item.image_url %>"
                                   style="max-height: 100px">
-                                <div>
-                                  <p>
-                                    <%= item.event_description %>
-                                  </p>
-                                </div>
                               </div>
                             </div>
+                          </td>
+                          <td class="text-right font-weight-semibold align-middle p-4">
+                            <%= item.section %>
+                          </td>
+                          <td class="text-right font-weight-semibold align-middle p-4">
+                            <%= item.seat %>
                           </td>
                           <% if (item.sale_price == null) { %>
                             <td class="text-right font-weight-semibold align-middle p-4">$<%= item.price %></td>
@@ -73,9 +74,6 @@
                               <p3 class="original-price" id="original_price">$<%= item.price %></p3>
                             </td>
                           <% } %>
-                          <td class="text-right font-weight-semibold align-middle p-4">
-                            <%= item.quantity %>
-                          </td>
                           <% if (item.sale_price == null) { %>
                           <td class="text-right font-weight-semibold align-middle p-4">$<%=
                               formatter.format(parseFloat(item.price) * parseFloat(item.quantity)) %>
