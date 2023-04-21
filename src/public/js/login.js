@@ -39,8 +39,11 @@ function login() {
 		success: function (data, textStatus, jQxhr) {
 			location.reload();
 		},
-		error: function(error) {
-			
+		error: function() {
+			console.log('error');
+		},
+		complete: function () {
+			console.log('complete');
 		}
 	});
 }
