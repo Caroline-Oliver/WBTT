@@ -1065,8 +1065,8 @@ app.get('/api/my/setDiscountCode', authenticate, (req, res) => {
             req_query = JSON.parse(keys_string);
         }
 
-        if (json_query.promocode != null) {
-            promocode = json_query.promocode;
+        if (req_query.promocode != null) {
+            promocode = req_query.promocode;
         }
 
         else {
