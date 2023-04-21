@@ -628,11 +628,12 @@ app.get('/my/cart', authenticate, (req, res) => {
                 })
                 .finally(() => {
                     let sql =
-                        `SELECT e.event_name, e.image_url, t.price, t.sale_price, t.ticket_id, t.section_name, t.seat
-                    FROM cart AS c
-                    JOIN ticket AS t ON c.ticket_id = t.ticket_id
-                    JOIN event AS e ON t.event_id = e.event_id
-                    WHERE c.user_id = ${req.cookies.token};`;
+                        `SELECT *
+                        FROM wbtt.cart as c
+                        JOIN wbtt.ticket as t ON t.ticket_id = c.ticket_id
+                        JOIN wbtt.event as e ON t.event_id = e.event_id
+                        JOIN wbtt.venue_sections as v ON t.section_name = v.section_name
+                        WHERE e.configuration = v.venue_configuration AND c.user_id = ${req.cookies.token};`;
                     query(sql, [])
                         .catch((err) => {
                             console.log('error in big sql query in my/cart');
@@ -1409,8 +1410,8 @@ app.post('/api/admin/createTickets', (req, res) => {
             });
             req_query = JSON.parse(keys_string);
         }
-        if (query_search.event_id != null)
-            event_id = query_search.event_id;
+        if (req_query.event_id != null)
+            event_id = req_query.event_id;
         else {
             res.send('missing body parts');
             return;
@@ -1484,11 +1485,11 @@ app.get('/api/admin/updateTickets', (req, res) => {
             });
             req_query = JSON.parse(keys_string);
         }
-        if (query_search.event_id != null && query_search.factor != null) {
-            event_id = query_search.event_id;
-            factor = query_search.factor;
-            if (query_search.discount_factor != null && query_search.discount_factor != 'undefined')
-                discount_factor = query_search.discount_factor;
+        if (req_query.event_id != null && req_query.factor != null) {
+            event_id = req_query.event_id;
+            factor = req_query.factor;
+            if (req_query.discount_factor != null && req_query.discount_factor != 'undefined')
+                discount_factor = req_query.discount_factor;
         }
         else {
             res.send('missing body parts');
