@@ -87,13 +87,17 @@
                         </div>
                         <div class="modal-body">
                             <form id="login-form">
-                                <label for="username">Username:</label><br>
-                                <input type="text" id="login_username" name="username" required><br>
-                                <label for="password">Password:</label><br>
-                                <input type="password" id="login_password" name="password" required>
-                                <button type="button" class="btn btn-primary" onclick="location.href='/my/register'">Register</button>
-                                <button id="login-button" type="submit" class="btn btn-primary">Login</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <div>
+                                    <label for="username">Username:</label><br>
+                                    <input type="text" id="login_username" name="username" required><br>
+                                    <label for="password">Password:</label><br>
+                                    <input type="password" id="login_password" name="password" required>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-primary" onclick="location.href='/my/register'">Register</button>
+                                    <button id="login-button" type="submit" class="btn btn-primary">Login</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
                             </form>
                         </div>
                         <!-- <div class="modal-footer">

@@ -36,6 +36,9 @@ function login() {
 		.then( (result) => {
 			if (result == 'Successfully logged in')
 				location.reload();
+			else {
+				
+			}
 		})
 }
 function callLogin() {
