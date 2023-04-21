@@ -867,7 +867,7 @@ app.get('/api/my/editAccount', (req, res) => {
     let pass_sql;
     let promises = [user_query];
     console.log(password);
-    if (password != null && password != '') {
+    if (password != null && password != '' && password != undefined) {
         pass_sql = 'UPDATE password SET user_name=?, password=? WHERE password_id=?';
         let pass_params = [username, password, user_id];
         let pass_query = query(pass_sql, pass_params);
