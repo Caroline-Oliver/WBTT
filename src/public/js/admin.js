@@ -23,6 +23,8 @@ $(document).ready(function () {
 });
 
 function createUser() {
+	document.getElementById('error-box').innerHTML = '';
+	document.getElementById('success-box').innerHTML = '';
 	callRegister()
 		.catch((err) => {
 			console.log('errored');
@@ -69,6 +71,8 @@ function callRegister() {
 }
 
 function changeUser() {
+	document.getElementById('error-box').innerHTML = '';
+	document.getElementById('success-box').innerHTML = '';
 	callEditUser()
 		.catch((err) => {
 			console.log('errored');
@@ -115,6 +119,8 @@ function callEditUser() {
 }
 
 function createEvent_ad() {
+	document.getElementById('error-box').innerHTML = '';
+	document.getElementById('success-box').innerHTML = '';
 	callCreateEvent()
 		.catch((err) => {
 			console.log('errored');
@@ -163,6 +169,8 @@ function callCreateEvent() {
 }
 
 function changeEvent() {
+	document.getElementById('error-box').innerHTML = '';
+	document.getElementById('success-box').innerHTML = '';
 	var new_price = document.getElementById('base-price').value;
 	var old_price = document.getElementById('base-price').placeholder;
 	var discount_price = document.getElementById('discount-base-price').value;
@@ -252,6 +260,8 @@ function callUpdateTickets(factor, discount_factor) {
 }
 
 function changeDiscount() {
+	document.getElementById('error-box').innerHTML = '';
+	document.getElementById('success-box').innerHTML = '';
 	callChangeDiscount()
 		.catch((err) => {
 			console.log('errored');
@@ -296,6 +306,8 @@ function callChangeDiscount() {
 }
 
 function createDiscount_ad() {
+	document.getElementById('error-box').innerHTML = '';
+	document.getElementById('success-box').innerHTML = '';
 	callCreateDiscount()
 		.catch((err) => {
 			console.log('errored');
