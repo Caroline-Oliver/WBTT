@@ -76,11 +76,11 @@
                           <% } %>
                           <% if (item.sale_price == null) { %>
                           <td class="text-right font-weight-semibold align-middle p-4">$<%=
-                              formatter.format(parseFloat(item.price) * parseFloat(item.quantity)) %>
+                              formatter.format(parseFloat(item.price)) %>
                           </td>
                           <% } else { %>
                             <td class="text-right font-weight-semibold align-middle p-4">$<%=
-                              formatter.format(parseFloat(item.sale_price) * parseFloat(item.quantity)) %>
+                              formatter.format(parseFloat(item.sale_price)) %>
                           </td>
                           <% } %>
                           <td class="text-center align-middle px-0"><a href="#"
