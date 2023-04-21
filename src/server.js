@@ -861,7 +861,7 @@ app.get('/api/my/editAccount', (req, res) => {
         }
     }
 
-    let user_sql = 'UPDATE user SET user_name=?, email=?, first_name=?, last_name=?, type=? WHERE user_id=?;';
+    let user_sql = 'UPDATE user SET user_name=?, email=?, first_name=?, last_name=? WHERE user_id=?;';
     let user_params = [username, email, first_name, last_name, type, user_id];
     let user_query = query(user_sql, user_params);
     let pass_query;
