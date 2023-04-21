@@ -1,12 +1,12 @@
 // JavaScript Document
 
-var input_username = document.getElementById("input_username");
-input_username.addEventListener("keypress", (event) => {
+var login_username = document.getElementById("login_username");
+login_username.addEventListener("keypress", (event) => {
 	if (event.key === "Enter") document.getElementById("login-button").click();
 });
 
-var input_password = document.getElementById("input_password");
-input_password.addEventListener("keypress", (event) => {
+var login_password = document.getElementById("login_password");
+login_password.addEventListener("keypress", (event) => {
 	if (event.key === "Enter") document.getElementById("login-button").click();
 });
 
