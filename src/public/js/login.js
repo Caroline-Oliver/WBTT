@@ -12,10 +12,18 @@ window.addEventListener('load', () => {
 	login_username.addEventListener("keypress", (event) => {
 		if (event.key === "Enter") document.getElementById("login-button").click();
 	});
+
+	login_username.addEventListener("keyup", (event) => {
+		document.getElementById('error-box').innerHTML = '';
+	});
 	
 	var login_password = document.getElementById("login_password");
 	login_password.addEventListener("keypress", (event) => {
 		if (event.key === "Enter") document.getElementById("login-button").click();
+	});
+
+	login_password.addEventListener("keyup", (event) => {
+		document.getElementById('error-box').innerHTML = '';
 	});
 	
 	var event_search = document.getElementById("eventSearch");
