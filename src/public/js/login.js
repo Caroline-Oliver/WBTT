@@ -36,8 +36,11 @@ function login() {
 			"password": `${document.getElementById('login_password').value}`
 		}),
 		processData: false,
-		complete: function (data, textStatus, jQxhr) {
+		success: function (data, textStatus, jQxhr) {
 			location.reload();
+		},
+		error: function(error) {
+			
 		}
 	});
 }
