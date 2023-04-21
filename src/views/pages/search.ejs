@@ -15,6 +15,7 @@
     </div>
 
     <% let idx = 0; %>
+    <% const formatter=new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %>
     <% if (events == null) events = []; %>
     <% if (JSON.stringify(events) === "[]") { %>
       <h3 class="search-results">No results found</h3>
@@ -30,6 +31,18 @@
           <p>
             <%= event.event_description %>
           </p>
+          <div>
+            <h2 style="font-weight:bold">Base Ticket Price</h2>
+            <p>$<%= formatter.format(event.base_price) %></p>
+          </div>
+          <div>
+            <h2 style="font-weight:bold">Date</h2>
+            <p><%= event.date %></p>
+          </div>
+          <div>
+            <h2 style="font-weight:bold">Time</h2>
+            <p><%= event.time %></p>
+          </div>
         </div>
         <div class="col-lg-3 col-12" style="margin-top: 10px">
           <img class="img-fluid" alt="<%= event.event_name %>" src="<%= event.image_url %>" style="max-height: 500px">
