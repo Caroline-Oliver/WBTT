@@ -91,7 +91,7 @@ function searchEvents(search_terms) {
             special_search += ' AND ';
         special_search += sql;
     }
-    var count_search = '', normal_search = '', special_search = '', ordering = 'DATE ASC', limit='';
+    var count_search = '', normal_search = '', special_search = '', ordering = 'DATE ASC', limit = '';
 
     return new Promise((resolve, reject) => {
         if (search_terms == '') {
@@ -173,14 +173,14 @@ function searchEvents(search_terms) {
             });
 
             let sql = generateSQL(count_search, normal_search, special_search, ordering, limit);
-            
+
             query(sql, [])
-                .catch( (err) => {
+                .catch((err) => {
                     console.log('errored in sql in search events');
                     console.log(err.message);
                     reject(err);
                 })
-                .then( (result) => {
+                .then((result) => {
                     resolve(result);
                 })
         }
@@ -339,9 +339,9 @@ const certificate = fs.readFileSync('/etc/letsencrypt/live/wbtt.us/cert.pem', 'u
 const ca = fs.readFileSync('/etc/letsencrypt/live/wbtt.us/chain.pem', 'utf8');
 
 const credentials = {
-	key: privateKey,
-	cert: certificate,
-	ca: ca
+    key: privateKey,
+    cert: certificate,
+    ca: ca
 };
 
 app.set('view engine', 'ejs');
@@ -583,6 +583,27 @@ app.get('/my/account', authenticate, (req, res) => {
     });
 });
 
+app.get('/my/tickets', authenticate, (req, res) => {
+    var sql = `SELECT * FROM ticket WHERE sold=1 AND user_id=${req.cookies.token}`;
+    var promises = [accountStatus(req.cookies.token), query(sql, [])]
+    Promise.all(promises)
+        .catch((err) => {
+            loggedIn = 'na';
+            tickets = [];
+        })
+        .then((results) => {
+            loggedIn = results[0]
+            ticketList = results[1];
+        })
+        .finally(() => {
+            res.render('pages/tickets', {
+                status: loggedIn,
+                tickets: ticketList
+            })
+
+        })
+});
+
 app.get('/my/cart', authenticate, (req, res) => {
     accountStatus(req.cookies.token)
         .catch((err) => {
@@ -602,8 +623,8 @@ app.get('/my/cart', authenticate, (req, res) => {
                         result = null;
                 })
                 .finally(() => {
-                    let sql = 
-                    `SELECT e.event_name, e.image_url, t.price, t.sale_price, t.ticket_id, t.section_name, t.seat
+                    let sql =
+                        `SELECT e.event_name, e.image_url, t.price, t.sale_price, t.ticket_id, t.section_name, t.seat
                     FROM cart AS c
                     JOIN ticket AS t ON c.ticket_id = t.ticket_id
                     JOIN event AS e ON t.event_id = e.event_id
@@ -965,12 +986,12 @@ app.get('/api/my/removeFromCart', authenticate, (req, res) => {
     var promises = [query(deleteCartSQL, []), query(updateTicketSQL, [])];
 
     Promise.all(promises)
-        .catch( (err) => {
+        .catch((err) => {
             console.log('errored in removeFromCart')
             console.log(err.message);
             res.send('failed to remove from cart');
         })
-        .then( (result) => {
+        .then((result) => {
             if (result[1].affectedRows == 1)
                 res.send('Successfully removed from cart.');
             else
@@ -1368,7 +1389,7 @@ app.post('/api/admin/createTickets', (req, res) => {
 app.get('/api/admin/updateTickets', (req, res) => {
     let event_id, factor, discount_factor;
 
-    if (req.body.event_id != null && req.body.factor != null){
+    if (req.body.event_id != null && req.body.factor != null) {
         console.log(req.body);
         event_id = req.body.event_id;
         factor = req.body.factor;
@@ -1378,7 +1399,7 @@ app.get('/api/admin/updateTickets', (req, res) => {
     else {
         var query_search = JSON.parse(Object.keys(req.query)[0]);
         console.log(query_search);
-        if (query_search.event_id != null && query_search.factor != null){
+        if (query_search.event_id != null && query_search.factor != null) {
             event_id = query_search.event_id;
             factor = query_search.factor;
             if (query_search.discount_factor != null && query_search.discount_factor != 'undefined')
@@ -1397,11 +1418,11 @@ app.get('/api/admin/updateTickets', (req, res) => {
     var sql = `UPDATE ticket SET price = price * ${factor}${discount_str} WHERE event_id = ${event_id} AND sold=0`
     console.log(sql);
     query(sql, [])
-        .catch( (err) => {
+        .catch((err) => {
             console.log('error in update ticket select');
             console.log(err.message);
         })
-        .then( (result) => {
+        .then((result) => {
             res.send("success!")
         })
 })
@@ -1704,10 +1725,10 @@ const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(8000, () => {
-	console.log('HTTP Server running on port 80');
+    console.log('HTTP Server running on port 80');
 });
 
 httpsServer.listen(8443, () => {
-	console.log('HTTPS Server running on port 443');
+    console.log('HTTPS Server running on port 443');
 });
 // #endregion

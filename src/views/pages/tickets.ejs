@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+
+<head>
+  <%- include('../partials/head') %>
+</head>
+
+<body>
+  <header>
+    <%- include('../partials/header') %>
+  </header>
+
+  <% tickets.forEach( (ticket) => { %>
+
+  <% }) %>
+
+  <div class="container px-3 my-5 clearfix">
+    <!-- Shopping cart table -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Shopping Cart</h2>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered m-0">
+            <thead>
+              <tr>
+                <!-- Set columns width -->
+                <th class="text-center py-3 px-4" style="min-width: 400px;">Event</th>
+                <th class="text-right py-3 px-4" style="width: 100px;">Section</th>
+                <th class="text-center py-3 px-4" style="width: 120px;">Seat #</th>
+                <th class="text-right py-3 px-4" style="width: 100px;">Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center">
+    <script src="/js/admin.js"></script>
+    <%- include('../partials/footer') %>
+  </footer>
+  <%- include('../partials/scripts') %>
+</body>
+
+</html>
