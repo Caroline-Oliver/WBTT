@@ -1542,6 +1542,7 @@ app.get('/api/admin/editEvent', (req, res) => {
             discount_base_price = req.body.discount_base_price
     }
     else {
+        console.log(JSON.parse(Object.keys(req.query)[0]));
         var req_query = JSON.parse(Object.keys(req.query)[0]);
         if (req_query.event_id != null && req_query.event_name != null
             && req_query.image_url != null && req_query.category != null
