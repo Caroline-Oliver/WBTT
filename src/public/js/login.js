@@ -48,8 +48,8 @@ function callLogin() {
 				"password": `${document.getElementById('login_password').value}`
 			}),
 			processData: false,
-			success: function (data, textStatus, jQxhr) {
-				if (document.cookie.includes('token'))
+			success: function (response) {
+				if (response == 'Successfully logged in')
 					resolve();
 				else
 					reject();

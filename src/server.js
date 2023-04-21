@@ -865,7 +865,7 @@ app.get('/api/my/login', (req, res) => {
         }
         else {
             res.cookie(`token`, `${result[0].password_id}`);
-            res.status(200).send('successfully logged in');
+            res.status(200).send('Successfully logged in');
         }
     });
 
