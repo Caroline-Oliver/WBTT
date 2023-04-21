@@ -15,63 +15,63 @@
   </div>
 
   <% let idx=0; %>
-    <% const formatter=new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %>
-      <% if (events==null) events=[]; %>
-        <% if (JSON.stringify(events)==="[]" ) { %>
-          <h3 class="search-results">No results found</h3>
-          <% } %>
+  <% const formatter=new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %>
+  <% if (events==null) events=[]; %>
+  <% if (JSON.stringify(events)==="[]" ) { %>
+    <h3 class="search-results">No results found</h3>
+  <% } %>
 
-            <% events.forEach(function(event) { %>
-              <% var arr = event.time.split(':'); %>
-              <% var hours = arr[0] % 12; %>
-              <% var minutes = arr[1]; %>
-              <% var amOrPm = arr[0] > 12 ? 'PM' : 'AM'; %>
-              <div class="row" style="margin-top: 25px">
-                <div class="col-lg-9 col-12" style="margin-top: 10px">
-                  <h3 style="text-align: left">
-                    <a href="/event/<%= event.event_id %>">
-                      <%= event.event_name %>
-                    </a>
-                  </h3>
-                  <p>
-                    <%= event.event_description %>
-                  </p>
-                  <div class="table-responsive">
-                    <table class="table table-striped table-sm w-auto table-bordered">
-                      <thead>
-                        <tr>
-                          <th>
-                            <h6 style="font-weight:bold">Base Price</h6>
-                          </th>
-                          <th>
-                            <h6 style="font-weight:bold">Date</h6>
-                          </th>
-                          <th>
-                            <h6 style="font-weight:bold">Time</h6>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <p>$<%= formatter.format(parseFloat(event.base_price)) %>
-                            </p>
-                          </td>
-                          <td>
-                            <p>
-                              <%= event.date %>
-                            </p>
-                          </td>
-                          <td>
-                            <p>
-                              <%= hours + ':' + minutes + ' ' + amOrPm %>
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- <div>
+  <% events.forEach(function(event) { %>
+  <div class="row" style="margin-top: 25px">
+    <div class="col-lg-9 col-12" style="margin-top: 10px">
+      <h3 style="text-align: left">
+        <a href="/event/<%= event.event_id %>">
+          <%= event.event_name %>
+        </a>
+      </h3>
+      <p>
+        <%= event.event_description %>
+      </p>
+      <% var arr = event.time.split(':'); %>
+      <% var hours = arr[0] % 12; %>
+      <% var minutes = arr[1]; %>
+      <% var amOrPm = arr[0] > 12 ? 'PM' : 'AM'; %>
+      <div class="table-responsive">
+        <table class="table table-striped table-sm w-auto table-bordered">
+          <thead>
+            <tr>
+              <th>
+                <h6 style="font-weight:bold">Base Price</h6>
+              </th>
+              <th>
+                <h6 style="font-weight:bold">Date</h6>
+              </th>
+              <th>
+                <h6 style="font-weight:bold">Time</h6>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p>$<%= formatter.format(parseFloat(event.base_price)) %>
+                </p>
+              </td>
+              <td>
+                <p>
+                  <%= event.date %>
+                </p>
+              </td>
+              <td>
+                <p>
+                  <%= hours + ':' + minutes + ' ' + amOrPm %>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- <div>
             <h5 style="font-weight:bold">Base Ticket Price</h5>
             <p>$<%= formatter.format(parseFloat(event.base_price)) %></p>
           </div>
@@ -83,13 +83,12 @@
             <h5 style="font-weight:bold">Time</h5>
             <p><%= event.time %></p>
           </div> -->
-                </div>
-                <div class="col-lg-3 col-12" style="margin-top: 10px">
-                  <img class="img-fluid" alt="<%= event.event_name %>" src="<%= event.image_url %>"
-                    style="max-height: 500px">
-                </div>
-              </div>
-              <% }); %>
+    </div>
+    <div class="col-lg-3 col-12" style="margin-top: 10px">
+      <img class="img-fluid" alt="<%= event.event_name %>" src="<%= event.image_url %>" style="max-height: 500px">
+    </div>
+  </div>
+  <% }); %>
 
-                <%- include('../partials/scripts') %>
+  <%- include('../partials/scripts') %>
 </body>

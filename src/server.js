@@ -134,7 +134,7 @@ function ticketListToInfoList(ticket_list) {
 }
 
 function searchEvents(search_terms) {
-    const generateSQL = (sort_search = '', normal_search = '', special_search, ordering) => {
+    const generateSQL = (sort_search = '', normal_search = '', special_search, ordering, limit) => {
         if (sort_search != '') sort_search = `, (${sort_search}) AS count_words`;
         if (normal_search != '') normal_search = `AND (${normal_search})`;
         if (special_search != '') special_search = `AND (${special_search})`;
@@ -148,14 +148,15 @@ function searchEvents(search_terms) {
         ${special_search}
         GROUP BY e.event_id, e.event_name, e.event_description, e.image_url, e.base_price, e.date, e.time
         ORDER BY
-        ${ordering};`
+        ${ordering}
+        ${limit}`
     }
     const special = (sql) => {
         if (special_search != '')
             special_search += ' AND ';
         special_search += sql;
     }
-    var count_search = '', normal_search = '', special_search = '', ordering = 'DATE DESC';
+    var count_search = '', normal_search = '', special_search = '', ordering = 'DATE ASC', limit='';
 
     return new Promise((resolve, reject) => {
         if (search_terms == '') {
@@ -215,12 +216,15 @@ function searchEvents(search_terms) {
                                 if (term.toLowerCase() == 'desc' || term.toLowerCase() == 'asc')
                                     ordering = `base_price ${term}`;
                                 break;
+                            case 'limit':
+                                limit = `LIMIT ${term}`;
+                                break;
                         }
                     }
                 }
                 else {
                     // handle default sort
-                    if (normal_search == '' && ordering == 'DATE DESC')
+                    if (normal_search == '' && ordering == 'DATE ASC')
                         ordering = 'count_words DESC, date DESC';
 
                     // build normal search & count search strings
@@ -233,7 +237,7 @@ function searchEvents(search_terms) {
                 }
             });
 
-            let sql = generateSQL(count_search, normal_search, special_search, ordering);
+            let sql = generateSQL(count_search, normal_search, special_search, ordering, limit);
             
             query(sql, [])
                 .catch( (err) => {
@@ -462,20 +466,7 @@ const pool = mysql.createPool({
 
 // #region basic pages
 app.get('/', (req, res) => {
-    var events = [
-        {
-            name: 'Event 1',
-            desc: '1 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, voluptates, soluta velit nostrum ut iste exercitationem vitae ipsum repellendus laudantium ab possimus nemo odio cumque illum nulla laborum blanditiis unde.',
-            imgSrc: '/images/event-singer.jpg'
-        },
-        {
-            name: 'Event 2',
-            desc: '2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, voluptates, soluta velit nostrum ut iste exercitationem vitae ipsum repellendus laudantium ab possimus nemo odio cumque illum nulla laborum blanditiis unde.',
-            imgSrc: '/images/event-field.jpg'
-        }
-    ]
-
-    getCurrentEvents()
+    searchEvents('limit:5')
         .catch((err) => {
             console.log(err);
         })
