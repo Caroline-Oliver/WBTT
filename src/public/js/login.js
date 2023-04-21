@@ -45,7 +45,7 @@ function callLogin() {
 			url: '/api/my/login',
 			dataType: 'text',
 			type: 'get',
-			contentType: 'application/jsonp',
+			contentType: 'text',
 			data: JSON.stringify({
 				"username": `${document.getElementById('login_username').value}`,
 				"password": `${document.getElementById('login_password').value}`
