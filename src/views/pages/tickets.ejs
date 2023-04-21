@@ -18,7 +18,7 @@
     <!-- Shopping cart table -->
     <div class="card">
       <div class="card-header">
-        <h2>Shopping Cart</h2>
+        <h2>My Tickets</h2>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -36,39 +36,29 @@
               <% const formatter=new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %>
               <% if (tickets == null) tickets = []; %>
               <% tickets.forEach( (ticket) => { %>
-                <tr>
+              <tr>
                 <td class="p-4">
-                    <div class="media align-items-center">
-                    <div class="media-body">
-                        <a href="#" class="d-block text-dark">
-                        <%= ticket.event_name %>
-                        </a>
-                        <small>
-                        <!--<span class="text-muted">Color:</span> -->
-                        <span class="ui-product-color ui-product-color-sm align-text-bottom" style="background:#e81e2c;"></span> &nbsp;
-                        </small>
-                    </div>
-                    <div>
-                        <img class="img-fluid" alt="<%= ticket.event_name %>" src="<%= ticket.image_url %>" style="max-height: 100px">
-                    </div>
-                    </div>
+                  <div>
+                    <p><%= ticket.event_name %></p>
+                    <img class="img-fluid" alt="<%= item.event_name %>" src="<%= item.image_url %>" style="max-height: 100px">
+                  </div>
                 </td>
                 <td class="text-right font-weight-semibold align-middle p-4">
-                    <%= ticket.section_name %>
-                  </td>
-                  <td class="text-right font-weight-semibold align-middle p-4">
-                    <%= ticket.seat %>
-                  </td>
-                  <% if (ticket.sale_price == null) { %>
-                    <td class="text-right font-weight-semibold align-middle p-4">$<%= ticket.price %></td>
-                  <% } else { %>
-                    <td class="text-right font-weight-semibold align-middle p-4">
-                      <p3 class="sale-price" id="sale_price">$<%= ticket.sale_price %> </p3>
-                      <p3 class="original-price" id="original_price">$<%= ticket.price %></p3>
-                    </td>
-                  <% } %>
-              <% }) %>
-            </tr>
+                  <%= ticket.section_name %>
+                </td>
+                <td class="text-right font-weight-semibold align-middle p-4">
+                  <%= ticket.seat %>
+                </td>
+                <% if (ticket.sale_price == null) { %>
+                <td class="text-right font-weight-semibold align-middle p-4">$<%= ticket.price %></td>
+                <% } else { %>
+                <td class="text-right font-weight-semibold align-middle p-4">
+                  <p3 class="sale-price" id="sale_price">$<%= ticket.sale_price %> </p3>
+                  <p3 class="original-price" id="original_price">$<%= ticket.price %></p3>
+                </td>
+                <% } %>
+                <% }) %>
+              </tr>
             </tbody>
           </table>
         </div>
