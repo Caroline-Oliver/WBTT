@@ -600,6 +600,7 @@ app.get('/my/tickets', authenticate, (req, res) => {
         .then((results) => {
             loggedIn = results[0]
             ticketList = results[1];
+            console.log(JSON.stringify(results[1]));
         })
         .finally(() => {
             res.render('pages/tickets', {
