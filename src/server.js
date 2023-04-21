@@ -744,10 +744,6 @@ app.get('/my/confirmation', authenticate, (req, res) => {
 
 // #region user account api
 app.get('/api/my/create', (req, res) => {
-    // console.log('user attempting to register account');
-    // console.log(req);
-    // console.log(JSON.stringify(req.body));
-    // console.log(JSON.stringify(req.query));
     var username, password, email, first_name, last_name;
     // make sure request contains all elements of a user account
     if (req.body.username != null && req.body.password != null
