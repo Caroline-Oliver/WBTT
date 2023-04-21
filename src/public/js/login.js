@@ -35,6 +35,7 @@ function login() {
 		})
 		.then( (result) => {
 			console.log('reloading...');
+			console.log(result);
 			console.log(document.cookie);
 			location.reload();
 		})
@@ -53,7 +54,7 @@ function callLogin() {
 			processData: false,
 			success: function (response) {
 				if (response == 'Successfully logged in')
-					resolve();
+					resolve(response);
 				else
 					reject();
 			},
