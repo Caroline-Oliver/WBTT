@@ -33,6 +33,7 @@
         <input type="text" class="form-control" id="expiration" placeholder="Expiration" value="<%= code.expiration %>">
       </div>
       <button onclick="changeDiscount()" id="change_user" type="button">Update</button>
+      <button type="button" onclick="deleteDiscount(<%= code.discount_id %>);" style="color:red">Delete Discount</button>
       <button type="reset" value="Reset">Reset</button>
       <h5 style="color:red" id="error-box"></h5>
 			<h5 style="color:green" id="success-box"></h5>
