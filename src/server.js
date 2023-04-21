@@ -572,9 +572,7 @@ app.get('/my/account', authenticate, (req, res) => {
 
             if (result.length != 0) {
                 res.render('pages/customer', {
-                    username: result[0].user_name,
-                    first_name: result[0].first_name,
-                    last_name: result[0].last_name,
+                    user: result[0],
                     status: loggedIn
                 });
             }
