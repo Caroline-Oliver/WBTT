@@ -42,6 +42,7 @@
       </div>
       <button onclick="changeUser()" id="change_user" type="button">Update</button>
       <button type="reset" value="Reset">Reset</button>
+      <button type="button" onclick="deleteUser(<%= user.user_id %>);" style="color:red">Delete User</button>
       <h5 style="color:red" id="error-box"></h5>
 			<h5 style="color:green" id="success-box"></h5>
     </form>
