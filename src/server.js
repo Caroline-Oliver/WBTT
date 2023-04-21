@@ -842,8 +842,8 @@ app.get('/api/my/login', (req, res) => {
             req_query = JSON.parse(keys_string);
         }
 
-        if (query.username != null && query.password != null) {
-            user = query;
+        if (req_query.username != null && req_query.password != null) {
+            user = req_query;
         }
 
         else {
