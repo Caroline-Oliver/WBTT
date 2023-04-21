@@ -1,3 +1,30 @@
+window.addEventListener('load', () => {
+	var login = document.getElementById("login");
+	login.addEventListener("keypress", (event) => {
+		if (event.key === "Enter") document.getElementById("register-button").click();
+	});
+
+    var password = document.getElementById("password");
+	password.addEventListener("keypress", (event) => {
+		if (event.key === "Enter") document.getElementById("register-button").click();
+	});
+
+    var email = document.getElementById("email");
+	email.addEventListener("keypress", (event) => {
+		if (event.key === "Enter") document.getElementById("register-button").click();
+	});
+
+    var first_name = document.getElementById("first_name");
+	first_name.addEventListener("keypress", (event) => {
+		if (event.key === "Enter") document.getElementById("register-button").click();
+	});
+
+    var last_name = document.getElementById("last_name");
+	last_name.addEventListener("keypress", (event) => {
+		if (event.key === "Enter") document.getElementById("register-button").click();
+	});
+});
+
 function register() {
     console.log('attempting to register');
 	var sentinel = -1
