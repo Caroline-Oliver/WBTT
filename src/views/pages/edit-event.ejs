@@ -30,10 +30,14 @@
       </div>
       <div class="form-group">
         <label for="imageSelect">Choose An Existing Image:</label><br>
-          <select name="existingImages" id="existing-images" style="min-width:100%;">
-            <option value="none" selected disabled hidden>Select an option:</option>
+          <select name="existingImages" id="image_url" style="min-width:100%;">
+            <!-- <option value="none" selected disabled hidden>Select an option:</option> -->
             <% images.forEach( (image) => { %>
-              <option value="<%= image.image_path %>"><%= image.image_path %></option>
+              <% if (image.image_path == event.image_url) { %>
+                <option value="<%= image.image_path %>" selected><%= image.image_path %></option>
+              <% } else { %>
+                <option value="<%= image.image_path %>"><%= image.image_path %></option>
+              <% } %>
             <% }); %>
           </select>
       </div>
@@ -41,10 +45,6 @@
       <div class="form-group">
         <label for="image">Upload An Image:</label><br>
         <input type="file" name="chooseFile" id="chooseFile">
-      </div>
-      <div class="form-group">
-        <label for="image_url">Image URL</label>
-        <input type="text" class="form-control" id="image_url" placeholder="Image URL" value="<%= event.image_url %>">
       </div>
       <div class="form-group">
         <label for="date">Date</label>
