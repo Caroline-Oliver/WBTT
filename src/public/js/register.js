@@ -1,5 +1,6 @@
 window.addEventListener('load', () => {
     document.getElementById('register-button').addEventListener('submit', (event) => {
+        event.preventDefault();
         register();
     })
 
