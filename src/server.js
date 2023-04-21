@@ -834,6 +834,7 @@ app.get('/api/my/editAccount', (req, res) => {
         email = req.body.email;
         first_name = req.body.first_name;
         last_name = req.body.last_name;
+        console.log(req.body);
     }
     else {
         var req_query;
@@ -845,6 +846,7 @@ app.get('/api/my/editAccount', (req, res) => {
                 keys_string += obj;
             });
             req_query = JSON.parse(keys_string);
+            console.log(JSON.stringify(req_query));
         }
         if (req_query.username != null && req_query.email != null
             && req_query.first_name != null && req_query.last_name != null) {
