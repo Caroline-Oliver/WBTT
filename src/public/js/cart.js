@@ -1,7 +1,7 @@
 function applyDiscount() {
     let promocode = document.getElementById('promocode').value;
     if (promocode != null && promocode != '') {
-        callServer(promocode)
+        sendServerApplyDiscount(promocode)
             .catch((err) => {
                 document.getElementById('error-box').innerHTML = 'Some error occured. Please try again.';
                 document.getElementById('success-box').innerHTML = '';
@@ -22,7 +22,7 @@ function applyDiscount() {
     }
 }
 
-function callServer(promocode) {
+function sendServerApplyDiscount(promocode) {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: '/api/my/setDiscountCode',
@@ -31,6 +31,38 @@ function callServer(promocode) {
             contentType: 'application/jsonp',
             data: JSON.stringify({
                 "promocode": `${promocode}`
+            }),
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (data) {
+                reject(data);
+            }
+        });
+    })
+}
+
+function removeTicketFromCart(ticket_id) {
+    sendServerRemoveTicket(ticket_id)
+        .catch( (err) => {
+            console.log(err.message);
+            console.log('errored in remove ticket from cart');
+        })
+        .then( (result) => {
+            if (result == 'Successfully removed from cart.')
+                location.reload();
+        })
+}
+
+function sendServerRemoveTicket(ticket_id) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/api/my/removeFromCart',
+            dataType: 'text',
+            type: 'get',
+            contentType: 'application/jsonp',
+            data: JSON.stringify({
+                "ticket_id": `${ticket_id}`
             }),
             success: function (data) {
                 resolve(data);

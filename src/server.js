@@ -596,6 +596,10 @@ app.get('/my/cart', authenticate, (req, res) => {
                     console.log('error in check timestamps in my/cart');
                     console.log(err.message);
                 })
+                .then((result) => {
+                    if (result == null)
+                        result = null;
+                })
                 .finally(() => {
                     let sql = 
                     `SELECT e.event_name, e.image_url, t.price, t.sale_price, t.ticket_id, t.section_name, t.seat
@@ -936,6 +940,42 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
 
 
 });
+
+app.get('/api/my/removeFromCart', authenticate, (req, res) => {
+    var event_id;
+    if (req.body.event_id != null) {
+        event_id = req.body.event_id;
+    }
+    else {
+        var json_query = JSON.parse(Object.keys(req.query)[0]);
+
+        if (json_query.event_id != null) {
+            event_id = json_query.event_id;
+        }
+
+        else {
+            res.status(403).send(`Missing body parts`);
+            return;
+        }
+    }
+    // remove from cart (delete) and update to not held in ticket
+    var deleteCartSQL = `DELETE FROM cart WHERE ticket_id=${ticket_id} AND user_id=${req.cookies.token}`;
+    var updateTicketSQL = `UPDATE ticket SET user_id=null, hold=0, hold_time=null WHERE ticket_id=${ticket_id} AND user_id=${req.cookies.token}`;
+    var promises = [query(deleteCartSQL, []), query(updateTicketSQL, [])];
+
+    Promise.all(promises)
+        .catch( (err) => {
+            console.log('errored in removeFromCart')
+            console.log(err.message);
+            res.send('failed to remove from cart');
+        })
+        .then( (result) => {
+            if (result[1].affectedRows == 1)
+                res.send('Successfully removed from cart.');
+            else
+                res.send('Failed to remove from cart.');
+        })
+})
 
 app.get('/api/my/getCart', authenticate, (req, res) => {
     getCart(req.cookies.token)
