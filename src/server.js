@@ -824,6 +824,8 @@ app.get('/api/my/create', (req, res) => {
 });
 
 app.get('/api/my/editAccount', (req, res) => {
+    console.log(req.body);
+    console.log(req.query);
     var user_id = req.cookies.token, username, password, email, first_name, last_name, type;
     // make sure request contains all elements of a user account
     if (req.body.username != null && req.body.email != null
@@ -834,7 +836,6 @@ app.get('/api/my/editAccount', (req, res) => {
         email = req.body.email;
         first_name = req.body.first_name;
         last_name = req.body.last_name;
-        console.log(req.body);
     }
     else {
         var req_query;
@@ -846,7 +847,6 @@ app.get('/api/my/editAccount', (req, res) => {
                 keys_string += obj;
             });
             req_query = JSON.parse(keys_string);
-            console.log(JSON.stringify(req_query));
         }
         if (req_query.username != null && req_query.email != null
             && req_query.first_name != null && req_query.last_name != null) {
