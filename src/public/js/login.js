@@ -31,13 +31,11 @@ function login() {
 	
 	callLogin()
 		.catch( (err) => {
-			console.log('error');
+			//console.log('error');
 		})
 		.then( (result) => {
-			console.log('reloading...');
-			console.log(result);
-			console.log(document.cookie);
-			location.reload();
+			if (result == 'Successfully logged in')
+				location.reload();
 		})
 }
 function callLogin() {
