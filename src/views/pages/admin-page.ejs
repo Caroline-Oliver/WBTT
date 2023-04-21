@@ -180,6 +180,7 @@
               <thead>
                 <tr>
                   <th>Event</th>
+                  <th>Event ID</th>
                   <th>Description</th>
                   <th>Venue</th>
                   <th>Date</th>
@@ -190,9 +191,14 @@
               <tbody>
                 <% events.forEach(function(event) { %>
                   <tr>
-                    <td><a href="/admin/editEvent/<%= event.event_id %>">
+                    <td>
+                      <a href="/admin/editEvent/<%= event.event_id %>">
                         <%= event.event_name %>
-                      </a></td>
+                      </a>
+                    </td>
+                    <td>
+                      <%= event.event_id %>
+                    </td>
                     <td>
                       <%= event.event_description %>
                     </td>

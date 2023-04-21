@@ -13,13 +13,19 @@ tabEvents.addEventListener('click', function () { setView('events-body') }, fals
 
 $(document).ready(function () {
 	$('#orders-table').DataTable({
+		order: [[0, 'asc']],
 		searching: false
 	});
-	$('#users-table').DataTable();
+	$('#users-table').DataTable({
+		order: [[1, 'asc']],
+	});
 	$('#discounts-table').DataTable({
+		order: [[1, 'asc']],
 		searching: false
 	});
-	$('#events-table').DataTable();
+	$('#events-table').DataTable({
+		order: [[1, 'asc']],
+	});
 });
 
 function createUser() {
