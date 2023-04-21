@@ -760,7 +760,16 @@ app.get('/api/my/create', (req, res) => {
         last_name = req.body.last_name;
     }
     else {
-        var req_query = JSON.parse(Object.keys(req.query)[0]);
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
         if (req_query.username != null && req_query.password != null
             && req_query.email != null && req_query.first_name != null
             && req_query.last_name != null) {
@@ -824,7 +833,16 @@ app.get('/api/my/login', (req, res) => {
         user = req.body;
     }
     else {
-        var query = JSON.parse(Object.keys(req.query)[0]);
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
 
         if (query.username != null && query.password != null) {
             user = query;
@@ -879,7 +897,16 @@ app.post('/api/my/addToCart', authenticate, (req, res) => {
         event_id = req.body.event_id;
     }
     else {
-        var json_query = JSON.parse(Object.keys(req.query)[0]);
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
 
         if (json_query.tickets != null && json_query.event_id != null) {
             tickets_str = json_query.tickets;
@@ -973,7 +1000,16 @@ app.get('/api/my/removeFromCart', authenticate, (req, res) => {
         ticket_id = req.body.ticket_id;
     }
     else {
-        var json_query = JSON.parse(Object.keys(req.query)[0]);
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
 
         if (json_query.ticket_id != null) {
             ticket_id = json_query.ticket_id;
@@ -1020,7 +1056,16 @@ app.get('/api/my/setDiscountCode', authenticate, (req, res) => {
         promocode = req.body.promocode;
     }
     else {
-        var json_query = JSON.parse(Object.keys(req.query)[0]);
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
 
         if (json_query.promocode != null) {
             promocode = json_query.promocode;
@@ -1358,7 +1403,16 @@ app.post('/api/admin/createTickets', (req, res) => {
     if (req.body.event_id != null)
         event_id = req.body.event_id;
     else {
-        var query_search = JSON.parse(Object.keys(req.query)[0]);
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
         if (query_search.event_id != null)
             event_id = query_search.event_id;
         else {
@@ -1424,7 +1478,16 @@ app.get('/api/admin/updateTickets', (req, res) => {
             discount_factor = req.body.discount_factor;
     }
     else {
-        var query_search = JSON.parse(Object.keys(req.query)[0]);
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
         if (query_search.event_id != null && query_search.factor != null) {
             event_id = query_search.event_id;
             factor = query_search.factor;
@@ -1470,7 +1533,16 @@ app.get('/api/admin/editUser', (req, res) => {
         type = req.body.type;
     }
     else {
-        var req_query = JSON.parse(Object.keys(req.query)[0]);
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
         if (req_query.user_id != null && req_query.username != null
             && req_query.email != null
             && req_query.first_name != null && req_query.last_name != null
@@ -1536,7 +1608,16 @@ app.get('/api/admin/createEvent', (req, res) => {
         base_price = req.body.base_price;
     }
     else {
-        var req_query = JSON.parse(Object.keys(req.query)[0]);
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
         if (req_query.event_name != null && req_query.image_url != null
             && req_query.configuration != null && req_query.category != null
             && req_query.date != null && req_query.time != null
@@ -1654,7 +1735,16 @@ app.get('/api/admin/createDiscount', (req, res) => {
         expiration = req.body.expiration;
     }
     else {
-        var req_query = JSON.parse(Object.keys(req.query)[0]);
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
         if (req_query.code != null
             && req_query.type != null && req_query.amount != null
             && req_query.type != null) {
@@ -1697,7 +1787,16 @@ app.get('/api/admin/editDiscount', (req, res) => {
         expiration = req.body.expiration;
     }
     else {
-        var req_query = JSON.parse(Object.keys(req.query)[0]);
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
         if (req_query.discount_id != null && req_query.code != null
             && req_query.type != null && req_query.amount != null
             && req_query.type != null) {
