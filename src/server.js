@@ -587,8 +587,9 @@ app.get('/my/tickets', authenticate, (req, res) => {
     var sql = 
     `SELECT * 
     FROM ticket as t
-    JOIN event as e on t.event_id = e.event_id
-    WHERE sold=1 AND user_id=${req.cookies.token}`;
+    JOIN event as e ON t.event_id = e.event_id
+    JOIN venue_sections as v ON t.section_name = v.section_name
+    WHERE sold=1 AND user_id=${req.cookies.token} AND e.configuration = v.venue_configuration`;
     var promises = [accountStatus(req.cookies.token), query(sql, [])]
     Promise.all(promises)
         .catch((err) => {

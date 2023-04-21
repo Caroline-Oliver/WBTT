@@ -10,10 +10,6 @@
     <%- include('../partials/header') %>
   </header>
 
-  <% tickets.forEach( (ticket) => { %>
-
-  <% }) %>
-
   <div class="container px-3 my-5 clearfix">
     <!-- Shopping cart table -->
     <div class="card">
@@ -33,6 +29,16 @@
               </tr>
             </thead>
             <tbody>
+              <% const convert = (seat, dec, rows, cols) => { %>
+                <% seat++; %>
+                <% for (var i = rows; i >= 1; i--) { %>
+                  <% for (var j = 1; j <= cols - (rows-i) * dec; j++) { %>
+                    <% seat--; %>
+                    <% if (seat == 0) return `row-${i} seat-${j}`; %>
+                  <% } %>
+                <% } %>  
+                <% return 'null'; %>
+              <% } %>
               <% const formatter=new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) %>
               <% if (tickets == null) tickets = []; %>
               <% tickets.forEach( (ticket) => { %>
@@ -47,7 +53,7 @@
                   <%= ticket.section_name %>
                 </td>
                 <td class="text-right font-weight-semibold align-middle p-4">
-                  <%= ticket.seat %>
+                  <%= convert(ticket.seat, ticket.row_decrement, ticket.section_rows, ticket.section_cols) %>
                 </td>
                 <% if (ticket.sale_price == null) { %>
                 <td class="text-right font-weight-semibold align-middle p-4">$<%= ticket.price %></td>
