@@ -22,7 +22,10 @@
           <% } %>
 
             <% events.forEach(function(event) { %>
-
+              <% var arr = event.time.split(':'); %>
+              <% var hours = arr[0] % 12; %>
+              <% var minutes = arr[1]; %>
+              <% var amOrPm = arr[0] > 12 ? 'PM' : 'AM'; %>
               <div class="row" style="margin-top: 25px">
                 <div class="col-lg-9 col-12" style="margin-top: 10px">
                   <h3 style="text-align: left">
@@ -34,7 +37,7 @@
                     <%= event.event_description %>
                   </p>
                   <div class="table-responsive">
-                    <table class="table table-striped table-sm">
+                    <table class="table table-striped table-sm w-auto">
                       <thead>
                         <tr>
                           <th>
@@ -61,7 +64,7 @@
                           </td>
                           <td>
                             <p>
-                              <%= event.time %>
+                              <%= hours + ':' + minutes + ' ' + amOrPm %>
                             </p>
                           </td>
                         </tr>
