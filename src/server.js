@@ -864,22 +864,24 @@ app.get('/api/my/editAccount', (req, res) => {
     let user_sql = 'UPDATE user SET user_name=?, email=?, first_name=?, last_name=? WHERE user_id=?;';
     let user_params = [username, email, first_name, last_name, type, user_id];
     let user_query = query(user_sql, user_params);
+    let pass_sql;
     let promises = [user_query];
-    
+    console.log(password);
     if (password != null && password != '') {
-        let pass_sql = 'UPDATE password SET user_name=?, password=? WHERE password_id=?';
+        pass_sql = 'UPDATE password SET user_name=?, password=? WHERE password_id=?';
         let pass_params = [username, password, user_id];
         let pass_query = query(pass_sql, pass_params);
         promises.push(pass_query);
     }
 
     else {
-        let pass_sql = 'UPDATE password SET user_name=? WHERE password_id=?';
+        pass_sql = 'UPDATE password SET user_name=? WHERE password_id=?';
         let pass_params = [username, user_id];
         let pass_query = query(pass_sql, pass_params);
         promises.push(pass_query);
     }
-
+    console.log(user_sql);
+    console.log(pass_sql);
     Promise.all(promises)
         .catch((err) => {
             console.log('error in update user admin function');
