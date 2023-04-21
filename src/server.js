@@ -139,14 +139,14 @@ function searchEvents(search_terms) {
         if (normal_search != '') normal_search = `AND (${normal_search})`;
         if (special_search != '') special_search = `AND (${special_search})`;
 
-        return `SELECT e.event_id, e.event_name, e.event_description, e.image_url, COUNT(*)/e.max_tickets as percent
+        return `SELECT e.event_id, e.event_name, e.event_description, e.image_url, e.base_price, e.date, e.time COUNT(*)/e.max_tickets as percent
         ${sort_search}
         FROM \`event\` as e
         JOIN \`ticket\` as t ON e.event_id = t.event_id
         WHERE (t.hold = 0 AND t.sold = 0)
         ${normal_search}
         ${special_search}
-        GROUP BY e.event_id, e.event_name, e.event_description, e.image_url
+        GROUP BY e.event_id, e.event_name, e.event_description, e.image_url, e.base_price, e.date, e.time
         ORDER BY
         ${ordering};`
     }
