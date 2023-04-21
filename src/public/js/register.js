@@ -1,4 +1,8 @@
 window.addEventListener('load', () => {
+    document.getElementById('register-button').addEventListener('submit', (event) => {
+        register();
+    })
+
 	var login = document.getElementById("login");
 	login.addEventListener("keypress", (event) => {
 		if (event.key === "Enter") document.getElementById("register-button").click();
