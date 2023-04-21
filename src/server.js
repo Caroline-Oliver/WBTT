@@ -1418,7 +1418,6 @@ app.get('/api/admin/updateTickets', (req, res) => {
     let event_id, factor, discount_factor;
 
     if (req.body.event_id != null && req.body.factor != null) {
-        console.log(req.body);
         event_id = req.body.event_id;
         factor = req.body.factor;
         if (req.body.discount_factor != null && req.body.discount_factor != 'undefined')
@@ -1426,7 +1425,6 @@ app.get('/api/admin/updateTickets', (req, res) => {
     }
     else {
         var query_search = JSON.parse(Object.keys(req.query)[0]);
-        console.log(query_search);
         if (query_search.event_id != null && query_search.factor != null) {
             event_id = query_search.event_id;
             factor = query_search.factor;
@@ -1444,7 +1442,7 @@ app.get('/api/admin/updateTickets', (req, res) => {
     else if (discount_factor != null && discount_factor == 0)
         discount_str = ', sale_price = null';
     var sql = `UPDATE ticket SET price = price * ${factor}${discount_str} WHERE event_id = ${event_id} AND sold=0`
-    console.log(sql);
+
     query(sql, [])
         .catch((err) => {
             console.log('error in update ticket select');
@@ -1592,7 +1590,16 @@ app.get('/api/admin/editEvent', (req, res) => {
             discount_base_price = req.body.discount_base_price
     }
     else {
-        var req_query = JSON.parse(Object.keys(req.query)[0]);
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
         if (req_query.event_id != null && req_query.event_name != null
             && req_query.image_url != null && req_query.category != null
             && req_query.date != null && req_query.time != null
