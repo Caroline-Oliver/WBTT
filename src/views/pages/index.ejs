@@ -36,10 +36,10 @@
     <div class="row" style="margin-top: 25px">
       <div class="col-lg-9 col-12" style="margin-top: 10px">
         <h3 style="text-align: center">
-          <a href="/event/<%= event.id %>"><%= event.name %></a>
+          <a href="/event/<%= event.event_id %>"><%= event.event_name %></a>
         </h3>
         <p>
-          <%= event.desc %>
+          <%= event.event_description %>
         </p>
         <div class="table-responsive">
           <table class="table table-striped table-sm w-auto table-bordered">
@@ -78,20 +78,20 @@
         </div>
       </div>
       <div class="col-lg-3 col-12" style="margin-top: 10px">
-        <img class="img-fluid" alt="<%= event.name %>" src="<%= event.imgSrc %>" style="max-height: 500px">
+        <img class="img-fluid" alt="<%= event.event_name %>" src="<%= event.image_url %>" style="max-height: 500px">
       </div>
     </div>
     <% } else { %>
     <div class="row flex-row" style="margin-top: 25px">
       <div class="col-lg-3 col-12" style="margin-top: 10px">
-        <img class="img-fluid" alt="<%= event.name %>" src="<%= event.imgSrc %>" style="max-height: 500px">
+        <img class="img-fluid" alt="<%= event.event_name %>" src="<%= event.image_url %>" style="max-height: 500px">
       </div>
       <div class="col-lg-9 col-12" style="margin-top: 10px">
         <h3 style="text-align: center">
-          <a href="/event/<%= event.id %>"><%= event.name %></a>
+          <a href="/event/<%= event.event_id %>"><%= event.event_name %></a>
         </h3>
         <p>
-          <%= event.desc %>
+          <%= event.event_description %>
         </p>
         <div class="table-responsive">
           <table class="table table-striped table-sm w-auto table-bordered">
