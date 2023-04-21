@@ -95,10 +95,12 @@
           </table>
         </div>
         <% if (totalCost != 0) { %>
+          <table>
           <tr>
             <td style="width: 650px;">Taxes (8.25%) </td>
             <td style="width: 80px;"><%= formatter.format(totalCost * 0.0825) %></td>
           </tr>
+          </table>
         <% } %>
         
         <!-- / Shopping cart table -->
