@@ -31,18 +31,34 @@
           <p>
             <%= event.event_description %>
           </p>
-          <div>
-            <h4 style="font-weight:bold">Base Ticket Price</h2>
+          <table>
+            <thead>
+              <tr>
+                <th><h5 style="font-weight:bold">Base Ticket Price</h5></th>
+                <th><h5 style="font-weight:bold">Date</h5></th>
+                <th><h5 style="font-weight:bold">Time</h5></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><p>$<%= formatter.format(parseFloat(event.base_price)) %></p></td>
+                <td><p><%= event.date %></p></td>
+                <td><p><%= event.time %></p></td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div>
+            <h5 style="font-weight:bold">Base Ticket Price</h5>
             <p>$<%= formatter.format(parseFloat(event.base_price)) %></p>
           </div>
           <div>
-            <h4 style="font-weight:bold">Date</h2>
+            <h5 style="font-weight:bold">Date</h5>
             <p><%= event.date %></p>
           </div>
           <div>
-            <h4 style="font-weight:bold">Time</h2>
+            <h5 style="font-weight:bold">Time</h5>
             <p><%= event.time %></p>
-          </div>
+          </div> -->
         </div>
         <div class="col-lg-3 col-12" style="margin-top: 10px">
           <img class="img-fluid" alt="<%= event.event_name %>" src="<%= event.image_url %>" style="max-height: 500px">
