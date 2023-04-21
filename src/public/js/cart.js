@@ -59,7 +59,7 @@ function sendServerRemoveTicket(ticket_id) {
         $.ajax({
             url: '/api/my/removeFromCart',
             dataType: 'text',
-            type: 'post',
+            type: 'get',
             contentType: 'application/jsonp',
             data: JSON.stringify({
                 "ticket_id": `${ticket_id}`
