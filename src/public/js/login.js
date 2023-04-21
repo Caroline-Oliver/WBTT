@@ -47,7 +47,7 @@ function callLogin() {
 			}),
 			processData: false,
 			success: function (data, textStatus, jQxhr) {
-				if (document.cookie != '')
+				if (document.cookie.includes('token'))
 					resolve();
 				else
 					reject();
