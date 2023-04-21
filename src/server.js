@@ -1894,6 +1894,40 @@ app.get('/api/admin/editDiscount', (req, res) => {
         })
 });
 
+app.get('/api/admin/deleteDiscount', (req, res) => {
+    let discount_id;
+
+    if (req.body.discount_id != null)
+    discount_id = req.body.discount_id;
+    else {
+        var req_query;
+        if (Object.keys(req.query).length == 1)
+            req_query = JSON.parse(Object.keys(req.query)[0]);
+        else {
+            var keys_string = '';
+            Object.keys(req.query).forEach( obj => {
+                keys_string += obj;
+            });
+            req_query = JSON.parse(keys_string);
+        }
+        if (req_query.discount_id != null)
+        discount_id = req_query.discount_id;
+        else {
+            res.send('missing body parts');
+            return;
+        }
+    }
+    query(`DELETE FROM discount_code WHERE discount_id=?`, discount_id)
+        .catch( (err) => {
+            console.log('error in deleteEvent');
+            console.log(err.message);
+        })
+        .then( (results) => {
+            res.send('successfully deleted tickets');
+        });
+
+});
+
 app.post('/api/admin/upload', authenticate, (req, res) => {
     fs.writeFile(`venues/${req.body.name}.html`, req.body.html, (err) => {
         if (err) return console.log(err);
