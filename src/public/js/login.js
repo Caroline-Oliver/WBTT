@@ -1,18 +1,19 @@
 // JavaScript Document
-
-var login_username = document.getElementById("login_username");
-login_username.addEventListener("keypress", (event) => {
-	if (event.key === "Enter") document.getElementById("login-button").click();
-});
-
-var login_password = document.getElementById("login_password");
-login_password.addEventListener("keypress", (event) => {
-	if (event.key === "Enter") document.getElementById("login-button").click();
-});
-
-var event_search = document.getElementById("eventSearch");
-event_search.addEventListener("keypress", (event) => {
-	if (event.key === "Enter") document.getElementById("search-button").click();
+window.addEventListener('load', () => {
+	var login_username = document.getElementById("login_username");
+	login_username.addEventListener("keypress", (event) => {
+		if (event.key === "Enter") document.getElementById("login-button").click();
+	});
+	
+	var login_password = document.getElementById("login_password");
+	login_password.addEventListener("keypress", (event) => {
+		if (event.key === "Enter") document.getElementById("login-button").click();
+	});
+	
+	var event_search = document.getElementById("eventSearch");
+	event_search.addEventListener("keypress", (event) => {
+		if (event.key === "Enter") document.getElementById("search-button").click();
+	});
 });
 
 function login() {
