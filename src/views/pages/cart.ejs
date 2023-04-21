@@ -75,7 +75,7 @@
                             </td>
                           <% } %>
                           <td class="text-center align-middle px-0">
-                            <button type="button" class="shop-tooltip close float-none text-danger" onclick="console.log('remove <%= item.ticket_id %>')">×</button>
+                            <button type="button" class="shop-tooltip close float-none text-danger" onclick="removeTicketFromCart(<%= item.ticket_id %>)">×</button>
                           </td>
                         </tr>
                         <% }); %>
