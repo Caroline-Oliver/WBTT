@@ -1,5 +1,10 @@
 // JavaScript Document
 window.addEventListener('load', () => {
+	document.getElementById('login-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        login();
+    })
+
 	var login_username = document.getElementById("login_username");
 	login_username.addEventListener("keypress", (event) => {
 		if (event.key === "Enter") document.getElementById("login-button").click();

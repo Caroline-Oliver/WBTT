@@ -86,16 +86,16 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form id="login-form">
                                 <label for="username">Username:</label><br>
-                                <input type="text" id="login_username" name="username"><br>
+                                <input type="text" id="login_username" name="username" require><br>
                                 <label for="password">Password:</label><br>
-                                <input type="password" id="login_password" name="password">
+                                <input type="password" id="login_password" name="password" require>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" onclick="location.href='/my/register'">Register</button>
-                            <button id="login-button" type="button" class="btn btn-primary" onclick="login()">Login</button>
+                            <button id="login-button" type="submit" class="btn btn-primary" onclick="login()">Login</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             
                         </div>
