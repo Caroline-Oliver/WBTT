@@ -74,6 +74,7 @@ function update() {
 
 function showPanel(evt) {
 	shape = evt.target;
+	console.log(shape..getAttribute('id'));
 	labelOne = document.getElementById('venueName');
 	labelOne.innerHTML = shape.getAttribute('id');
 }
