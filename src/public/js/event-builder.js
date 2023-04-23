@@ -86,5 +86,10 @@ function showHalfPanel(evt) {
 
 function makeVisible(element) {
 	temp=document.getElementById(element);
-	element.style.visibility = "visible";
+	element.style.display = '';
+}
+
+showPanel(evt){
+	halfPanelIDs.forEach(makeVisible);	
+	showHalfPanel(evt);
 }
