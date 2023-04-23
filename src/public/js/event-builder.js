@@ -102,6 +102,7 @@ const seatSelector = document.getElementById('hasSeats');
 seatSelector.addEventListener("change", (event) => {
   const result = document.querySelector(".result");
   if (result == "Yes"){
+	console.log(event);  
   	showPanel(event);
   }
 });
