@@ -74,7 +74,7 @@ function update() {
 	//when it's draggable it exists, and the values should be filled in
 }
 
-const halfPanelIDs = ["labelOne","venueName","labelTwo","sectionName","labelThree","venueConfiguration","labelFour","image_url","submit"];
+const halfPanelIDs = ["labelOne","venueName","labelTwo","sectionName","labelThree","venueConfiguration","labelFour","hasSeats","submit"];
 const secondHalfPanelIDs = ["labelFive","sectionCapacity","labelSix","sectionName","labelSeven","rowDecrement","labelEight","TextLabel"];
 
 function showHalfPanel(evt) {
