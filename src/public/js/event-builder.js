@@ -39,7 +39,7 @@
 	
 function startDrag(evt) {
   if (evt.target.classList.contains('draggable')) {
-    showPanel(evt);
+    //showPanel(evt);
     selectedElement = evt.target;
     offset = getMousePosition(evt);
     // Get all the transforms currently on this element
@@ -92,7 +92,7 @@ function makeVisible(element) {
 
 function showPanel(evt){
 	halfPanelIDs.forEach(makeVisible);
-	secondhalfPanelIDs.forEach(makeVisible);	
+	secondHalfPanelIDs.forEach(makeVisible);	
 	showHalfPanel(evt);
 }
 
