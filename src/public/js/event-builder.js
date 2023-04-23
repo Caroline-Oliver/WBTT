@@ -17,16 +17,12 @@
 				nodeCopy.id="new"+shape+count;
 			count++;
 			nodeCopy.setAttribute('class','draggable')
-			//newPawn.setAttribute("transform",move)
 		document.getElementById('view').appendChild(nodeCopy)
-		  		///shapes[shapes.length] = new moveableShape("new"+shape+count,0,0,0,0,0,0);
-				//count=count+1/* We cannot use the same ID */
-				//document.appendChild(nodeCopy);
+		  		
 		}
  function drag(evt) {
   if (selectedElement) {
     evt.preventDefault();
-	//test =  document.getElementById(evt.target);
 	var coord = getMousePosition(evt);
     transform.setTranslate(coord.x - offset.x, coord.y - offset.y);
   }
@@ -43,6 +39,7 @@
 	
 function startDrag(evt) {
   if (evt.target.classList.contains('draggable')) {
+    showPanel(evt);
     selectedElement = evt.target;
     offset = getMousePosition(evt);
     // Get all the transforms currently on this element
@@ -70,3 +67,14 @@ function startDrag(evt) {
   selectedElement = null;
 			}
 }
+
+function update() {
+	
+}
+
+function showPanel(evt) {
+	shape = evt.target;
+	labelOne = document.getElementById('venueName');
+	labelOne.innerHTML = shape.getAttribute('id');
+}
+
