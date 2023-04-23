@@ -70,17 +70,18 @@ function startDrag(evt) {
 }
 
 function update() {
-	
+	//this will add to the associative array keys, and create all the default values
+	//when it's draggable it exists, and the values should be filled in
 }
 
-halfPanelIDs = ["labelOne","venueName","labelTwo","sectionName","labelThree","venueConfiguration","labelFour","image_url","submit"];
-secondHalfPanelIDs = ["labelFive","sectionCapacity","labelSix","sectionName","labelSeven","rowDecrement","labelEight","TextLabel"];
+const halfPanelIDs = ["labelOne","venueName","labelTwo","sectionName","labelThree","venueConfiguration","labelFour","image_url","submit"];
+const secondHalfPanelIDs = ["labelFive","sectionCapacity","labelSix","sectionName","labelSeven","rowDecrement","labelEight","TextLabel"];
 
 function showHalfPanel(evt) {
 	halfPanelIDs.forEach(makeVisible);	
-	shape = evt.target;
+	var shape = evt.target;
 	console.log(shape.getAttribute('id'));
-	labelOne = document.getElementById('venueName');
+	var labelOne = document.getElementById('venueName');
 	labelOne.value = shape.getAttribute('id');
 }
 
@@ -90,6 +91,18 @@ function makeVisible(element) {
 }
 
 function showPanel(evt){
-	halfPanelIDs.forEach(makeVisible);	
+	halfPanelIDs.forEach(makeVisible);
+	secondhalfPanelIDs.forEach(makeVisible);	
 	showHalfPanel(evt);
 }
+
+const seatSelector = document.getElementById('hasSeats');
+//const selectElement = document.querySelector(".ice-cream");
+
+seatSelector.addEventListener("change", (event) => {
+  const result = document.querySelector(".result");
+  if (result == "Yes"){
+  	function showPanel(event)
+}
+  }
+});
