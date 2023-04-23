@@ -89,7 +89,7 @@ function makeVisible(element) {
 	element.style.display = '';
 }
 
-showPanel(evt){
+function showPanel(evt){
 	halfPanelIDs.forEach(makeVisible);	
 	showHalfPanel(evt);
 }
