@@ -85,8 +85,7 @@ function showHalfPanel(evt) {
 }
 
 function makeVisible(element) {
-	temp=document.getElementById(element);
-	element.style.display = '';
+	document.getElementById(element).style.visibility = "visible";
 }
 
 function showPanel(evt){
