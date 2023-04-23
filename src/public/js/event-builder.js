@@ -60,6 +60,7 @@ function startDrag(evt) {
   }
 	else{
 		  addShape(evt.target.getAttribute('id'));
+		  showHalfPanel(evt);
     
 	}
 }
@@ -72,10 +73,18 @@ function update() {
 	
 }
 
-function showPanel(evt) {
+halfPanelIDs = ["labelOne","venueName","labelTwo","sectionName","labelThree","venueConfiguration","labelFour","image_url","submit"];
+secondHalfPanelIDs = ["labelFive","sectionCapacity","labelSix","sectionName","labelSeven","rowDecrement","labelEight","TextLabel"];
+
+function showHalfPanel(evt) {
+	halfPanelIDs.forEach(makeVisible);	
 	shape = evt.target;
 	console.log(shape.getAttribute('id'));
 	labelOne = document.getElementById('venueName');
-	labelOne.innerHTML = shape.getAttribute('id');
+	labelOne.value = shape.getAttribute('id');
 }
 
+function makeVisible(element) {
+	temp=document.getElementById(element);
+	element.style.visibility = "visible";
+}
