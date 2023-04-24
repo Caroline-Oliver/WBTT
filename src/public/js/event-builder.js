@@ -97,6 +97,7 @@ function showPanel(evt){
 }
 
 const seatSelector = document.getElementById('hasSeats');
+seatSelector.setAttribute('value','NO');
 //const selectElement = document.querySelector(".ice-cream");
 
 seatSelector.addEventListener("change", (event) => {
