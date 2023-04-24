@@ -138,18 +138,18 @@ function removeSection() {
 	var id = document.getElementById('sectionName').value;
 	const section = document.getElementById(id);
 	section.remove();
-	id = '';
+	document.getElementById('sectionName').value = '';
 	document.getElementById('hasSeats').value = 'defaultOption';
 	
 }
 
 var seatSelector = document.getElementById('hasSeats');
-seatSelector.setAttribute('value','NO');
+seatSelector.value','NO');
 //const selectElement = document.querySelector(".ice-cream");
 
 seatSelector.addEventListener("change", (event) => {
   
-  if (event.target.value == "Yes"){
+  if (event.target.value == "yes"){
 	console.log("YES");  
   	secondHalfPanelIDs.forEach(makeVisible);
   }
