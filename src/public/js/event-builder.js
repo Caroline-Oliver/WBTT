@@ -89,6 +89,7 @@ function startDrag(evt) {
 function update() {
 	//this will add to the associative array keys, and create all the default values
 	//when it's draggable it exists, and the values should be filled in
+	console.log(lastElement)
 	console.log(lastElement.getAttribute('Id'))
 	current = lastElement.getAttribute('Id')
 	for (var i =0; i <venueShapes.length; i++){
