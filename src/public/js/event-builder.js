@@ -136,8 +136,9 @@ function showPanel(evt){
 
 function removeSection() {
 	var id = document.getElementById('sectionName').value;
-	var section = document.getElementById(id).value;
+	const section = document.getElementById(id);
 	section.remove();
+	
 }
 
 var seatSelector = document.getElementById('hasSeats');
