@@ -119,7 +119,7 @@ function showHalfPanel(evt) {
 	halfPanelIDs.forEach(makeVisible);	
 	var shape = evt.target;
 	console.log(shape.getAttribute('id'));
-	var labelOne = document.getElementById('venueName');
+	var labelOne = document.getElementById('sectionName');
 	labelOne.value = shape.getAttribute('id');
 }
 
