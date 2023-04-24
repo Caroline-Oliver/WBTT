@@ -73,7 +73,7 @@ function startDrag(evt) {
 	        textFields = document.getElementsByClassName('stage-label');
 		    
 		for (var i = 0; i<textFields.length; i++){
-			console.log(textFields[i]);
+			console.log("THIS-->"+textFields[i]);
 	    	if (textFields[i] == current){
 	    		makeVisible('TextLabel');
 			makeVisible('labelEight');
