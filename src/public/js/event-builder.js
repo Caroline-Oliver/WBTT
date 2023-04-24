@@ -134,6 +134,11 @@ function showPanel(evt){
 	showHalfPanel(evt);
 }
 
+function removeSection() {
+	var id = document.getElementById('sectionName').value;
+	id.remove();
+}
+
 var seatSelector = document.getElementById('hasSeats');
 seatSelector.setAttribute('value','NO');
 //const selectElement = document.querySelector(".ice-cream");
