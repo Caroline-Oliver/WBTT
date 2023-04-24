@@ -192,7 +192,8 @@ function removeSection() {
 	document.getElementById('hasSeats').value = 'defaultOption';
 	halfPanelIDs.forEach(makeHidden);
 	secondHalfPanelIDs.forEach(makeHidden);
-	
+	makeHidden('TextLabel');
+	makeHidden('labelEight');
 }
 
 var seatSelector = document.getElementById('hasSeats');
