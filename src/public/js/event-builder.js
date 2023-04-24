@@ -93,6 +93,7 @@ function update() {
 	console.log(lastElement.getAttribute('Id'))
 	current = lastElement.getAttribute('Id')
 	for (var i =0; i <venueShapes.length; i++){
+		console.log("at "+i+" "+venueShapes[i][0])
 		if (venueShapes[i][0] == current){
 			venueShape[i][0] = document.getElementById('venueName').value;
 			venueShape[i][1] = document.getElementById('sectionName').value;
