@@ -18,6 +18,8 @@ var lastElement;
 			count++;
 			nodeCopy.setAttribute('class','draggable')
 		document.getElementById('view').appendChild(nodeCopy)
+		venueShapes.push([name,"","","","","","","",""])
+		console.log(venueShapes); 	
 		  		
 		}
  function drag(evt) {
@@ -76,9 +78,7 @@ function startDrag(evt) {
 		var name = evt.target.getAttribute('id')
 		  addShape(name);
 		  showHalfPanel(evt);
-		  venueShapes.push([name,"","","","","","","",""])
-		console.log(venueShapes); 
-    
+		  
 	}
 }
 		function endDrag(evt) {
