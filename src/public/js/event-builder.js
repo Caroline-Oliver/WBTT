@@ -22,7 +22,18 @@ function makeDraggable(evt) {
 		}
 		document.getElementById('view').appendChild(nodeCopy)
 		venueShapes.push([nodeCopy.id,"","","","","",""])
-		console.log(venueShapes); 	
+		console.log(venueShapes);
+		textFields = document.getElementsByClassName('stage-label');
+		    
+		for (var i = 0; i<textFields.length; i++){
+	    		if (textFields[i].getAttribute('id') == current){
+	    			makeVisible('TextLabel');
+				makeVisible('labelEight');
+				break;
+	       		 }
+	   		makeHidden('TextLabel');
+			makeHidden('labelEight');
+		}
 		  		
 		}
  function drag(evt) {
@@ -176,6 +187,8 @@ function removeSection() {
 	section.remove();
 	document.getElementById('sectionName').value = '';
 	document.getElementById('hasSeats').value = 'defaultOption';
+	halfPanelIDs.forEach(makeHidden);
+	secondHalfPanelIDs.forEach(makeHidden);
 	
 }
 
