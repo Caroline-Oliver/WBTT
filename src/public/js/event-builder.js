@@ -95,6 +95,7 @@ function update() {
 	for (var i =0; i <venueShapes.length; i++){
 		console.log("at "+i+" "+venueShapes[i][0])
 		if (venueShapes[i][0] == current){
+			console.log("inside if");
 			venueShape[i][0] = document.getElementById('venueName').value;
 			venueShape[i][1] = document.getElementById('sectionName').value;
 			venueShape[i][2] = document.getElementById('venueConfiguration').value;
