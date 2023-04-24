@@ -146,7 +146,7 @@ function update() {
 }
 
 const halfPanelIDs = ["labelTwo","sectionName","labelFour","hasSeats","submit","remove"];
-const secondHalfPanelIDs = ["labelFive","sectionCapacity","labelSix","sectionWeight","labelSeven","rowDecrement","labelEight"];
+const secondHalfPanelIDs = ["labelFive","sectionCapacity","labelSix","sectionWeight","labelSeven","rowDecrement"];
 
 function showHalfPanel(evt) {
 	halfPanelIDs.forEach(makeVisible);	
