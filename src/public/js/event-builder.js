@@ -101,7 +101,7 @@ const seatSelector = document.getElementById('hasSeats');
 
 seatSelector.addEventListener("change", (event) => {
   
-  if (seatSelector.value == "Yes"){
+  if (seatSelector.getAttribute('value') == "Yes"){
 	console.log(result);  
   	secondHalfPanelIDs.forEach(makeVisible);
   }
