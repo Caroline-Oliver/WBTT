@@ -65,11 +65,13 @@ function startDrag(evt) {
 			secondHalfPanelIDs.forEach(makeHidden);
 		}
 	        textFields = document.getElementsByClassName('stage-label');
-		if (textFields.includes('TextLabel')){
+		for (var i = 0; i<textFields.length; i++){
+	    	if (textFields[i] == current){
 	    		makeVisible('TextLabel');
+			break;
 	        }
-	   	else{
-			makeHidden('TextLabel');
+	   	makeHidden('TextLabel');
+		
 		}
 	        break;      
 	}
