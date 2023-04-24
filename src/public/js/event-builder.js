@@ -128,6 +128,11 @@ function makeVisible(element) {
 	document.getElementById(element).style.visibility = "visible";
 }
 
+function makeHidden(element) {
+	console.log(element)
+	document.getElementById(element).style.visibility = "hidden";
+}
+
 function showPanel(evt){
 	halfPanelIDs.forEach(makeVisible);
 	secondHalfPanelIDs.forEach(makeVisible);	
@@ -150,8 +155,10 @@ var seatSelector = document.getElementById('hasSeats');
 seatSelector.addEventListener("change", (event) => {
   
   if (event.target.value == "yes"){
-	console.log("YES");  
-  	secondHalfPanelIDs.forEach(makeVisible);
+	secondHalfPanelIDs.forEach(makeVisible);
+  }
+  else{
+	  secondHalfPanelIDs.forEach(makeHidden);
   }
 });
 
