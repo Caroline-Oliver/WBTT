@@ -184,6 +184,9 @@ function showPanel(evt){
 function removeSection() {
 	var id = document.getElementById('sectionName').value;
 	const section = document.getElementById(id);
+	if (!section.classList.contains('draggable')){
+		return;
+	}
 	section.remove();
 	document.getElementById('sectionName').value = '';
 	document.getElementById('hasSeats').value = 'defaultOption';
