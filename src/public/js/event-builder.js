@@ -1,6 +1,6 @@
 
 	var selectedElement, offset, transform;
-
+var lastElement;
 	function makeDraggable(evt) {
   var svg = evt.target;
   svg.addEventListener('mousedown', startDrag);
@@ -40,7 +40,20 @@
 function startDrag(evt) {
   if (evt.target.classList.contains('draggable')) {
     //showPanel(evt);
+    lastElement = evt.target;
     selectedElement = evt.target;
+    for (var i =0; i <venueShapes.length; i++){
+	if (venueShapes[i][0] == lastElement){
+	     document.getElementById('venueName').value = venueShape[i][0];
+			document.getElementById('sectionName').value = venueShape[i][1];
+			document.getElementById('venueConfiguration').value = venueShape[i][2];
+			document.getElementById('hasSeats').value = venueShape[i][3];
+			document.getElementById('sectionCapacity').value = venueShape[i][4];
+			document.getElementById('sectionWeight').value = venueShape[i][5];
+			document.getElementById('rowDecrement').value = venueShape[i][6];
+			document.getElementById('TextLabel').value = venueShape[i][7];
+	}
+    }
     offset = getMousePosition(evt);
     // Get all the transforms currently on this element
     var transforms = selectedElement.transform.baseVal;
@@ -59,8 +72,10 @@ function startDrag(evt) {
     offset.y -= transform.matrix.f;
   }
 	else{
-		  addShape(evt.target.getAttribute('id'));
+		var name = evt.target.getAttribute('id')
+		  addShape(name);
 		  showHalfPanel(evt);
+		  venueShapes.push([name,"","","","","","","",""])
     
 	}
 }
@@ -72,10 +87,24 @@ function startDrag(evt) {
 function update() {
 	//this will add to the associative array keys, and create all the default values
 	//when it's draggable it exists, and the values should be filled in
+	name = 
+	for (var i =0; i <venueShapes.length; i++){
+		if (venueShapes[i][0] == lastElement){
+			venueShape[i][0] = document.getElementById('venueName')
+			venueShape[i][1] = document.getElementById('sectionName')
+			venueShape[i][2] = document.getElementById('venueConfiguration')
+			venueShape[i][3] = document.getElementById('hasSeats')
+			venueShape[i][4] = document.getElementById('sectionCapacity')
+			venueShape[i][5] = document.getElementById('sectionWeight')
+			venueShape[i][6] = document.getElementById('rowDecrement')
+			venueShape[i][7] = document.getElementById('TextLabel')
+		}
+	}
+	
 }
 
 const halfPanelIDs = ["labelOne","venueName","labelTwo","sectionName","labelThree","venueConfiguration","labelFour","hasSeats","submit"];
-const secondHalfPanelIDs = ["labelFive","sectionCapacity","labelSix","sectionName","labelSeven","rowDecrement","labelEight","TextLabel"];
+const secondHalfPanelIDs = ["labelFive","sectionCapacity","labelSix","sectionWeight","labelSeven","rowDecrement","labelEight","TextLabel"];
 
 function showHalfPanel(evt) {
 	halfPanelIDs.forEach(makeVisible);	
@@ -96,7 +125,7 @@ function showPanel(evt){
 	showHalfPanel(evt);
 }
 
-const seatSelector = document.getElementById('hasSeats');
+var seatSelector = document.getElementById('hasSeats');
 seatSelector.setAttribute('value','NO');
 //const selectElement = document.querySelector(".ice-cream");
 
@@ -106,4 +135,12 @@ seatSelector.addEventListener("change", (event) => {
 	console.log(result);  
   	secondHalfPanelIDs.forEach(makeVisible);
   }
+});
+
+const selectElement = document.querySelector(".ice-cream");
+const venueShapes = []
+
+selectElement.addEventListener("change", (event) => {
+  const result = document.querySelector(".result");
+  result.textContent = `You like ${event.target.value}`;
 });
