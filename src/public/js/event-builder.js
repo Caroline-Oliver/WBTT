@@ -133,7 +133,7 @@ seatSelector.setAttribute('value','NO');
 seatSelector.addEventListener("change", (event) => {
   
   if (event.target.value == "Yes"){
-	console.log(result);  
+	console.log("YES");  
   	secondHalfPanelIDs.forEach(makeVisible);
   }
 });
