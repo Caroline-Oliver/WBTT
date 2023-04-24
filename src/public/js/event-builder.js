@@ -130,9 +130,9 @@ function update() {
 			venueShapes[i][5] = document.getElementById('TextLabel').value;
 			lastElement.setAttribute('id',venueShapes[i][0]);
 			textFields = document.getElementsByClassName('stage-label');
-		   	for (var i = 0; i<textFields.length; i++){
-	    			if (textFields[i].getAttribute('id') == venueShapes[i][0]){
-	    				textFields[i].innerHTML = venueShapes[i][5];
+		   	for (var j = 0; j<textFields.length; j++){
+	    			if (textFields[j].getAttribute('id') == current){
+	    				textFields[j].innerHTML = venueShapes[i][5];
 					break;
 			}
 		}
