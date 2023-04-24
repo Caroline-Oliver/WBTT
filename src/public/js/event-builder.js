@@ -91,14 +91,14 @@ function update() {
 	
 	for (var i =0; i <venueShapes.length; i++){
 		if (venueShapes[i][0] == lastElement){
-			venueShape[i][0] = document.getElementById('venueName')
-			venueShape[i][1] = document.getElementById('sectionName')
-			venueShape[i][2] = document.getElementById('venueConfiguration')
-			venueShape[i][3] = document.getElementById('hasSeats')
-			venueShape[i][4] = document.getElementById('sectionCapacity')
-			venueShape[i][5] = document.getElementById('sectionWeight')
-			venueShape[i][6] = document.getElementById('rowDecrement')
-			venueShape[i][7] = document.getElementById('TextLabel')
+			venueShape[i][0] = document.getElementById('venueName').value;
+			venueShape[i][1] = document.getElementById('sectionName').value;
+			venueShape[i][2] = document.getElementById('venueConfiguration').value;
+			venueShape[i][3] = document.getElementById('hasSeats').value;
+			venueShape[i][4] = document.getElementById('sectionCapacity').value;
+			venueShape[i][5] = document.getElementById('sectionWeight').value;
+			venueShape[i][6] = document.getElementById('rowDecrement').value;
+			venueShape[i][7] = document.getElementById('TextLabel').value;
 		}
 	}
 	console.log(venueShapes); 
