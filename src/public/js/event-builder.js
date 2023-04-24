@@ -40,6 +40,7 @@ var lastElement;
 function startDrag(evt) {
   if (evt.target.classList.contains('draggable')) {
     //showPanel(evt);
+  showHalfPanel(evt);
     lastElement = evt.target;
     selectedElement = evt.target;
     for (var i =0; i <venueShapes.length; i++){
