@@ -132,7 +132,9 @@ function update() {
 			textFields = document.getElementsByClassName('stage-label');
 		   	for (var j = 0; j<textFields.length; j++){
 	    			if (textFields[j].getAttribute('id') == current){
-	    				textFields[j].innerHTML = venueShapes[i][5];
+					if (venueShapes[i][5] != ""){
+	    					textFields[j].innerHTML = venueShapes[i][5];
+					}
 					break;
 			}
 		}
