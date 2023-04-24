@@ -138,6 +138,8 @@ function removeSection() {
 	var id = document.getElementById('sectionName').value;
 	const section = document.getElementById(id);
 	section.remove();
+	id = '';
+	document.getElementById('hasSeats').value = 'defaultOption';
 	
 }
 
