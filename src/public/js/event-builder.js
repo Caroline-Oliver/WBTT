@@ -19,7 +19,7 @@ const venueShapes = [];
 			count++;
 			nodeCopy.setAttribute('class','draggable')
 		document.getElementById('view').appendChild(nodeCopy)
-		venueShapes.push([nodeCopy.id,"","","","","","",""])
+		venueShapes.push([nodeCopy.id,"","","","","",""])
 		console.log(venueShapes); 	
 		  		
 		}
@@ -53,12 +53,11 @@ function startDrag(evt) {
 		    console.log(venueShapes[i]);
 	     //document.getElementById('venueName').value = venueShapes[i][0];
 			document.getElementById('sectionName').value = venueShapes[i][0];
-			document.getElementById('venueConfiguration').value = venueShapes[i][1];
-			document.getElementById('hasSeats').value = venueShapes[i][2];
-			document.getElementById('sectionCapacity').value = venueShapes[i][3];
-			document.getElementById('sectionWeight').value = venueShapes[i][4];
-			document.getElementById('rowDecrement').value = venueShapes[i][5];
-			document.getElementById('TextLabel').value = venueShapes[i][6];
+			document.getElementById('hasSeats').value = venueShapes[i][1];
+			document.getElementById('sectionCapacity').value = venueShapes[i][2];
+			document.getElementById('sectionWeight').value = venueShapes[i][3];
+			document.getElementById('rowDecrement').value = venueShapes[i][4];
+			document.getElementById('TextLabel').value = venueShapes[i][5];
 	}
     }
     offset = getMousePosition(evt);
@@ -101,12 +100,11 @@ function update() {
 		if (venueShapes[i][0] == current){
 			//venueShapes[i][0] = document.getElementById('venueName').value;
 			venueShapes[i][0] = document.getElementById('sectionName').value;
-			venueShapes[i][1] = document.getElementById('venueConfiguration').value;
-			venueShapes[i][2] = document.getElementById('hasSeats').value;
-			venueShapes[i][3] = document.getElementById('sectionCapacity').value;
-			venueShapes[i][4] = document.getElementById('sectionWeight').value;
-			venueShapes[i][5] = document.getElementById('rowDecrement').value;
-			venueShapes[i][6] = document.getElementById('TextLabel').value;
+			venueShapes[i][1] = document.getElementById('hasSeats').value;
+			venueShapes[i][2] = document.getElementById('sectionCapacity').value;
+			venueShapes[i][3] = document.getElementById('sectionWeight').value;
+			venueShapes[i][4] = document.getElementById('rowDecrement').value;
+			venueShapes[i][5] = document.getElementById('TextLabel').value;
 			lastElement.setAttribute('id',venueShapes[i][0]);
 		}
 	}
@@ -114,7 +112,7 @@ function update() {
 	
 }
 
-const halfPanelIDs = ["labelOne","venueName","labelTwo","sectionName","labelThree","venueConfiguration","labelFour","hasSeats","submit"];
+const halfPanelIDs = ["labelTwo","sectionName","labelFour","hasSeats","submit"];
 const secondHalfPanelIDs = ["labelFive","sectionCapacity","labelSix","sectionWeight","labelSeven","rowDecrement","labelEight","TextLabel"];
 
 function showHalfPanel(evt) {
