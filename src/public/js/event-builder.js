@@ -129,6 +129,13 @@ function update() {
 			venueShapes[i][4] = document.getElementById('rowDecrement').value;
 			venueShapes[i][5] = document.getElementById('TextLabel').value;
 			lastElement.setAttribute('id',venueShapes[i][0]);
+			textFields = document.getElementsByClassName('stage-label');
+		   	for (var i = 0; i<textFields.length; i++){
+	    			if (textFields[i].getAttribute('id') == venueShapes[i][0]){
+	    				textFields[i].innerHTML = venueShapes[i][5];
+					break;
+			}
+		}
 			break;
 		}
 	}
