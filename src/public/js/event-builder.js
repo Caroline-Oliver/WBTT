@@ -58,8 +58,18 @@ function startDrag(evt) {
 		document.getElementById('sectionWeight').value = venueShapes[i][3];
 		document.getElementById('rowDecrement').value = venueShapes[i][4];
 		document.getElementById('TextLabel').value = venueShapes[i][5];
-		if(document.getElementById('hasSeats').value =='no'){
+		if(document.getElementById('hasSeats').value =='yes'){
+			secondHalfPanelIDs.forEach(makeVisible);
+		}
+		else{
 			secondHalfPanelIDs.forEach(makeHidden);
+		}
+	        textFields = document.getElementsByClass('stage-label');
+		if (textFields.includes('TextLabel'){
+	    		makeVisible('TextLabel');
+	        }
+	   	else{
+			makeHidden('TextLabel');
 		}
 	        break;      
 	}
@@ -118,7 +128,7 @@ function update() {
 }
 
 const halfPanelIDs = ["labelTwo","sectionName","labelFour","hasSeats","submit","remove"];
-const secondHalfPanelIDs = ["labelFive","sectionCapacity","labelSix","sectionWeight","labelSeven","rowDecrement","labelEight","TextLabel"];
+const secondHalfPanelIDs = ["labelFive","sectionCapacity","labelSix","sectionWeight","labelSeven","rowDecrement","labelEight"];
 
 function showHalfPanel(evt) {
 	halfPanelIDs.forEach(makeVisible);	
