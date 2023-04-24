@@ -1,6 +1,7 @@
 
 	var selectedElement, offset, transform;
 var lastElement;
+const venueShapes = [];
 	function makeDraggable(evt) {
   var svg = evt.target;
   svg.addEventListener('mousedown', startDrag);
@@ -47,14 +48,14 @@ function startDrag(evt) {
     selectedElement = evt.target;
     for (var i =0; i <venueShapes.length; i++){
 	if (venueShapes[i][0] == lastElement){
-	     document.getElementById('venueName').value = venueShape[i][0];
-			document.getElementById('sectionName').value = venueShape[i][1];
-			document.getElementById('venueConfiguration').value = venueShape[i][2];
-			document.getElementById('hasSeats').value = venueShape[i][3];
-			document.getElementById('sectionCapacity').value = venueShape[i][4];
-			document.getElementById('sectionWeight').value = venueShape[i][5];
-			document.getElementById('rowDecrement').value = venueShape[i][6];
-			document.getElementById('TextLabel').value = venueShape[i][7];
+	     document.getElementById('venueName').value = venueShapes[i][0];
+			document.getElementById('sectionName').value = venueShapes[i][1];
+			document.getElementById('venueConfiguration').value = venueShapes[i][2];
+			document.getElementById('hasSeats').value = venueShapes[i][3];
+			document.getElementById('sectionCapacity').value = venueShapes[i][4];
+			document.getElementById('sectionWeight').value = venueShapes[i][5];
+			document.getElementById('rowDecrement').value = venueShapes[i][6];
+			document.getElementById('TextLabel').value = venueShapes[i][7];
 	}
     }
     offset = getMousePosition(evt);
@@ -96,14 +97,14 @@ function update() {
 		console.log("at "+i+" "+venueShapes[i][0])
 		if (venueShapes[i][0] == current){
 			console.log("inside if");
-			venueShape[i][0] = document.getElementById('venueName').value;
-			venueShape[i][1] = document.getElementById('sectionName').value;
-			venueShape[i][2] = document.getElementById('venueConfiguration').value;
-			venueShape[i][3] = document.getElementById('hasSeats').value;
-			venueShape[i][4] = document.getElementById('sectionCapacity').value;
-			venueShape[i][5] = document.getElementById('sectionWeight').value;
-			venueShape[i][6] = document.getElementById('rowDecrement').value;
-			venueShape[i][7] = document.getElementById('TextLabel').value;
+			venueShapes[i][0] = document.getElementById('venueName').value;
+			venueShapes[i][1] = document.getElementById('sectionName').value;
+			venueShapes[i][2] = document.getElementById('venueConfiguration').value;
+			venueShapes[i][3] = document.getElementById('hasSeats').value;
+			venueShapes[i][4] = document.getElementById('sectionCapacity').value;
+			venueShapes[i][5] = document.getElementById('sectionWeight').value;
+			venueShapes[i][6] = document.getElementById('rowDecrement').value;
+			venueShapes[i][7] = document.getElementById('TextLabel').value;
 		}
 	}
 	console.log(venueShapes); 
@@ -145,7 +146,7 @@ seatSelector.addEventListener("change", (event) => {
 });
 
 //const selectElement = document.querySelector(".ice-cream");
-const venueShapes = []
+
 
 //selectElement.addEventListener("change", (event) => {
 //  const result = document.querySelector(".result");
