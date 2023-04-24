@@ -2,28 +2,24 @@
 	var selectedElement, offset, transform;
 var lastElement;
 const venueShapes = [];
-	function makeDraggable(evt) {
-  var svg = evt.target;
-  svg.addEventListener('mousedown', startDrag);
-  svg.addEventListener('mousemove', drag);
-  svg.addEventListener('mouseup', endDrag);
-  svg.addEventListener('mouseleave', endDrag);
-  
-
-		
-		var count = 1;
-		function addShape(shape) {
-			evt.preventDefault();
-			var nodeCopy = document.getElementById(shape).cloneNode(true);
-				nodeCopy.id="new"+shape+count;
-			count++;
-			if(shape == "textlabel"){
-				nodeCopy.setAttribute('class','draggable stage-label');
-
-			}
-			else{
+function makeDraggable(evt) {
+	var svg = evt.target;
+	svg.addEventListener('mousedown', startDrag);
+  	svg.addEventListener('mousemove', drag);
+  	svg.addEventListener('mouseup', endDrag);
+  	svg.addEventListener('mouseleave', endDrag);
+  	var count = 1;
+	function addShape(shape) {
+		evt.preventDefault();
+		var nodeCopy = document.getElementById(shape).cloneNode(true);
+		nodeCopy.id="new"+shape+count;
+		count++;
+		if(shape == "textlabel"){
+			nodeCopy.setAttribute('class','draggable stage-label');
+		}
+		else{
 			nodeCopy.setAttribute('class','draggable')
-			}
+		}
 		document.getElementById('view').appendChild(nodeCopy)
 		venueShapes.push([nodeCopy.id,"","","","","",""])
 		console.log(venueShapes); 	
@@ -102,9 +98,10 @@ function startDrag(evt) {
   }
 	else{
 		var name = evt.target.getAttribute('id')
+		if (name != "view"){
 		  addShape(name);
 		  showHalfPanel(evt);
-		  
+		}
 	}
 }
 		function endDrag(evt) {
@@ -182,8 +179,6 @@ function removeSection() {
 }
 
 var seatSelector = document.getElementById('hasSeats');
-//seatSelector.value'NO';
-//const selectElement = document.querySelector(".ice-cream");
 
 seatSelector.addEventListener("change", (event) => {
   
@@ -194,11 +189,3 @@ seatSelector.addEventListener("change", (event) => {
 	  secondHalfPanelIDs.forEach(makeHidden);
   }
 });
-
-//const selectElement = document.querySelector(".ice-cream");
-
-
-//selectElement.addEventListener("change", (event) => {
-//  const result = document.querySelector(".result");
-//  result.textContent = `You like ${event.target.value}`;
-//});
