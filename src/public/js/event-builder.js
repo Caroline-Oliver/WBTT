@@ -139,10 +139,10 @@ seatSelector.addEventListener("change", (event) => {
   }
 });
 
-const selectElement = document.querySelector(".ice-cream");
+//const selectElement = document.querySelector(".ice-cream");
 const venueShapes = []
 
-selectElement.addEventListener("change", (event) => {
-  const result = document.querySelector(".result");
-  result.textContent = `You like ${event.target.value}`;
-});
+//selectElement.addEventListener("change", (event) => {
+//  const result = document.querySelector(".result");
+//  result.textContent = `You like ${event.target.value}`;
+//});
