@@ -107,7 +107,7 @@ function update() {
 			venueShapes[i][4] = document.getElementById('sectionWeight').value;
 			venueShapes[i][5] = document.getElementById('rowDecrement').value;
 			venueShapes[i][6] = document.getElementById('TextLabel').value;
-			current.setAttribute('id) = venueShapes[i][0];
+			current.setAttribute('id') = venueShapes[i][0];
 		}
 	}
 	console.log(venueShapes); 
