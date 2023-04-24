@@ -90,8 +90,8 @@ function update() {
 	//this will add to the associative array keys, and create all the default values
 	//when it's draggable it exists, and the values should be filled in
 	console.log(lastElement)
-	console.log(lastElement.getAttribute('Id'))
-	current = lastElement.getAttribute('Id')
+	console.log(lastElement.getAttribute('id'))
+	current = lastElement.getAttribute('id')
 	for (var i =0; i <venueShapes.length; i++){
 		console.log("at "+i+" "+venueShapes[i][0])
 		if (venueShapes[i][0] == current){
