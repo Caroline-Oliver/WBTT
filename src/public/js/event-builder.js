@@ -18,7 +18,7 @@ var lastElement;
 			count++;
 			nodeCopy.setAttribute('class','draggable')
 		document.getElementById('view').appendChild(nodeCopy)
-		venueShapes.push([name,"","","","","","","",""])
+		venueShapes.push([nodeCopy.id,"","","","","","","",""])
 		console.log(venueShapes); 	
 		  		
 		}
