@@ -75,6 +75,7 @@ function startDrag(evt) {
 				break;
 	       		 }
 	   		makeHidden('TextLabel');
+			makeHidden('labelEight');
 		}
 	        break;      
 	}
