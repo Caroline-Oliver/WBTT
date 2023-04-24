@@ -17,7 +17,13 @@ const venueShapes = [];
 			var nodeCopy = document.getElementById(shape).cloneNode(true);
 				nodeCopy.id="new"+shape+count;
 			count++;
+			if(shape == "textlabel"){
+				nodeCopy.setAttribute('class','draggable stage-label');
+
+			}
+			else{
 			nodeCopy.setAttribute('class','draggable')
+			}
 		document.getElementById('view').appendChild(nodeCopy)
 		venueShapes.push([nodeCopy.id,"","","","","",""])
 		console.log(venueShapes); 	
