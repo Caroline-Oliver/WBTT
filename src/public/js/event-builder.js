@@ -50,14 +50,18 @@ function startDrag(evt) {
    for (var i =0; i <venueShapes.length; i++){
 	console.log("at "+i+" "+venueShapes[i][0])
 	    if (venueShapes[i][0] == current){
-		    console.log(venueShapes[i]);
+	    	console.log(venueShapes[i]);
 	     //document.getElementById('venueName').value = venueShapes[i][0];
-			document.getElementById('sectionName').value = venueShapes[i][0];
-			document.getElementById('hasSeats').value = venueShapes[i][1];
-			document.getElementById('sectionCapacity').value = venueShapes[i][2];
-			document.getElementById('sectionWeight').value = venueShapes[i][3];
-			document.getElementById('rowDecrement').value = venueShapes[i][4];
-			document.getElementById('TextLabel').value = venueShapes[i][5];
+		document.getElementById('sectionName').value = venueShapes[i][0];
+		document.getElementById('hasSeats').value = venueShapes[i][1];
+		document.getElementById('sectionCapacity').value = venueShapes[i][2];
+		document.getElementById('sectionWeight').value = venueShapes[i][3];
+		document.getElementById('rowDecrement').value = venueShapes[i][4];
+		document.getElementById('TextLabel').value = venueShapes[i][5];
+		if(document.getElementById('hasSeats').value =='no'){
+			secondHalfPanelIDs.forEach(makeHidden);
+		}
+	        break;      
 	}
     }
     offset = getMousePosition(evt);
@@ -106,6 +110,7 @@ function update() {
 			venueShapes[i][4] = document.getElementById('rowDecrement').value;
 			venueShapes[i][5] = document.getElementById('TextLabel').value;
 			lastElement.setAttribute('id',venueShapes[i][0]);
+			break;
 		}
 	}
 	console.log(venueShapes); 
