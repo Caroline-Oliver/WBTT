@@ -46,8 +46,10 @@ function startDrag(evt) {
   showHalfPanel(evt);
     lastElement = evt.target;
     selectedElement = evt.target;
-    for (var i =0; i <venueShapes.length; i++){
-	if (venueShapes[i][0] == lastElement){
+    current = lastElement.getAttribute('id')
+   for (var i =0; i <venueShapes.length; i++){
+	console.log("at "+i+" "+venueShapes[i][0])
+	    if (venueShapes[i][0] == current){
 	     document.getElementById('venueName').value = venueShapes[i][0];
 			document.getElementById('sectionName').value = venueShapes[i][1];
 			document.getElementById('venueConfiguration').value = venueShapes[i][2];
