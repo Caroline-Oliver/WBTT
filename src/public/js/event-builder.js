@@ -50,7 +50,7 @@ function startDrag(evt) {
    for (var i =0; i <venueShapes.length; i++){
 	console.log("at "+i+" "+venueShapes[i][0])
 	    if (venueShapes[i][0] == current){
-		    console.log(venueshapes[i]);
+		    console.log(venueShapes[i]);
 	     //document.getElementById('venueName').value = venueShapes[i][0];
 			document.getElementById('sectionName').value = venueShapes[i][0];
 			document.getElementById('venueConfiguration').value = venueShapes[i][1];
