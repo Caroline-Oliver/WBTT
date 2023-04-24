@@ -88,7 +88,7 @@ function startDrag(evt) {
 function update() {
 	//this will add to the associative array keys, and create all the default values
 	//when it's draggable it exists, and the values should be filled in
-	console.log(result); 
+	console.log(venueShapes); 
 	for (var i =0; i <venueShapes.length; i++){
 		if (venueShapes[i][0] == lastElement){
 			venueShape[i][0] = document.getElementById('venueName')
