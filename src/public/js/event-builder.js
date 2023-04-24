@@ -100,8 +100,8 @@ const seatSelector = document.getElementById('hasSeats');
 //const selectElement = document.querySelector(".ice-cream");
 
 seatSelector.addEventListener("change", (event) => {
-  const result = document.querySelector(".result");
-  if (result == "Yes"){
+  
+  if (seatSelector.value == "Yes"){
 	console.log(result);  
   	secondHalfPanelIDs.forEach(makeVisible);
   }
